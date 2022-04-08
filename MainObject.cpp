@@ -1,0 +1,137 @@
+﻿#include "MainObject.h"
+
+bool MainObject::loadImg(std::string path, SDL_Renderer* screen) {
+    SDL_Texture* new_texture = NULL;
+    SDL_Surface* load_surface = IMG_Load(path.c_str());
+    if (load_surface != NULL)
+    {
+        SDL_SetColorKey(load_surface, SDL_TRUE, SDL_MapRGB(load_surface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
+        new_texture = SDL_CreateTextureFromSurface(screen, load_surface);
+        if (new_texture != NULL)
+        {
+            rect_.w = load_surface->w;
+            rect_.h = load_surface->h;
+        }
+        SDL_FreeSurface(load_surface);
+    }
+
+    p_object_ = new_texture;
+
+    return p_object_ != NULL;
+}
+
+MainObject::MainObject(int x, int y)
+{
+	x_pos_ = x;
+	y_pos_ = y;
+	rect_.x = x_pos_;
+	rect_.y = y_pos_;
+	rect_.w = DOT_WIDTH;
+	rect_.h = DOT_HEIGHT;
+	x_val_ = 0;
+	y_val_ = 0;
+}
+
+void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
+	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+	{
+		//Adjust the velocity
+		switch (e.key.keysym.sym)
+		{
+		case SDLK_UP: y_val_ -= DOT_VEL; break;
+		case SDLK_DOWN: y_val_ += DOT_VEL; break;
+		case SDLK_LEFT: x_val_ -= DOT_VEL; break;
+		case SDLK_RIGHT: x_val_ += DOT_VEL; break;
+		}
+	}
+	//If a key was released
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+	{
+		//Adjust the velocity
+		switch (e.key.keysym.sym)
+		{
+		case SDLK_UP: y_val_ += DOT_VEL; break;
+		case SDLK_DOWN: y_val_ -= DOT_VEL; break;
+		case SDLK_LEFT: x_val_ += DOT_VEL; break;
+		case SDLK_RIGHT: x_val_ -= DOT_VEL; break;
+		}
+	}
+	else if (e.type == SDL_MOUSEBUTTONDOWN) // Sự kiện khi ấn chuột. Bắn đạn
+	{
+		AmoObject* p_amo = new AmoObject();
+		if (e.button.button == SDL_BUTTON_RIGHT)
+		{
+			p_amo->loadImg("laser.png",des);
+			p_amo->SetRect(this->rect_.x + 20, this->rect_.y + 22);
+			p_amo->set_is_move(true);
+			p_amo->Set_y_val(20);
+
+			p_amo_list.push_back(p_amo);
+		}
+	}
+}
+
+void MainObject::MakeAmo(SDL_Renderer* des)
+{
+	for (int i = 0; i < p_amo_list.size(); i++)
+	{
+		AmoObject* p_amo = p_amo_list.at(i);
+		if (p_amo != NULL)
+		{
+			if (p_amo->get_is_move() == true)
+			{
+				p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+				p_amo->Render(des, NULL, rect_.x+DOT_WIDTH/2-10, rect_.y-DOT_HEIGHT/2);
+			}
+			else
+			{
+				p_amo_list.erase(p_amo_list.begin() + i);
+				if (p_amo != NULL)
+				{
+					delete p_amo;
+					p_amo = NULL;
+				}
+			}
+		}
+	}
+}
+
+
+void MainObject::HandleMove()
+{
+	x_pos_ += x_val_;
+
+	//If the dot collided or went too far to the left or right
+	if ((x_pos_ < 0) || (x_pos_ + 81 > SCREEN_WIDTH))
+	{
+		//Move back
+		x_pos_ -= x_val_;
+	}
+
+	//Move the dot up or down
+	y_pos_ += y_val_;
+
+	//If the dot collided or went too far up or down
+	if ((y_pos_ < 0) || (y_pos_ + 53 > SCREEN_HEIGHT))
+	{
+		//Move back
+		y_pos_ -= y_val_;
+	}
+}
+void MainObject::Render(SDL_Renderer* des, SDL_Rect* clip)
+{	
+	rect_.x = x_pos_;
+	rect_.y = y_pos_;
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { rect_.x, rect_.y, DOT_WIDTH, DOT_HEIGHT };
+
+	//Set clip rendering dimensions
+	if (clip != NULL)
+	{
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
+	}
+
+	//Render to screen
+	SDL_RenderCopy(des, p_object_, clip, &renderQuad);
+}
