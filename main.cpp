@@ -1,7 +1,10 @@
 #include "Common_Function.h"
 #include "BaseObject.h"
 #include "MainObject.h"
+#include "Timer.h"
+#include <iostream>
 
+using namespace std;
 BaseObject g_background;
 
 bool InitData()
@@ -32,11 +35,11 @@ bool InitData()
         }
     }
     return success;
-}   
+}
 
 bool LoadBackground()
 {
-    bool ret = g_background.loadImg("background.png",g_screen);
+    bool ret = g_background.loadImg("background.png", g_screen);
     if (ret == false)
         return false;
 
@@ -59,26 +62,30 @@ void close()
 
 int main(int argc, char* argv[])
 {
+    Timer fps_timer;
+
     int bkgn_x = 0;
     if (InitData() == false)
         return -1;
     if (LoadBackground() == false)
         return -1;
 
-    MainObject p_player(START_XPOS_MAIN,START_YPOS_MAIN);
-    p_player.loadImg("player.png",g_screen);
+    MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
+    p_player.loadImg("player.png", g_screen);
 
 
     bool is_quit = false;
     while (!is_quit)
     {
+        //start counting time
+        fps_timer.start();
         while (SDL_PollEvent(&g_event) != 0)
         {
             if (g_event.type == SDL_QUIT)
             {
                 is_quit = true;
             }
-            p_player.HandleInputAction(g_event,g_screen);
+            p_player.HandleInputAction(g_event, g_screen);
         }
 
         p_player.HandleMove();
@@ -93,14 +100,24 @@ int main(int argc, char* argv[])
         g_background.Render(g_screen, NULL, 0, bkgn_x - SCREEN_HEIGHT);
         if (bkgn_x >= SCREEN_HEIGHT)
         {
-            bkgn_x = 0; 
+            bkgn_x = 0;
         }
-                                                                                                        
+
         p_player.MakeAmo(g_screen);
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);
+        
+        //total real time has passed while running
+        int real_time = fps_timer.get_ticks();
+        int time_one_frame = 1000 / FRAME_PER_SEC; //ms
 
+        if (real_time < time_one_frame) {
+            int delay_time = time_one_frame - real_time;
+            if (delay_time >= 0) {
+            SDL_Delay(delay_time);
+            }
+        }
     }
     close();
     return 0;
