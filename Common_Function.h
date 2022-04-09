@@ -1,4 +1,5 @@
-﻿#ifndef COMMON_FUNCTION_H
+
+#ifndef COMMON_FUNCTION_H
 #define COMMON_FUNCTION_H
 
 
@@ -14,6 +15,7 @@ static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
 
+const int FRAME_PER_SEC = 300; // FPS
 const int BACKGROUND_HEIGHT = 3350;
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 800;
@@ -28,6 +30,7 @@ const int COLOR_KEY_G = 175;
 const int COLOR_KEY_B = 180;
 
 const int RENDER_DRAW_COLOR = 0xff;
+
 
 
 namespace SDLCommonFunc //Tránh trùng lặp
