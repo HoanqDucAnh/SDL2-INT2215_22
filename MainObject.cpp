@@ -24,8 +24,6 @@ MainObject::MainObject(int x, int y)
 {
 	x_pos_ = x;
 	y_pos_ = y;
-	rect_.x = x_pos_;
-	rect_.y = y_pos_;
 	rect_.w = DOT_WIDTH;
 	rect_.h = DOT_HEIGHT;
 	x_val_ = 0;
@@ -62,7 +60,8 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		if (e.button.button == SDL_BUTTON_RIGHT)
 		{
 			p_amo->loadImg("laser.png",des);
-			p_amo->SetRect(this->rect_.x + 20, this->rect_.y + 22);
+			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 			p_amo->set_is_move(true);
 			p_amo->Set_y_val(20);
 
@@ -80,8 +79,8 @@ void MainObject::MakeAmo(SDL_Renderer* des)
 		{
 			if (p_amo->get_is_move() == true)
 			{
+				p_amo->Render(des, NULL, rect_.x, rect_.y);
 				p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
-				p_amo->Render(des, NULL, rect_.x+DOT_WIDTH/2-10, rect_.y-DOT_HEIGHT/2);
 			}
 			else
 			{

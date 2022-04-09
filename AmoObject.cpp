@@ -16,7 +16,7 @@ AmoObject::~AmoObject()
 // Di chuyển đạn cuả nhân vật
 void AmoObject::HandleMove(const int& x_border, const int& y_border)
 {
-    rect_.y -= y_val_;
+    rect_.y -= 3;
     if (rect_.y > y_border)
     {
         is_move_ = false;

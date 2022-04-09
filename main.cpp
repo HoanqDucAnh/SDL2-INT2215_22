@@ -1,6 +1,7 @@
 #include "Common_Function.h"
 #include "BaseObject.h"
 #include "MainObject.h"
+#include "Timer.h"
 
 BaseObject g_background;
 
@@ -59,6 +60,8 @@ void close()
 
 int main(int argc, char* argv[])
 {
+    Timer fps_timer;
+
     int bkgn_x = 0;
     if (InitData() == false)
         return -1;
@@ -72,6 +75,8 @@ int main(int argc, char* argv[])
     bool is_quit = false;
     while (!is_quit)
     {
+
+        fps_timer.start();
         while (SDL_PollEvent(&g_event) != 0)
         {
             if (g_event.type == SDL_QUIT)
@@ -86,21 +91,28 @@ int main(int argc, char* argv[])
         SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
         SDL_RenderClear(g_screen);
 
-        p_player.MakeAmo(g_screen);
-
         bkgn_x += 1;
-        g_background.Render(g_screen, NULL, 0, bkgn_x);
-        g_background.Render(g_screen, NULL, 0, bkgn_x - SCREEN_HEIGHT);
+        g_background.Render1(g_screen, NULL, 0, bkgn_x);
+        g_background.Render1(g_screen, NULL, 0, bkgn_x - SCREEN_HEIGHT);
         if (bkgn_x >= SCREEN_HEIGHT)
         {
-            bkgn_x = 0; 
+            bkgn_x = 0;
         }
-                                                                                                        
         p_player.MakeAmo(g_screen);
+
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);
 
+        int real_time = fps_timer.get_ticks();
+        int time_one_frame = 1000 / FRAME_PER_SEC; //ms
+
+        if (real_time < time_one_frame) {
+            int delay_time = time_one_frame - real_time;
+            if (delay_time >= 0) {
+                SDL_Delay(delay_time);
+            }
+        }
     }
     close();
     return 0;

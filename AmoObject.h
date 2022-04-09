@@ -41,6 +41,11 @@ public:
     {
         return y_val_;
     }
+    void SetWidthHeight(const int& width, const int& height)
+    {
+        rect_.w = width;
+        rect_.h = height;
+    }
 private:
     int x_val_;
     int y_val_;
