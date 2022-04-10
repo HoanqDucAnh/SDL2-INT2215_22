@@ -1,24 +1,6 @@
 ﻿#include "MainObject.h"
 
-bool MainObject::loadImg(std::string path, SDL_Renderer* screen) {
-    SDL_Texture* new_texture = NULL;
-    SDL_Surface* load_surface = IMG_Load(path.c_str());
-    if (load_surface != NULL)
-    {
-        SDL_SetColorKey(load_surface, SDL_TRUE, SDL_MapRGB(load_surface->format, COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B));
-        new_texture = SDL_CreateTextureFromSurface(screen, load_surface);
-        if (new_texture != NULL)
-        {
-            rect_.w = load_surface->w;
-            rect_.h = load_surface->h;
-        }
-        SDL_FreeSurface(load_surface);
-    }
 
-    p_object_ = new_texture;
-
-    return p_object_ != NULL;
-}
 
 MainObject::MainObject(int x, int y)
 {
@@ -59,7 +41,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		AmoObject* p_amo = new AmoObject();
 		if (e.button.button == SDL_BUTTON_RIGHT)
 		{
-			p_amo->loadImg("laser.png",des);
+			p_amo->loadImg("laser.png", des);
 			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 			p_amo->set_is_move(true);
@@ -118,7 +100,7 @@ void MainObject::HandleMove()
 	}
 }
 void MainObject::Render(SDL_Renderer* des, SDL_Rect* clip)
-{	
+{
 	rect_.x = x_pos_;
 	rect_.y = y_pos_;
 	//Set rendering space and render to screen
