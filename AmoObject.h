@@ -13,8 +13,9 @@ class AmoObject : public BaseObject
 public:
     AmoObject();
     ~AmoObject();
-  
+
     void HandleMove(const int& x_border, const int& y_border);
+ 
 
     bool get_is_move() const
     {
@@ -46,6 +47,7 @@ public:
         rect_.w = width;
         rect_.h = height;
     }
+    void HandleMoveOfThreat();
 private:
     int x_val_;
     int y_val_;
