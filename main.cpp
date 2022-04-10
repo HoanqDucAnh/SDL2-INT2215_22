@@ -2,6 +2,7 @@
 #include "BaseObject.h"
 #include "MainObject.h"
 #include "Timer.h"
+#include "ThreadObject.h"
 
 BaseObject g_background;
 
@@ -71,6 +72,12 @@ int main(int argc, char* argv[])
     MainObject p_player(START_XPOS_MAIN,START_YPOS_MAIN);
     p_player.loadImg("player.png",g_screen);
 
+    ThreatsObject* p_threat = new ThreatsObject();
+    p_threat->loadImg("threat.png", g_screen);
+    p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
+    p_threat->set_y_val(5);
+ 
+
 
     bool is_quit = false;
     while (!is_quit)
@@ -100,6 +107,8 @@ int main(int argc, char* argv[])
         }
         p_player.MakeAmo(g_screen);
 
+        p_threat->Render(g_screen, NULL, 100, 100);
+        p_threat->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);
