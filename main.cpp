@@ -1,3 +1,4 @@
+
 #include "Common_Function.h"
 #include "BaseObject.h"
 #include "MainObject.h"
@@ -10,27 +11,37 @@ bool InitData()
 {
     bool success = true;
     int ret = SDL_Init(SDL_INIT_VIDEO);
-    if (ret < 0)
+    if (ret < 0) {
+        std::cout << "SDL NO INTI\n";
         return false;
+    }
+        
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     g_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (g_window == NULL)
     {
+        std::cout << "NO WINDOW"<<std::endl;
         success = false;
     }
     else
     {
-        g_screen = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED);
-        if (g_screen == NULL)
+        g_screen = SDL_CreateRenderer(g_window, -1, NULL);
+        if (g_screen == NULL) {
+            std::cout << "NO SCREEN"<<SDL_GetError() << std::endl;
             success = false;
+        }
+            
         else
         {
             SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
             int ImgFlags = IMG_INIT_PNG;
-            if (!(IMG_Init(ImgFlags) && ImgFlags))
+            if (!(IMG_Init(ImgFlags) && ImgFlags)) {
+                std::cout << "NO SDL IMAGE"<<std::endl;
                 success = false;
+            }
+                
         }
     }
     return success;

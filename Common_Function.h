@@ -1,7 +1,7 @@
 ﻿#ifndef COMMON_FUNCTION_H
 #define COMMON_FUNCTION_H
 
-
+#include <iostream>
 #include <SDL.h>
 #include <string>
 #include <windows.h>
