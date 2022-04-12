@@ -1,4 +1,5 @@
-﻿#include "ThreatObject.h"
+﻿#pragma once
+#include "ThreatObject.h"
 
 ThreatsObject::ThreatsObject()
 {
@@ -31,11 +32,11 @@ ThreatsObject::~ThreatsObject()
 }
 
 // Đạn của quái
-void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed,SDL_Renderer* des)
+void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des)
 {
     if (p_amo)
     {
-        bool ret = p_amo->loadImg("images/egg.png",des);
+        bool ret = p_amo->loadImg("images/egg.png", des);
         if (ret)
         {
             p_amo->set_is_move(true);
@@ -58,7 +59,7 @@ void ThreatsObject::MakeAmo(SDL_Renderer* des, const int& x_limit, const int& y_
         {
             if (p_amo->get_is_move())
             {
-                p_amo->Render(des,NULL,rect_.x,rect_.y);
+                p_amo->Render(des, NULL, rect_.x, rect_.y);
                 p_amo->HandleMoveOfThreat();
             }
             else
@@ -78,7 +79,7 @@ void ThreatsObject::HandleInputAction(SDL_Event events)
 // Di chuyển của quái
 void ThreatsObject::HandleMove(const int& x_border, const int& y_border)
 {
-    rect_.y += y_val_;
+    rect_.y += 3;
     if (rect_.y > SCREEN_HEIGHT)
     {
         rect_.y = 0;

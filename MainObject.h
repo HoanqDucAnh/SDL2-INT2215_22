@@ -1,5 +1,4 @@
-﻿#pragma once
-#ifndef MAIN_OBJECT_H_
+﻿#ifndef MAIN_OBJECT_H_
 #define MAIN_OBJECT_H_
 
 #include <vector>
@@ -16,11 +15,12 @@ public:
     static const int DOT_VEL = 2;
 
     MainObject(int x, int y);
-    void HandleInputAction(SDL_Event events, SDL_Renderer* des);
+    bool loadImg(std::string path, SDL_Renderer* screen);
+    void HandleInputAction(SDL_Event events,SDL_Renderer* des);
     void HandleMove();
     void Render(SDL_Renderer* des, SDL_Rect* clip);
     // Đạn của nhân vật lưu trong vector
-
+    
     void SetAmoList(std::vector<AmoObject*> amo_list)
     {
         p_amo_list = amo_list;

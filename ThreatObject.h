@@ -1,5 +1,4 @@
-﻿// Đối tượng quái trong game
-
+#pragma once
 #ifndef THREATS_OBJECT_H_
 #define THREATS_OBJECT_H_
 
@@ -37,7 +36,7 @@ public:
         return y_val_;
     }
 
-    void InitAmo(AmoObject* p_amo, const int& speed,SDL_Renderer* des);
+    void InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des);
     void SetAmoList(std::vector<AmoObject*> amo_list)
     {
         p_amo_list = amo_list;

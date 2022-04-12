@@ -2,7 +2,7 @@
 #include "BaseObject.h"
 #include "MainObject.h"
 #include "Timer.h"
-#include "ThreadObject.h"
+#include "ThreatObject.h"
 
 BaseObject g_background;
 
