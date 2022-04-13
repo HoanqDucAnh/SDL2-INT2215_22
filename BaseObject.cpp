@@ -36,15 +36,15 @@ bool BaseObject::loadImg(std::string path, SDL_Renderer* screen)
     return p_object_ != NULL;
 }
 
-void BaseObject::Render1(SDL_Renderer* des, const SDL_Rect* clip)
+void BaseObject::Render1(SDL_Renderer* des, const SDL_Rect* clip, int x, int y)
 {
+    rect_.x = x;
+    rect_.y = y;
     SDL_Rect renderquad = { rect_.x, rect_.y, rect_.w, rect_.h };
     SDL_RenderCopy(des, p_object_, clip, &renderquad);
 }
 void BaseObject::Render(SDL_Renderer* des, const SDL_Rect* clip, int x, int y)
 {
-    rect_.x = x;
-    rect_.y = y;
     SDL_Rect renderquad = { rect_.x, rect_.y, rect_.w, rect_.h };
     SDL_RenderCopy(des, p_object_, clip, &renderquad);
 }

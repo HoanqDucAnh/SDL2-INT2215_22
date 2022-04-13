@@ -15,6 +15,7 @@ public:
     ~AmoObject();
   
     void HandleMove(const int& x_border, const int& y_border);
+    void HandleMoveOfThreat();
 
     bool get_is_move() const
     {
@@ -40,6 +41,11 @@ public:
     int Get_y_val() const
     {
         return y_val_;
+    }
+    void SetWidthHeight(const int& width, const int& height)
+    {
+        rect_.w = width;
+        rect_.h = height;
     }
 private:
     int x_val_;

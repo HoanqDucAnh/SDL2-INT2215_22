@@ -26,7 +26,7 @@ public:
 
     bool loadImg(std::string path, SDL_Renderer* screen);
     void Render(SDL_Renderer* des, const SDL_Rect* clip , int x, int y);
-    void Render1(SDL_Renderer* des, const SDL_Rect* clip);
+    void Render1(SDL_Renderer* des, const SDL_Rect* clip, int x, int y);
     void Free();
 protected:
     SDL_Rect rect_;
