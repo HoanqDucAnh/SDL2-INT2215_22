@@ -59,7 +59,17 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		AmoObject* p_amo = new AmoObject();
 		if (e.button.button == SDL_BUTTON_RIGHT)
 		{
-			p_amo->loadImg("laser.png",des);
+			p_amo->loadImg("bullet.png",des);
+			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
+			p_amo->set_is_move(true);
+			p_amo->Set_y_val(20);
+
+			p_amo_list.push_back(p_amo);
+		}
+		else if (e.button.button == SDL_BUTTON_LEFT)
+		{
+			p_amo->loadImg("laser.png", des);
 			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 			p_amo->set_is_move(true);

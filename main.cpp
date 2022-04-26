@@ -76,9 +76,17 @@ int main(int argc, char* argv[])
 
     int bkgn_x = 0;
     if (InitData() == false)
+    {
+        std::cerr << "init error";
         return -1;
+
+    }
     if (LoadBackground() == false)
+    {
+        std::cerr << "loadback error";
         return -1;
+
+    }
 
     MainObject p_player(START_XPOS_MAIN,START_YPOS_MAIN);
     p_player.loadImg("player.png",g_screen);
