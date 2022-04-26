@@ -73,10 +73,13 @@ int main(int argc, char* argv[])
     p_player.loadImg("player.png",g_screen);
 
     ThreatsObject* p_threat = new ThreatsObject();
+   
     p_threat->loadImg("threat.png", g_screen);
     p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
-    p_threat->set_y_val(5);
- 
+    p_threat->set_y_val(4);
+    AmoObject* p_bullet = new AmoObject();
+    p_threat->InitAmo(p_bullet, 10 , g_screen);
+   
 
 
     bool is_quit = false;
@@ -106,9 +109,9 @@ int main(int argc, char* argv[])
             bkgn_x = 0;
         }
         p_player.MakeAmo(g_screen);
-
         p_threat->Render(g_screen, NULL, 100, 100);
-        p_threat->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+        p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
+        p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);

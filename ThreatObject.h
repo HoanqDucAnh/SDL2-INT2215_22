@@ -16,6 +16,7 @@ public:
     ThreatsObject();
     ~ThreatsObject();
 
+    void HandleMove2(const int& x_border, const int& y_border);
     void HandleInputAction(SDL_Event events);
     void HandleMove(const int& x_border, const int& y_border);
     void HandleMoveBoss(const int& x_border, const int& y_border);
@@ -37,7 +38,7 @@ public:
     }
 
     void InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des);
-    void SetAmoList(std::vector<AmoObject*> amo_list)
+    void SetAmoList(std::vector<AmoObject*>& amo_list)
     {
         p_amo_list = amo_list;
     }

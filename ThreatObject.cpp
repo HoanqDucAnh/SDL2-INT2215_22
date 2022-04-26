@@ -3,7 +3,7 @@
 
 ThreatsObject::ThreatsObject()
 {
-    rect_.x = SCREEN_WIDTH * 0.5;
+    rect_.x = SCREEN_WIDTH * 0.5 ;
     rect_.y = SCREEN_HEIGHT;
     rect_.w = WIDTH_THREAT;
     rect_.h = HEIGHT_THREAT;
@@ -36,13 +36,12 @@ void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* de
 {
     if (p_amo)
     {
-        bool ret = p_amo->loadImg("images/egg.png", des);
+        bool ret = p_amo->loadImg("egg.png", des);
         if (ret)
         {
             p_amo->set_is_move(true);
             p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-            //p_amo->set_type(AmoObject::SPHERE);
-            p_amo->SetRect(rect_.x + rect_.h / 3, rect_.y + rect_.h);
+            p_amo->SetRect(this->rect_.x + WIDTH_THREAT / 2 , this->rect_.y - HEIGHT_THREAT / 2 );
             p_amo->Set_y_val(speed);
             p_amo_list.push_back(p_amo);
         }
@@ -79,7 +78,7 @@ void ThreatsObject::HandleInputAction(SDL_Event events)
 // Di chuyển của quái
 void ThreatsObject::HandleMove(const int& x_border, const int& y_border)
 {
-    rect_.y += 3;
+    rect_.y -= 2;
     if (rect_.y > SCREEN_HEIGHT)
     {
         rect_.y = 0;
@@ -89,6 +88,22 @@ void ThreatsObject::HandleMove(const int& x_border, const int& y_border)
             rand_x = SCREEN_WIDTH * 0.3;
         }
         rect_.x = rand_x;
+    }
+}
+
+void ThreatsObject::HandleMove2(const int& x_border, const int& y_border)
+{
+    rect_.x += 1;
+    rect_.y -= 1;
+    if (rect_.x > SCREEN_HEIGHT)
+    {
+        rect_.x = 0;
+        int rand_y = rand() % 1100;
+        if (rand_y > SCREEN_HEIGHT/2)
+        {
+            rand_y = SCREEN_HEIGHT * 0.3;
+        }
+        rect_.y = rand_y;
     }
 }
 
