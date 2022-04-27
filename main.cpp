@@ -56,7 +56,7 @@ bool LoadBackground()
     return true;
 }
 
-void close()
+void close()    
 {
     g_background.Free();
 
