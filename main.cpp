@@ -91,13 +91,14 @@ int main(int argc, char* argv[])
     MainObject p_player(START_XPOS_MAIN,START_YPOS_MAIN);
     p_player.loadImg("player.png",g_screen);
 
+    
     ThreatsObject* p_threat = new ThreatsObject();
    
     p_threat->loadImg("threat.png", g_screen);
     p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
     p_threat->set_y_val(4);
     AmoObject* p_bullet = new AmoObject();
-    p_threat->InitAmo(p_bullet, 10 , g_screen);
+    p_threat->InitAmo(p_bullet, 5 , g_screen);
    
 
 
