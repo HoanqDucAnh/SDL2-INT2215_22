@@ -61,7 +61,12 @@ void ThreatsObject::MakeAmo(SDL_Renderer* des, const int& x_limit, const int& y_
                 p_amo->Render(des, NULL, rect_.x, rect_.y);
                 p_amo->HandleMoveOfThreat();
             }
-            else
+            else 
+
+           // p_amo->Render(des, NULL, rect_.x, rect_.y);
+//            p_amo->HandleMoveOfThreat();
+
+  //          if (!p_amo->get_is_move())
             {
                 p_amo->set_is_move(true);
                 p_amo->SetRect(rect_.x + rect_.h / 3, rect_.y + rect_.h);
@@ -94,10 +99,10 @@ void ThreatsObject::HandleMove(const int& x_border, const int& y_border)
 void ThreatsObject::HandleMove2(const int& x_border, const int& y_border)
 {
     rect_.x += 1;
-    rect_.y -= 1;
+    //rect_.y -= 1;
     if (rect_.x > SCREEN_HEIGHT)
     {
-        rect_.x = 0;
+        rect_.x = -100;
         int rand_y = rand() % 1100;
         if (rand_y > SCREEN_HEIGHT/2)
         {
