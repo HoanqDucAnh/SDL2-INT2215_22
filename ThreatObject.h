@@ -37,6 +37,7 @@ public:
         return y_val_;
     }
 
+
     void InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des);
     void SetAmoList(std::vector<AmoObject*>& amo_list)
     {

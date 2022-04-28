@@ -113,15 +113,15 @@ void ThreatsObject::HandleMove2(const int& x_border, const int& y_border)
 }
 
 // Reset quái sau khi chết
-void ThreatsObject::Reset(const int& yborder)
+void ThreatsObject::Reset(const int& xborder)
 {
-    rect_.y = yborder;
-    int rand_x = rand() % 1100;
-    if (rand_x > SCREEN_WIDTH)
+    rect_.x = xborder;
+    int rand_y = rand() % 1100;
+    if (rand_y > SCREEN_HEIGHT)
     {
-        rand_x = SCREEN_WIDTH * 0.3;
+        rand_y = SCREEN_HEIGHT * 0.3;
     }
-    rect_.x = rand_x;
+    rect_.y = rand_y;
     for (int i = 0; i < p_amo_list.size(); i++)
     {
         AmoObject* p_amo = p_amo_list.at(i);

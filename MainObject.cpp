@@ -144,3 +144,22 @@ void MainObject::Render(SDL_Renderer* des, SDL_Rect* clip)
 	//Render to screen
 	SDL_RenderCopy(des, p_object_, clip, &renderQuad);
 }
+
+void MainObject::DestroyAmo(const int& idx)
+{
+	int amo_size = p_amo_list.size();
+	if (amo_size > 0 && idx < amo_size)
+	{
+		for (int i = 0; i < amo_size; i++)
+		{
+			AmoObject* p_amo = p_amo_list.at(idx);
+			p_amo_list.erase(p_amo_list.begin() + idx);
+
+			if (p_amo != NULL)
+			{
+				delete p_amo;
+				p_amo = NULL;
+			}
+		}
+	}
+}

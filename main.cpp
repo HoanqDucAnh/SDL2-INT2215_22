@@ -128,13 +128,42 @@ int main(int argc, char* argv[])
         {
             bkgn_x = 0;
         }
-        p_player.MakeAmo(g_screen);
-        p_threat->Render(g_screen, NULL, 100, 100);
         p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
+        p_threat->Render(g_screen, NULL, 100, 100);
+        p_player.MakeAmo(g_screen);
         p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);
+
+
+        //player & threat collision
+        bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threat->GetRect());
+        if (is_col)
+        {
+            if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
+            {
+                close();
+                return 0;
+            }
+        }
+
+        //player ammo & threat collision
+        std::vector<AmoObject*> amo_list = p_player.GetAmoList();
+        for (int ia = 0; ia < amo_list.size(); ia++)
+        {
+            AmoObject* p_amo = amo_list.at(ia);
+            if (p_amo != NULL)
+            {
+                bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
+                if (ret_col)
+                {
+                    p_player.DestroyAmo(ia);
+                    p_threat->Reset(0);
+                }
+            }
+        }
+
 
         int real_time = fps_timer.get_ticks();
         int time_one_frame = 1000 / FRAME_PER_SEC; //ms

@@ -32,4 +32,10 @@ const int COLOR_KEY_B = 180;
 const int RENDER_DRAW_COLOR = 0xff;
 
 
+namespace SDLCommonFunction
+{
+	bool CheckCollision(const SDL_Rect& obj1, const SDL_Rect& obj2);
+}
+
+
 #endif
