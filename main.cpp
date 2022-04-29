@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "Common_Function.h"
 #include "BaseObject.h"
 #include "MainObject.h"
@@ -118,6 +117,13 @@ int main(int argc, char* argv[])
             p_player.HandleInputAction(g_event,g_screen);
         }
 
+
+        //Main game functions
+        p_player.HandleMove();
+
+        SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+        SDL_RenderClear(g_screen);
+
         //Background Scrolling
         bkgn_x += 1;
         g_background.Render1(g_screen, NULL, 0, bkgn_x);
@@ -126,13 +132,6 @@ int main(int argc, char* argv[])
         {
             bkgn_x = 0;
         }
-
-        //Main game functions
-        p_player.HandleMove();
-
-        SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
-        SDL_RenderClear(g_screen);
-
         p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
         p_threat->Render(g_screen, NULL, 100, 100);
         p_player.MakeAmo(g_screen);
@@ -180,10 +179,8 @@ int main(int argc, char* argv[])
                 if (ret_col_threat)
                 {
                     //p_threat->DestroyAmo(ia);
-                    //p_player->Reset(0);
-                    char text[128];
-                    sprintf(text, "You Died! Final Score: %d", score);
-                    if (MessageBox(NULL, text, L"Info", MB_OK) == IDOK)
+                    //p_player->Reset(0); 
+                    if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
                     {
                         close();
                         std::cout << std::endl << score;
