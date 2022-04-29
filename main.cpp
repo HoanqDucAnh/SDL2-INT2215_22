@@ -92,16 +92,18 @@ int main(int argc, char* argv[])
     MainObject p_player(START_XPOS_MAIN,START_YPOS_MAIN);
     p_player.loadImg("player.png",g_screen);
 
-    
-    ThreatsObject* p_threat = new ThreatsObject();
-   
-    p_threat->loadImg("threat.png", g_screen);
-    p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
-    p_threat->set_y_val(4);
-    AmoObject* p_bullet = new AmoObject();
-    p_threat->InitAmo(p_bullet, 5 , g_screen);
-   
+    ThreatsObject* p_threats = new ThreatsObject[20];
 
+    for (int i = 0; i < NUM_THREAT; i++) {
+        ThreatsObject* p_threat = (p_threats+i);
+
+        p_threat->loadImg("threat.png", g_screen);
+        p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
+        p_threat->set_y_val(4);
+        AmoObject* p_bullet = new AmoObject();
+        p_threat->InitAmo(p_bullet, 5, g_screen);
+
+    }
 
     bool is_quit = false;
     while (!is_quit)
@@ -133,17 +135,22 @@ int main(int argc, char* argv[])
         {
             bkgn_x = 0;
         }
-        p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
-        p_threat->Render(g_screen, NULL, 100, 100);
+
+        for (int ii = 0; ii < NUM_THREAT; ii++) {
+            ThreatsObject* p_threat = (p_threats + ii);
+            p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
+            p_threat->Render(g_screen, NULL, 100, 100);
+            p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
         p_player.MakeAmo(g_screen);
-        p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+       
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);
 
 
         //player & threat collision
-        bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threat->GetRect());
+        bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threats->GetRect());
         if (is_col)
         {
             if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
@@ -160,17 +167,17 @@ int main(int argc, char* argv[])
             AmoObject* p_amo = amo_list.at(ia);
             if (p_amo != NULL)
             {
-                bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
+                bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threats->GetRect());
                 if (ret_col)
                 {
                     p_player.DestroyAmo(ia);
-                    p_threat->Reset(0);
+                    p_threats->Reset(0);
                     score++;
                 }
             }
         }
-
-        std::vector<AmoObject*> amo_list_threat = p_threat->GetAmoList(); 
+      
+        std::vector<AmoObject*> amo_list_threat = p_threats->GetAmoList(); 
         for (int iat = 0; iat < amo_list_threat.size(); iat++)
         {
             AmoObject* p_amo_threat = amo_list_threat.at(iat);
