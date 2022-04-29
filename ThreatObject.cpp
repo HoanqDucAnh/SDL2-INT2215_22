@@ -100,7 +100,7 @@ void ThreatsObject::HandleMove2(const int& x_border, const int& y_border)
 {
     rect_.x += 1;
     //rect_.y -= 1;
-    if (rect_.x > SCREEN_HEIGHT)
+    if (rect_.x > SCREEN_WIDTH)
     {
         rect_.x = -100;
         int rand_y = rand() % 1100;
@@ -117,7 +117,7 @@ void ThreatsObject::Reset(const int& xborder)
 {
     rect_.x = xborder;
     int rand_y = rand() % 1100;
-    if (rand_y > SCREEN_HEIGHT)
+    if (rand_y > SCREEN_HEIGHT/2)
     {
         rand_y = SCREEN_HEIGHT * 0.3;
     }

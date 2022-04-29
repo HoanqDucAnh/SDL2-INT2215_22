@@ -164,6 +164,26 @@ int main(int argc, char* argv[])
             }
         }
 
+        std::vector<AmoObject*> amo_list_threat = p_threat->GetAmoList(); 
+        for (int iat = 0; iat < amo_list_threat.size(); iat++)
+        {
+            AmoObject* p_amo_threat = amo_list_threat.at(iat);
+            if (p_amo_threat != NULL)
+            {
+                bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
+                if (ret_col_threat)
+                {
+                    //p_threat->DestroyAmo(ia);
+                    //p_player->Reset(0);
+                    if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
+                    {
+                        close();
+                        return 0;
+                    }
+                }
+            }
+        }
+
 
         int real_time = fps_timer.get_ticks();
         int time_one_frame = 1000 / FRAME_PER_SEC; //ms
