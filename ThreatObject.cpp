@@ -96,7 +96,24 @@ void ThreatsObject::HandleMove(const int& x_border, const int& y_border)
     }
 }
 
-void ThreatsObject::HandleMove2(const int& x_border, const int& y_border)
+
+void ThreatsObject::HandleMoveRtoL(const int& x_border, const int& y_border)
+{
+    rect_.x -= 1;
+    //rect_.y -= 1;
+    if (rect_.x > SCREEN_WIDTH)
+    {
+        rect_.x = 700;
+        int rand_y = rand() % 1100;
+        if (rand_y > SCREEN_HEIGHT / 2)
+        {
+            rand_y = SCREEN_HEIGHT * 0.3;
+        }
+        rect_.y = rand_y;
+    }
+}
+
+void ThreatsObject::HandleMoveLtoR(const int& x_border, const int& y_border)
 {
     rect_.x += 1;
     //rect_.y -= 1;
@@ -115,11 +132,21 @@ void ThreatsObject::HandleMove2(const int& x_border, const int& y_border)
 // Reset quái sau khi chết
 void ThreatsObject::Reset(const int& xborder)
 {
-    rect_.x = xborder;
-    int rand_y = rand() % 1100;
+    int rand_x = rand() % 2;
+    if (rand_x)
+    {
+        rect_.x = xborder;
+        set_direction(true); //true là từ Left to Right
+    }
+    else
+    {
+        rect_.x = 600;
+        set_direction(false); //false là từ right to left
+    }
+    int rand_y = rand() % 400;
     if (rand_y > SCREEN_HEIGHT/2)
     {
-        rand_y = SCREEN_HEIGHT * 0.3;
+        rand_y *= 0.3;
     }
     rect_.y = rand_y;
     for (int i = 0; i < p_amo_list.size(); i++)

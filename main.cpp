@@ -138,7 +138,14 @@ int main(int argc, char* argv[])
 
         for (int ii = 0; ii < NUM_THREAT; ii++) {
             ThreatsObject* p_threat = (p_threats + ii);
-            p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
+            if (p_threat->get_dir())
+            {
+                p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
+            }
+            else
+            {
+                p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
+            }
             p_threat->Render(g_screen, NULL, 100, 100);
             p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
@@ -177,7 +184,7 @@ int main(int argc, char* argv[])
                     if (ret_col)
                     {
                         p_player.DestroyAmo(ia);
-                        p_threat->Reset(0);
+                        p_threat->Reset(-100);
                         score++;
                         break;
                     }
@@ -210,7 +217,7 @@ int main(int argc, char* argv[])
                 }
             }
         }
-
+        
 
         int real_time = fps_timer.get_ticks();
         int time_one_frame = 1000 / FRAME_PER_SEC; //ms
