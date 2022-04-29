@@ -36,10 +36,10 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		//Adjust the velocity
 		switch (e.key.keysym.sym)
 		{
-			case SDLK_w: y_val_ -= DOT_VEL; break;
-			case SDLK_s: y_val_ += DOT_VEL; break;
-			case SDLK_a: x_val_ -= DOT_VEL; break;
-			case SDLK_d: x_val_ += DOT_VEL; break;
+			case SDLK_UP: y_val_ -= DOT_VEL; break;
+			case SDLK_DOWN: y_val_ += DOT_VEL; break;
+			case SDLK_LEFT: x_val_ -= DOT_VEL; break;
+			case SDLK_RIGHT: x_val_ += DOT_VEL; break;
 		}
 	}
 	//If a key was released
@@ -48,10 +48,10 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		//Adjust the velocity
 		switch (e.key.keysym.sym)
 		{
-			case SDLK_w: y_val_ += DOT_VEL; break;
-			case SDLK_s: y_val_ -= DOT_VEL; break;
-			case SDLK_a: x_val_ += DOT_VEL; break;
-			case SDLK_d: x_val_ -= DOT_VEL; break;
+			case SDLK_UP: y_val_ += DOT_VEL; break;
+			case SDLK_DOWN: y_val_ -= DOT_VEL; break;
+			case SDLK_LEFT: x_val_ += DOT_VEL; break;
+			case SDLK_RIGHT: x_val_ -= DOT_VEL; break;
 		}
 	}
 	else if (e.type == SDL_MOUSEBUTTONDOWN) // Sự kiện khi ấn chuột. Bắn đạn
