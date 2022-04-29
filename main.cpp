@@ -117,6 +117,7 @@ int main(int argc, char* argv[])
             p_player.HandleInputAction(g_event,g_screen);
         }
 
+       // if (e.type == SDL_KEYDOWN
 
         //Main game functions
         p_player.HandleMove();
