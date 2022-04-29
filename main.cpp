@@ -1,4 +1,4 @@
-
+#include <stdlib.h>
 #include "Common_Function.h"
 #include "BaseObject.h"
 #include "MainObject.h"
@@ -6,6 +6,8 @@
 #include "ThreatObject.h"
 
 BaseObject g_background;
+
+int score = 0;
 
 bool InitData()
 {
@@ -116,11 +118,7 @@ int main(int argc, char* argv[])
             p_player.HandleInputAction(g_event,g_screen);
         }
 
-        p_player.HandleMove();
-
-        SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
-        SDL_RenderClear(g_screen);
-
+        //Background Scrolling
         bkgn_x += 1;
         g_background.Render1(g_screen, NULL, 0, bkgn_x);
         g_background.Render1(g_screen, NULL, 0, bkgn_x - SCREEN_HEIGHT);
@@ -128,6 +126,13 @@ int main(int argc, char* argv[])
         {
             bkgn_x = 0;
         }
+
+        //Main game functions
+        p_player.HandleMove();
+
+        SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+        SDL_RenderClear(g_screen);
+
         p_threat->HandleMove2(SCREEN_WIDTH, SCREEN_HEIGHT);
         p_threat->Render(g_screen, NULL, 100, 100);
         p_player.MakeAmo(g_screen);
@@ -160,6 +165,7 @@ int main(int argc, char* argv[])
                 {
                     p_player.DestroyAmo(ia);
                     p_threat->Reset(0);
+                    score++;
                 }
             }
         }
@@ -175,9 +181,12 @@ int main(int argc, char* argv[])
                 {
                     //p_threat->DestroyAmo(ia);
                     //p_player->Reset(0);
-                    if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
+                    char text[128];
+                    sprintf(text, "You Died! Final Score: %d", score);
+                    if (MessageBox(NULL, text, L"Info", MB_OK) == IDOK)
                     {
                         close();
+                        std::cout << std::endl << score;
                         return 0;
                     }
                 }
