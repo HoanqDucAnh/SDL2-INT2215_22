@@ -142,57 +142,70 @@ int main(int argc, char* argv[])
             p_threat->Render(g_screen, NULL, 100, 100);
             p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
+
         p_player.MakeAmo(g_screen);
-       
         p_player.Render(g_screen, NULL);
 
         SDL_RenderPresent(g_screen);
 
 
         //player & threat collision
-        bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threats->GetRect());
-        if (is_col)
+        for (int ii = 0; ii < NUM_THREAT; ii++) 
         {
-            if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
+            ThreatsObject* p_threat = (p_threats + ii);
+            bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threat->GetRect());
+            if (is_col)
             {
-                close();
-                return 0;
+                if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
+                {
+                    close();
+                    return 0;
+                }
             }
         }
-
         //player ammo & threat collision
-        std::vector<AmoObject*> amo_list = p_player.GetAmoList();
-        for (int ia = 0; ia < amo_list.size(); ia++)
+        for (int ii = 0; ii < NUM_THREAT; ii++)
         {
-            AmoObject* p_amo = amo_list.at(ia);
-            if (p_amo != NULL)
+            ThreatsObject* p_threat = (p_threats + ii);
+            std::vector<AmoObject*> amo_list = p_player.GetAmoList();
+            for (int ia = 0; ia < amo_list.size(); ia++)
             {
-                bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threats->GetRect());
-                if (ret_col)
+                AmoObject* p_amo = amo_list.at(ia);
+                if (p_amo != NULL)
                 {
-                    p_player.DestroyAmo(ia);
-                    p_threats->Reset(0);
-                    score++;
+                    bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
+                    if (ret_col)
+                    {
+                        p_player.DestroyAmo(ia);
+                        p_threat->Reset(0);
+                        score++;
+                        break;
+                    }
                 }
             }
         }
       
-        std::vector<AmoObject*> amo_list_threat = p_threats->GetAmoList(); 
-        for (int iat = 0; iat < amo_list_threat.size(); iat++)
+        //threat ammo & player collision
+        for (int ii = 0; ii < NUM_THREAT; ii++)
         {
-            AmoObject* p_amo_threat = amo_list_threat.at(iat);
-            if (p_amo_threat != NULL)
+            ThreatsObject* p_threat = (p_threats + ii);
+            std::vector<AmoObject*> amo_list_threat = p_threat->GetAmoList();
+            for (int iat = 0; iat < amo_list_threat.size(); iat++)
             {
-                bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
-                if (ret_col_threat)
+                AmoObject* p_amo_threat = amo_list_threat.at(iat);
+                if (p_amo_threat != NULL)
                 {
-                    //p_threat->DestroyAmo(ia);
-                    //p_player->Reset(0); 
-                    if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                    bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
+                    if (ret_col_threat)
                     {
-                        close();
-                        std::cout << std::endl << score;
-                        return 0;
+                        //p_threat->DestroyAmo(ia);
+                        //p_player->Reset(0); 
+                        if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                        {
+                            close();
+                            std::cout << std::endl << score;
+                            return 0;
+                        }
                     }
                 }
             }
