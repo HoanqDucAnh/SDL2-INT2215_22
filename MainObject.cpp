@@ -147,9 +147,10 @@ void MainObject::Render(SDL_Renderer* des, SDL_Rect* clip)
 
 void MainObject::DestroyAmo(const int& idx)
 {
-	for (int i = 0; i < p_amo_list.size(); i++)
+	int amo_size = p_amo_list.size();
+	if (amo_size > 0 && idx < amo_size)
 	{
-		if (idx < p_amo_list.size())
+		for (int i = 0; i < amo_size; i++)
 		{
 			AmoObject* p_amo = p_amo_list.at(idx);
 			p_amo_list.erase(p_amo_list.begin() + idx);
