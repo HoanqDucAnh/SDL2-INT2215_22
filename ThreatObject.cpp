@@ -125,7 +125,7 @@ void ThreatsObject::Reset(const int& xborder)
     for (int i = 0; i < p_amo_list.size(); i++)
     {
         AmoObject* p_amo = p_amo_list.at(i);
-        if (p_amo)
+        if (!p_amo->get_is_move())
         {
             ResetAmo(p_amo);
         }
