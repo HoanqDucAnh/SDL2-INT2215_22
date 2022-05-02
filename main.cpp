@@ -3,6 +3,7 @@
 #include "MainObject.h"
 #include "Timer.h"
 #include "ThreatObject.h"
+#include "explosion.h"
 
 BaseObject g_background;
 
@@ -20,7 +21,7 @@ bool InitData()
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-    g_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    g_window = SDL_CreateWindow("Hardcore game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (g_window == NULL)
     {
         std::cout << "NO WINDOW"<<std::endl;
@@ -89,10 +90,24 @@ int main(int argc, char* argv[])
 
     }
 
+    //player
     MainObject p_player(START_XPOS_MAIN,START_YPOS_MAIN);
     p_player.loadImg("player.png",g_screen);
 
+
+    //threat
     ThreatsObject* p_threats = new ThreatsObject[20];
+
+
+    //explsion
+    ExplosionObj exp_threat;
+    bool check = exp_threat.loadImg("exp_eff.png", g_screen);
+    if (!check) {
+        std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
+        return -1;
+    }
+    exp_threat.set_clip();
+
 
     for (int i = 0; i < NUM_THREAT; i++) {
         ThreatsObject* p_threat = (p_threats+i);
@@ -155,7 +170,8 @@ int main(int argc, char* argv[])
 
         SDL_RenderPresent(g_screen);
 
-
+        int exp_frame_width = exp_threat.get_fr_width();
+        int exp_frame_height = exp_threat.get_fr_height();
         //player & threat collision
         for (int ii = 0; ii < NUM_THREAT; ii++) 
         {
@@ -163,6 +179,17 @@ int main(int argc, char* argv[])
             bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threat->GetRect());
             if (is_col)
             {
+                for (int ex = 0; ex < explosion_frame; ex++)
+                {
+                    int x_pos = (p_threat->GetRect().x + p_threat->GetRect().w * 0.5) - exp_frame_width * 0.5;
+                    int y_pos = (p_threat->GetRect().y + p_threat->GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                    exp_threat.set_frame(ex);
+                    exp_threat.SetRect(x_pos, y_pos);
+                    exp_threat.render_explosion(g_screen);
+                    SDL_RenderPresent(g_screen);
+                }
+                SDL_Delay(500);
                 if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
                 {
                     close();
@@ -170,6 +197,9 @@ int main(int argc, char* argv[])
                 }
             }
         }
+
+        //int exp_frame_width = exp_threat.get_fr_width();
+        //int exp_frame_height = exp_threat.get_fr_height();
         //player ammo & threat collision
         for (int ii = 0; ii < NUM_THREAT; ii++)
         {
@@ -183,6 +213,17 @@ int main(int argc, char* argv[])
                     bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
                     if (ret_col)
                     {
+                        for (int ex = 0; ex < explosion_frame; ex++)
+                        {
+                            int x_pos = (p_threat->GetRect().x + p_threat->GetRect().w * 0.5) - exp_frame_width * 0.5;
+                            int y_pos = (p_threat->GetRect().y + p_threat->GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                            exp_threat.set_frame(ex);
+                            exp_threat.SetRect(x_pos, y_pos);
+                            exp_threat.render_explosion(g_screen);
+                            SDL_RenderPresent(g_screen);
+                        }
+
                         p_player.DestroyAmo(ia);
                         p_threat->Reset(-100);
                         score++;
@@ -205,8 +246,19 @@ int main(int argc, char* argv[])
                     bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
                     if (ret_col_threat)
                     {
+                        for (int ex = 0; ex < explosion_frame; ex++)
+                        {
+                            int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                            int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                            exp_threat.set_frame(ex);
+                            exp_threat.SetRect(x_pos, y_pos);
+                            exp_threat.render_explosion(g_screen);
+                            SDL_RenderPresent(g_screen);
+                        }
                         //p_threat->DestroyAmo(ia);
                         //p_player->Reset(0); 
+                        SDL_Delay(500);
                         if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
                         {
                             close();
