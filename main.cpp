@@ -181,11 +181,11 @@ int main(int argc, char* argv[])
             {
                 for (int ex = 0; ex < explosion_frame; ex++)
                 {
-                    int x_pos = (p_threat->GetRect().x + p_threat->GetRect().w * 0.5) - exp_frame_width * 0.5;
-                    int y_pos = (p_threat->GetRect().y + p_threat->GetRect().h * 0.5) - exp_frame_height * 0.5;
+                    int x_player_pos= (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                    int y_player_pos= (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_width * 0.5;
 
                     exp_threat.set_frame(ex);
-                    exp_threat.SetRect(x_pos, y_pos);
+                    exp_threat.SetRect(x_player_pos, y_player_pos);
                     exp_threat.render_explosion(g_screen);
                     SDL_RenderPresent(g_screen);
                 }
