@@ -40,6 +40,16 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_DOWN: y_val_ += DOT_VEL; break;
 			case SDLK_LEFT: x_val_ -= DOT_VEL; break;
 			case SDLK_RIGHT: x_val_ += DOT_VEL; break;
+			case SDLK_SPACE:
+
+				AmoObject* p_amo = new AmoObject();    
+				p_amo->loadImg("bullet.png", des);
+				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+				p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
+				p_amo->set_is_move(true);
+				p_amo->Set_y_val(20);
+
+				p_amo_list.push_back(p_amo);
 		}
 	}
 	//If a key was released
@@ -52,12 +62,24 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_DOWN: y_val_ -= DOT_VEL; break;
 			case SDLK_LEFT: x_val_ += DOT_VEL; break;
 			case SDLK_RIGHT: x_val_ -= DOT_VEL; break;
+			case SDLK_SPACE:
+
+				AmoObject* p_amo = new AmoObject();
+				p_amo->loadImg("bullet.png", des);
+				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+				p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
+				p_amo->set_is_move(true);
+				p_amo->Set_y_val(20);
+
+				p_amo_list.push_back(p_amo);
 		}
 	}
-	else if (e.type == SDL_MOUSEBUTTONDOWN) // Sự kiện khi ấn chuột. Bắn đạn
+	//else if (e.type == SDL_OUSEBUTTONDOWN) // Sự kiện khi ấn chuột. Bắn đạn
+	else if (e.type == SDL_KEYDOWN)
 	{
 		AmoObject* p_amo = new AmoObject();
-		if (e.button.button == SDL_BUTTON_RIGHT)
+		//if (e.button.button == SDL_BUTTON_RIGHT)
+		if (e.key.keysym.sym == SDLK_z)
 		{
 			p_amo->loadImg("bullet.png",des);
 			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
@@ -67,7 +89,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 
 			p_amo_list.push_back(p_amo);
 		}
-		else if (e.button.button == SDL_BUTTON_LEFT)
+		/*else if (e.button.button == SDL_BUTTON_LEFT)
 		{
 			p_amo->loadImg("laser.png", des);
 			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
@@ -76,7 +98,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			p_amo->Set_y_val(20);
 
 			p_amo_list.push_back(p_amo);
-		}
+		}*/
 	}
 }
 

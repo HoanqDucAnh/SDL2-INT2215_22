@@ -14,12 +14,12 @@ static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
 
-const int FRAME_PER_SEC = 300;
+const int FRAME_PER_SEC = 60;
 const int BACKGROUND_HEIGHT = 800;
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 800;
 const int SCREEN_BPP = 32;
-const int NUM_THREAT = 2;
+const int NUM_THREAT = 3;
 //const int SPEED_MAIN = 8;
 //const int NUM_LIVES = 3;
 const int START_XPOS_MAIN = SCREEN_WIDTH / 2;

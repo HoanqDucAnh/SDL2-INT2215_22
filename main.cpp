@@ -120,6 +120,8 @@ int main(int argc, char* argv[])
 
     }
 
+    //main game loop
+
     bool is_quit = false;
     while (!is_quit)
     {
@@ -218,10 +220,11 @@ int main(int argc, char* argv[])
                             int x_pos = (p_threat->GetRect().x + p_threat->GetRect().w * 0.5) - exp_frame_width * 0.5;
                             int y_pos = (p_threat->GetRect().y + p_threat->GetRect().h * 0.5) - exp_frame_height * 0.5;
 
-                            exp_threat.set_frame(ex);
+                            exp_threat.set_frame(ex);   
                             exp_threat.SetRect(x_pos, y_pos);
                             exp_threat.render_explosion(g_screen);
                             SDL_RenderPresent(g_screen);
+                            SDL_Delay(2);
                         }
 
                         p_player.DestroyAmo(ia);
@@ -272,12 +275,12 @@ int main(int argc, char* argv[])
         
 
         int real_time = fps_timer.get_ticks();
-        int time_one_frame = 1000 / FRAME_PER_SEC; //ms
+        int time_one_frame = (1000/ 3) / FRAME_PER_SEC; //ms
 
         if (real_time < time_one_frame) {
             int delay_time = time_one_frame - real_time;
             if (delay_time >= 0) {
-                SDL_Delay(delay_time);
+                SDL_Delay(delay_time-1);
             }
         }
     }
