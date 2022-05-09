@@ -23,7 +23,7 @@ public:
     {
         return p_object_;
     }
-
+    void Render2(SDL_Renderer* screen, const SDL_Rect* clip /*- NULL*/);
     bool loadImg(std::string path, SDL_Renderer* screen);
     void Render(SDL_Renderer* des, const SDL_Rect* clip , int x, int y);
     void Render1(SDL_Renderer* des, const SDL_Rect* clip, int x, int y);
