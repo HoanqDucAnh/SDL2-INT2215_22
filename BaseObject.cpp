@@ -49,6 +49,12 @@ void BaseObject::Render(SDL_Renderer* des, const SDL_Rect* clip, int x, int y)
     SDL_RenderCopy(des, p_object_, clip, &renderquad);
 }
 
+void BaseObject::Render2(SDL_Renderer* screen, const SDL_Rect* clip /*- NULL*/)
+{
+    SDL_Rect renderquad1 = { rect_.x,rect_.y,rect_.w,rect_.h };
+    SDL_RenderCopy(screen, p_object_, clip, &renderquad1);
+}
+
 void BaseObject::Free()
 {
     if (p_object_ != NULL)
