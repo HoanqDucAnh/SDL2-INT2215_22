@@ -144,7 +144,7 @@ void ThreatsObject::Reset(const int& xborder)
         set_direction(false); //false là từ right to left
     }
     int rand_y = rand() % 400;
-    if (rand_y > SCREEN_HEIGHT/2)
+    if (rand_y > SCREEN_HEIGHT*2/5)
     {
         rand_y *= 0.3;
     }
