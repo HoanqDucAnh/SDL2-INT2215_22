@@ -16,7 +16,7 @@ GameButton HelpButton;
 GameButton ExitButton;
 GameButton BackButton;
 GameButton ScoreButton;
-int score = 0;
+int player_score = 0;
 
 bool InitData()
 {
@@ -275,6 +275,7 @@ int main(int argc, char* argv[])
 
                 int exp_frame_width = exp_threat.get_fr_width();
                 int exp_frame_height = exp_threat.get_fr_height();
+
                 //player & threat collision
                 for (int ii = 0; ii < NUM_THREAT; ii++)
                 {
@@ -301,8 +302,6 @@ int main(int argc, char* argv[])
                     }
                 }
 
-                //int exp_frame_width = exp_threat.get_fr_width();
-                //int exp_frame_height = exp_threat.get_fr_height();
                 //player ammo & threat collision
                 for (int ii = 0; ii < NUM_THREAT; ii++)
                 {
@@ -330,7 +329,7 @@ int main(int argc, char* argv[])
 
                                 p_player.DestroyAmo(ia);
                                 p_threat->Reset(-100);
-                                score++;
+                                player_score++;
                                 break;
                             }
                         }
@@ -366,7 +365,7 @@ int main(int argc, char* argv[])
                                 if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
                                 {
                                     close();
-                                    std::cout << std::endl << score;
+                                    std::cout << std::endl << player_score;
                                     return 0;
                                 }
                             }
