@@ -184,3 +184,11 @@ void MainObject::DestroyAmo(const int& idx)
 		}
 	//}
 }
+
+void MainObject::reset_main_pos(int x, int y)
+{
+	x_pos_ = x;
+	y_pos_ = y;
+	rect_.w = DOT_WIDTH;
+	rect_.h = DOT_HEIGHT;
+}

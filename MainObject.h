@@ -32,6 +32,7 @@ public:
 
     void MakeAmo(SDL_Renderer* des);
     void DestroyAmo(const int& idx);
+    void reset_main_pos(int x, int y);
 private:
     std::vector<AmoObject*> p_amo_list;
     //The X and Y offsets of the dot
