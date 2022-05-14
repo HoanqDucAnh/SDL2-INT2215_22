@@ -41,3 +41,8 @@ void PlayerHealth::minus_health()
 	lives_count_-=1;
 	heart_pos_list.pop_back();
 }
+void PlayerHealth::Reset() {
+	lives_count_ = 3;
+	heart_pos_list.erase(heart_pos_list.begin(), heart_pos_list.begin() + heart_pos_list.size());
+	health_pos = 0;
+}

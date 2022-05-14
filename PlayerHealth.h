@@ -12,7 +12,7 @@ public:
 	void show_heart(SDL_Renderer* screen);
 	void init_heart(SDL_Renderer* screen);
 	void minus_health();
-
+	void Reset();
 private:
 	int lives_count_;
 	std::vector <int> heart_pos_list;

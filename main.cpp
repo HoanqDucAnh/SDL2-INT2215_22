@@ -8,18 +8,21 @@
 #include "PlayerHealth.h"
 #include "Text.h";
 
+BaseObject Gameover;
 BaseObject g_background;
 BaseObject test_menu;
 BaseObject test_help;
 BaseObject test_pause;
-TTF_Font* general_font = NULL;
+TTF_Font*  Gameover_font ;
 GameButton PlayButton;
 GameButton HelpButton;
 GameButton ExitButton;
 GameButton BackButton;
 GameButton ScoreButton;
+GameButton RestartButton;
 int player_score = 0;
-TTF_Font* g_font;
+int time_value;
+TTF_Font* g_font = NULL;
 
 bool InitData()
 {
@@ -67,6 +70,11 @@ bool InitData()
         {
             success = true;
         }
+        Gameover_font = TTF_OpenFont("ARCADECLASSIC.TTF", 70);
+        if (Gameover_font)
+        {
+            success = true;
+        }
     }
 
     return success;
@@ -84,7 +92,10 @@ bool LoadBackground()
 void close()
 {
     g_background.Free();
-
+    test_help.Free();
+    test_menu.Free();
+    test_pause.Free();
+    Gameover.Free();
     SDL_DestroyRenderer(g_screen);
     g_screen = NULL;
 
@@ -118,6 +129,7 @@ int main(int argc, char* argv[])
     test_menu.loadImg("menu.png", g_screen);
     test_help.loadImg("help.png", g_screen);
     test_pause.loadImg("pause.png", g_screen);
+    Gameover.loadImg("GameOver.png", g_screen);
     bool play = false;
     bool menu = true;
     bool help = false;
@@ -126,9 +138,12 @@ int main(int argc, char* argv[])
 
     //game text
     Text game_time,game_mark;
+    Text game_over;
+    Text game_over_mark;
     game_time.Setcolor(Text::WHITE_TEXT);
     game_mark.Setcolor(Text::WHITE_TEXT);
-
+    game_over.Setcolor(Text::WHITE_TEXT);
+    game_over_mark.Setcolor(Text::WHITE_TEXT);
     while (!QuitMenu)
     {
         if (menu)
@@ -205,11 +220,12 @@ int main(int argc, char* argv[])
 
     //explsion
     ExplosionObj exp_threat;
-    bool check = exp_threat.loadImg("exp_eff.png", g_screen);
+       bool check = exp_threat.loadImg("exp_eff.png", g_screen);
     if (!check) {
         std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
         return -1;
     }
+    
     exp_threat.set_clip();
 
 
@@ -223,7 +239,7 @@ int main(int argc, char* argv[])
         p_threat->InitAmo(p_bullet, 5, g_screen);
 
     }
-
+    
     //player death counts
     int death_counts = 0;
 
@@ -279,6 +295,7 @@ int main(int argc, char* argv[])
                     p_player.HandleInputAction(g_event, g_screen);
                 }
               
+                
                 //Main game functions
                 p_player.HandleMove();
 
@@ -342,15 +359,11 @@ int main(int argc, char* argv[])
 
                             p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
                             player_health.minus_health();
-                            player_health.show_heart(g_screen);
+                            player_health.show_heart(g_screen); 
                             
                         }
                         else {
-                            if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
-                            {
-                                close();
-                                return 0;
-                            }
+                            GameOver = true;
                         }
                     }
                 }
@@ -358,7 +371,7 @@ int main(int argc, char* argv[])
 
                 //player score 
                 std::string string_score = "Score ";
-
+                std::string string_gameover = "Your Score";
                 //player ammo & threat collision
                 for (int ii = 0; ii < NUM_THREAT; ii++)
                 {
@@ -439,12 +452,14 @@ int main(int argc, char* argv[])
                                 else
                                 {
                                     SDLCommonFunction::CheckHighScore(player_score);
-                                    if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                                    /*if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
                                     {
                                         close();
                                         std::cout << std::endl << player_score;
                                         return 0;
                                     }
+                                    */
+                                    GameOver = true;
                                 }
                             }
                         }
@@ -456,12 +471,18 @@ int main(int argc, char* argv[])
                 std::string score_value = std::to_string(player_score);
                 string_score += score_value;
                 game_mark.settext(string_score);
+                
                 game_mark.Loadfromrendertext(g_font, g_screen);
                 game_mark.loadtexttoscreen(g_screen, 350, 0);
-
+                
+                std::string score_gameover = std::to_string(player_score * 100);
+                game_over_mark.settext(score_gameover);
+                game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                game_over.settext(string_gameover);
+                game_over.Loadfromrendertext(Gameover_font, g_screen);
                 //push game time to screen
                 std::string string_time = "Time ";
-                Uint32 time_value = SDL_GetTicks() / 1000;
+                time_value = SDL_GetTicks() / 1000;
                 //Uint32 value_time = 300 - time_val;
                 std::string string_value = std::to_string(time_value);
                 string_time += string_value;
@@ -481,6 +502,31 @@ int main(int argc, char* argv[])
                     }
                 }
             }
+        }
+        else
+        {
+            SDL_ShowCursor(SDL_ENABLE);
+            while (SDL_PollEvent(&g_event) != 0)
+            {
+                if (g_event.type == SDL_QUIT)
+                {
+                    play = false;
+                }
+                RestartButton.RestartButton(g_event, g_screen, p_player, p_threats, player_health, player_score, GameOver,time_value);
+                ExitButton.ExitButton(g_event, g_screen, play);
+            }
+            Gameover.Render2(g_screen,NULL);
+            game_over.Loadfromrendertext(Gameover_font, g_screen);
+            game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH/2 - 170, SCREEN_HEIGHT / 2 - 100);
+            game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+            game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20 );
+            RestartButton.SetRect(SCREEN_WIDTH/2 - RestartButton.get_frame_width()/2, SCREEN_HEIGHT / 2 - RestartButton.get_frame_height() + 150);
+            RestartButton.Render2(g_screen,NULL);
+            ExitButton.SetRect(SCREEN_WIDTH/2 - ExitButton.get_frame_width()/2, SCREEN_HEIGHT/2 - ExitButton.get_frame_height() + 250);
+            ExitButton.Render2(g_screen,NULL);
+
+           
+            SDL_RenderPresent(g_screen);
         }
     }
     close();
