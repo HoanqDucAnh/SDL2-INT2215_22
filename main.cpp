@@ -6,6 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
+#include "Text.h";
 
 BaseObject g_background;
 BaseObject test_menu;
@@ -18,6 +19,7 @@ GameButton ExitButton;
 GameButton BackButton;
 GameButton ScoreButton;
 int player_score = 0;
+TTF_Font* g_font;
 
 bool InitData()
 {
@@ -49,13 +51,24 @@ bool InitData()
         {
             SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
             int ImgFlags = IMG_INIT_PNG;
-            if (!(IMG_Init(ImgFlags) && ImgFlags)) {
+            if (!(IMG_Init(ImgFlags) && ImgFlags)) 
+            {
                 std::cout << "NO SDL IMAGE" << std::endl;
                 success = false;
             }
-
+        }
+        if (TTF_Init() == -1)
+        {
+            std::cerr << "ttf error: " << SDL_GetError() << std::endl;
+            success = false;
+        }
+        g_font = TTF_OpenFont("ARCADECLASSIC.TTF", 30);
+        if (g_font)
+        {
+            success = true;
         }
     }
+
     return success;
 }
 
@@ -108,6 +121,12 @@ int main(int argc, char* argv[])
     bool help = false;
     bool score = false;
     bool QuitMenu = false;
+
+    //game text
+    Text game_time,game_mark;
+    game_time.Setcolor(Text::WHITE_TEXT);
+    game_mark.Setcolor(Text::WHITE_TEXT);
+
     while (!QuitMenu)
     {
         if (menu)
@@ -282,7 +301,6 @@ int main(int argc, char* argv[])
                 //render health
                 player_health.show_heart(g_screen);
 
-                SDL_RenderPresent(g_screen);
 
                 int exp_frame_width = exp_threat.get_fr_width();
                 int exp_frame_height = exp_threat.get_fr_height();
@@ -312,9 +330,7 @@ int main(int argc, char* argv[])
                             p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
                             player_health.minus_health();
                             player_health.show_heart(g_screen);
-                            /*for (int i = 0; i < NUM_THREAT; i++) {
-                                p_threat->Reset(-100);
-                            }*/
+                            
                         }
                         else {
                             if (MessageBox(NULL, L"GA VCL!", L"Info", MB_OK) == IDOK)
@@ -325,6 +341,10 @@ int main(int argc, char* argv[])
                         }
                     }
                 }
+
+
+                //player score 
+                std::string string_score = "Score ";
 
                 //player ammo & threat collision
                 for (int ii = 0; ii < NUM_THREAT; ii++)
@@ -348,12 +368,17 @@ int main(int argc, char* argv[])
                                     exp_threat.SetRect(x_pos, y_pos);
                                     exp_threat.render_explosion(g_screen);
                                     SDL_RenderPresent(g_screen);
-                                    SDL_Delay(2);
+                                    SDL_Delay(4);
                                 }
 
                                 p_player.DestroyAmo(ia);
                                 p_threat->Reset(-100);
                                 player_score++;
+                                //std::string score_value = std::to_string(player_score);
+                                //string_score += score_value;
+                                //game_mark.settext(string_score);
+                                //game_mark.Loadfromrendertext(g_font, g_screen);
+                                //game_mark.loadtexttoscreen(g_screen, 150, 0);
                                 break;
                             }
                         }
@@ -412,6 +437,25 @@ int main(int argc, char* argv[])
                     }
                 }
 
+
+                //game score
+                std::string score_value = std::to_string(player_score);
+                string_score += score_value;
+                game_mark.settext(string_score);
+                game_mark.Loadfromrendertext(g_font, g_screen);
+                game_mark.loadtexttoscreen(g_screen, 350, 0);
+
+                //push game time to screen
+                std::string string_time = "Time ";
+                Uint32 time_value = SDL_GetTicks() / 1000;
+                //Uint32 value_time = 300 - time_val;
+                std::string string_value = std::to_string(time_value);
+                string_time += string_value;
+                game_time.settext(string_time);
+                game_time.Loadfromrendertext(g_font, g_screen);
+                game_time.loadtexttoscreen(g_screen, 150, 0);
+
+                SDL_RenderPresent(g_screen);
 
                 int real_time = fps_timer.get_ticks();
                 int time_one_frame = (1000 / 3) / FRAME_PER_SEC; //ms
