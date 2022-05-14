@@ -60,7 +60,7 @@ public:
     void MakeAmo(SDL_Renderer* des, const int& x_limit, const int& y_limit);
     void Reset(const int& yborder);
     void ResetAmo(AmoObject* p_amo);
-
+    void Reset1();
 private:
     int x_val_;
     int y_val_;

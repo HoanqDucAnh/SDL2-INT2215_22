@@ -157,6 +157,7 @@ void ThreatsObject::Reset(const int& xborder)
             ResetAmo(p_amo);
         }
     }
+    
 }
 
 void ThreatsObject::ResetAmo(AmoObject* p_amo)
@@ -171,4 +172,9 @@ void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
         rect_.x = 300;
     else if (rect_.x < 300)
         rect_.x = 300;
+}
+
+void ThreatsObject::Reset1() {
+    direction = false;
+    p_amo_list.erase(p_amo_list.begin(), p_amo_list.begin() + p_amo_list.size());
 }
