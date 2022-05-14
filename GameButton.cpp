@@ -1,4 +1,5 @@
 #include "GameButton.h"
+#include "Common_Function.h"
 using namespace std;
 GameButton::GameButton()
 {
@@ -124,5 +125,25 @@ void GameButton::HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& me
 	else
 	{
 		LoadTexture("Score.png", screen);
+	}
+}
+void GameButton::RestartButton(SDL_Event event, SDL_Renderer* screen, MainObject& p_player, ThreatsObject* &threat, PlayerHealth& health, int& player_score, bool& GameOver, int &time_value) {
+	if (Inside(event))
+	{
+		LoadTexture("RestartButton2.png", screen);
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			GameOver = false;
+			player_score = 0;
+			time_value = 0;
+			threat->Reset(SCREEN_WIDTH);
+			p_player.Reset(START_XPOS_MAIN, START_YPOS_MAIN);
+			health.Reset();
+			SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
+		}
+	}
+	else
+	{
+		LoadTexture("RestartButton.png", screen);
 	}
 }

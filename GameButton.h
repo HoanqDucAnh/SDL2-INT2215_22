@@ -2,6 +2,9 @@
 #define BUTTON_H_INCLUDED
 
 #include "BaseObject.h"
+#include "MainObject.h"
+#include "ThreatObject.h"
+#include "PlayerHealth.h"
 
 using namespace std;
 
@@ -19,7 +22,7 @@ public:
 	void ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu);
 	void BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
 	void HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& menu, bool& score);
-
+	void RestartButton(SDL_Event event, SDL_Renderer* screen, MainObject &p_player, ThreatsObject* &threat, PlayerHealth &health, int &player_score,bool &GameOver, int &time_value);
 private:
     int width_frame;
     int height_frame;
