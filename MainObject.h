@@ -30,6 +30,9 @@ public:
         return p_amo_list;
     }
 
+    int fetchScore();
+    void incScore();
+
     void MakeAmo(SDL_Renderer* des);
     void DestroyAmo(const int& idx);
     void reset_main_pos(int x, int y);
@@ -40,6 +43,9 @@ private:
 
     //The velocity of the dot
     int x_val_, y_val_;
+
+    //Player's score
+    int score = 0;
 };
 
 

@@ -87,3 +87,29 @@ bool SDLCommonFunction::CheckCollision(const SDL_Rect& object1, const SDL_Rect& 
 
     return false;
 }
+
+void SDLCommonFunction::CheckHighScore(int score)
+{
+    int hscore;
+
+    std::ifstream inp;
+    inp.open("highscore.dat");
+
+    inp >> hscore;
+
+    inp.close();
+
+    remove("highscore.dat");
+    std::ofstream out;
+
+    if (hscore < score)
+    {
+        remove("highscore.dat");
+
+        out.open("highscore.dat");
+
+        out << score;
+
+        out.close();
+    }
+}
