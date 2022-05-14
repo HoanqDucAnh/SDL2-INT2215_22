@@ -6,6 +6,7 @@
 #include <string>
 #include <windows.h>
 #include <SDL_image.h>
+#include <fstream>
 //#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
@@ -35,6 +36,7 @@ const int RENDER_DRAW_COLOR = 0xff;
 namespace SDLCommonFunction
 {
 	bool CheckCollision(const SDL_Rect& obj1, const SDL_Rect& obj2);
+	void CheckHighScore(int score);
 }
 
 

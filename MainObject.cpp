@@ -192,3 +192,13 @@ void MainObject::reset_main_pos(int x, int y)
 	rect_.w = DOT_WIDTH;
 	rect_.h = DOT_HEIGHT;
 }
+
+int MainObject::fetchScore()
+{
+	return score;
+}
+
+void MainObject::incScore()
+{
+	score++;
+}

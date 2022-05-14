@@ -86,6 +86,8 @@ int main(int argc, char* argv[])
 {
     Timer fps_timer;
 
+
+
     int bkgn_x = 0;
     if (InitData() == false)
     {
@@ -153,6 +155,17 @@ int main(int argc, char* argv[])
             BackButton.Render2(g_screen, NULL);
             SDL_RenderPresent(g_screen);
         }
+        /*if (score)
+        {
+            while (SDL_PollEvent(&g_event) != 0)
+            {
+                if (g_event.type == SDL_QUIT)
+                {
+                    QuitMenu = true;
+
+                }
+
+        }*/
     }
     SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
     bool paused = false;
@@ -400,6 +413,7 @@ int main(int argc, char* argv[])
                                 }
                                 else
                                 {
+                                    SDLCommonFunction::CheckHighScore(player_score);
                                     if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
                                     {
                                         close();
