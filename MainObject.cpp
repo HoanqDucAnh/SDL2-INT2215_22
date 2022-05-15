@@ -202,3 +202,12 @@ void MainObject::incScore()
 {
 	score++;
 }
+void MainObject::Reset(int x, int y) {
+	x_pos_ = x;
+	y_pos_ = y;
+	rect_.w = DOT_WIDTH;
+	rect_.h = DOT_HEIGHT;
+	x_val_ = 0;
+	y_val_ = 0;
+	p_amo_list.erase(p_amo_list.begin(), p_amo_list.begin() + p_amo_list.size());
+}
