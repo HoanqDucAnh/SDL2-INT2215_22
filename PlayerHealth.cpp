@@ -2,7 +2,7 @@
 
 PlayerHealth::PlayerHealth()
 {
-
+	
 }
 
 PlayerHealth::~PlayerHealth()
@@ -43,6 +43,7 @@ void PlayerHealth::minus_health()
 }
 void PlayerHealth::Reset() {
 	lives_count_ = 3;
-	heart_pos_list.erase(heart_pos_list.begin(), heart_pos_list.begin() + heart_pos_list.size());
-	health_pos = 0;
+	for (int i = 0; i < lives_count_; i++) {
+		heart_pos_list.push_back(health_pos);
+	}
 }
