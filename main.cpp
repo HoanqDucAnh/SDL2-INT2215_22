@@ -472,7 +472,7 @@ int main(int argc, char* argv[])
                 SDL_RenderPresent(g_screen);
 
                 int real_time = fps_timer.get_ticks();
-                int time_one_frame = (1000 / 3) / FRAME_PER_SEC; //ms
+                int time_one_frame = (800 / 3) / FRAME_PER_SEC; //ms
 
                 if (real_time < time_one_frame) {
                     int delay_time = time_one_frame - real_time;
