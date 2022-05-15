@@ -19,10 +19,10 @@ public:
 	bool Inside(SDL_Event event);
 	void PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &play,bool &QuitMenu);
 	void HelpButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
-	void ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu);
+	void ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu,bool &end);
 	void BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
 	void HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& menu, bool& score);
-	void RestartButton(SDL_Event event, SDL_Renderer* screen, MainObject &p_player, ThreatsObject* &threat, PlayerHealth &health, int &player_score,bool &GameOver, int &time_value);
+	void MenuButton(SDL_Event event, SDL_Renderer* screen, bool &menu, bool& QuitMenu, bool& Gameover,bool &end);
 private:
     int width_frame;
     int height_frame;

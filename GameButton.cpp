@@ -79,7 +79,7 @@ void GameButton::HelpButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool
 		LoadTexture("HelpButton.png",screen);
 	}
 }
-void GameButton::ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu)
+void GameButton::ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu, bool &end)
 {
     if(Inside(event))
 	{
@@ -87,6 +87,7 @@ void GameButton::ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu)
 		if(event.type==SDL_MOUSEBUTTONDOWN)
 		{
 		    QuitMenu=!QuitMenu;
+			end = true;
 		}
 	}
 	else
@@ -127,23 +128,20 @@ void GameButton::HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& me
 		LoadTexture("Score.png", screen);
 	}
 }
-void GameButton::RestartButton(SDL_Event event, SDL_Renderer* screen, MainObject& p_player, ThreatsObject* &threat, PlayerHealth& health, int& player_score, bool& GameOver, int &time_value) {
+void GameButton::MenuButton(SDL_Event event, SDL_Renderer* screen,bool &menu, bool& QuitMenu, bool &play,bool &end) {
 	if (Inside(event))
 	{
-		LoadTexture("RestartButton2.png", screen);
+		LoadTexture("MainMenu2.png", screen);
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			GameOver = false;
-			player_score = 0;
-			time_value = 0;
-			threat->Reset(SCREEN_WIDTH);
-			p_player.Reset(START_XPOS_MAIN, START_YPOS_MAIN);
-			health.Reset();
-			SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
+			play = false;
+			QuitMenu = false;
+			menu = true;
+			end = false;
 		}
 	}
 	else
 	{
-		LoadTexture("RestartButton.png", screen);
+		LoadTexture("MainMenu.png", screen);
 	}
 }
