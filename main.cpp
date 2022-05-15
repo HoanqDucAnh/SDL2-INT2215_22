@@ -155,6 +155,7 @@ int main(int argc, char* argv[])
                     if (g_event.type == SDL_QUIT)
                     {
                         QuitMenu = true;
+                        end = true;
 
                     }
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
@@ -180,6 +181,7 @@ int main(int argc, char* argv[])
                     if (g_event.type == SDL_QUIT)
                     {
                         QuitMenu = true;
+                        end = true;
                     }
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
                     BackButton.BackButton(g_event, g_screen, menu, help);
@@ -254,7 +256,7 @@ int main(int argc, char* argv[])
                     if (g_event.type == SDL_QUIT)
                     {
                         QuitMenu = true;
-
+                        end = true;
                     }
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
                     ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
@@ -279,6 +281,7 @@ int main(int argc, char* argv[])
                     if (g_event.type == SDL_QUIT)
                     {
                         QuitMenu = true;
+                        end = true;
                     }
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
                     BackButton.BackButton(g_event, g_screen, menu, help);
@@ -300,6 +303,7 @@ int main(int argc, char* argv[])
                         if (g_event.type == SDL_QUIT)
                         {
                             play = false;
+                            end = true;
                         }
                         if (g_event.type == SDL_KEYDOWN)
                         {
@@ -310,6 +314,7 @@ int main(int argc, char* argv[])
                             if (g_event.key.keysym.sym == SDLK_ESCAPE)
                             {
                                 play = false;
+                                end = true;
                             }
                         }
                     }
@@ -325,6 +330,7 @@ int main(int argc, char* argv[])
                         if (g_event.type == SDL_QUIT)
                         {
                             play = false;
+                            end = true;
                         }
                         if (g_event.type == SDL_KEYDOWN)
                         {
@@ -335,6 +341,7 @@ int main(int argc, char* argv[])
                             if (g_event.key.keysym.sym == SDLK_ESCAPE)
                             {
                                 play = false;
+                                end = true;
                             }
                         }
                         p_player.HandleInputAction(g_event, g_screen);
@@ -556,8 +563,9 @@ int main(int argc, char* argv[])
                     if (g_event.type == SDL_QUIT)
                     {
                         play = false;
+                        end = true;
                     }
-                    RestartButton.MenuButton(g_event, g_screen, menu, QuitMenu, play, end);
+                    RestartButton.MenuButton(g_event, g_screen,player_score, menu, QuitMenu, play, end);
                     ExitButton.ExitButton(g_event, g_screen, play, end);
                 }
                 Gameover.Render2(g_screen, NULL);

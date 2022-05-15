@@ -22,7 +22,7 @@ public:
 	void ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu,bool &end);
 	void BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
 	void HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& menu, bool& score);
-	void MenuButton(SDL_Event event, SDL_Renderer* screen, bool &menu, bool& QuitMenu, bool& Gameover,bool &end);
+	void MenuButton(SDL_Event event, SDL_Renderer* screen, int &score, bool &menu, bool& QuitMenu, bool& Gameover,bool &end);
 private:
     int width_frame;
     int height_frame;

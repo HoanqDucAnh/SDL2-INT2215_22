@@ -128,7 +128,7 @@ void GameButton::HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& me
 		LoadTexture("Score.png", screen);
 	}
 }
-void GameButton::MenuButton(SDL_Event event, SDL_Renderer* screen,bool &menu, bool& QuitMenu, bool &play,bool &end) {
+void GameButton::MenuButton(SDL_Event event, SDL_Renderer* screen,int &score, bool &menu, bool& QuitMenu, bool &play,bool &end) {
 	if (Inside(event))
 	{
 		LoadTexture("MainMenu2.png", screen);
@@ -138,6 +138,7 @@ void GameButton::MenuButton(SDL_Event event, SDL_Renderer* screen,bool &menu, bo
 			QuitMenu = false;
 			menu = true;
 			end = false;
+			score = 0;
 		}
 	}
 	else
