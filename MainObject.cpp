@@ -42,7 +42,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_RIGHT: x_val_ += DOT_VEL; break;
 			case SDLK_SPACE:
 
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < 12; i++) {
 				AmoObject* p_amo = new AmoObject();    
 				
 					p_amo->loadImg("bullet.png", des);

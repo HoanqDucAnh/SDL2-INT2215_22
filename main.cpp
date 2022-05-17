@@ -13,6 +13,7 @@ BaseObject g_background;
 BaseObject test_menu;
 BaseObject test_help;
 BaseObject test_pause;
+BaseObject test_score;
 
 GameButton PlayButton;
 GameButton HelpButton;
@@ -28,11 +29,12 @@ Mix_Chunk* Menu = NULL;
 Mix_Chunk* Game = NULL;
 
 Text game_time, game_mark;
-Text game_over;
+Text game_over, game_score;
 Text game_over_mark;
 
 int player_score = 0;
 int time_value;
+int invi_timer = 0;
 
 bool InitData()
 {
@@ -105,6 +107,8 @@ void close()
     test_help.Free();
     test_menu.Free();
     test_pause.Free();
+    test_score.Free();
+
     Gameover.Free();
     SDL_DestroyRenderer(g_screen);
     g_screen = NULL;
@@ -137,6 +141,7 @@ int main(int argc, char* argv[])
     test_menu.loadImg("menu.png", g_screen);
     test_help.loadImg("help.png", g_screen);
     test_pause.loadImg("pause.png", g_screen);
+    test_score.loadImg("HighScore.png", g_screen);
     Gameover.loadImg("GameOver.png", g_screen);
 
     Timer fps_timer;
@@ -153,7 +158,7 @@ int main(int argc, char* argv[])
     game_mark.Setcolor(Text::WHITE_TEXT);
     game_over.Setcolor(Text::WHITE_TEXT);
     game_over_mark.Setcolor(Text::WHITE_TEXT);
-    
+    game_score.Setcolor(Text::WHITE_TEXT);
 
     while (!end) {
         while (!QuitMenu)
@@ -168,7 +173,7 @@ int main(int argc, char* argv[])
                         end = true;
 
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
                     HelpButton.HelpButton(g_event, g_screen, menu, help);
                     ExitButton.ExitButton(g_event, g_screen, QuitMenu, end);
@@ -193,8 +198,10 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
-                    BackButton.BackButton(g_event, g_screen, menu, help);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                 }
                 test_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
@@ -203,7 +210,7 @@ int main(int argc, char* argv[])
                 BackButton.Render2(g_screen, NULL);
                 SDL_RenderPresent(g_screen);
             }
-            /*if (score)
+            if (score)
             {
                 while (SDL_PollEvent(&g_event) != 0)
                 {
@@ -212,9 +219,24 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
+                    
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                  }
-                 
-            }*/
+
+                int score = SDLCommonFunction::FetchHighScore();
+                std::string highscore = std::to_string(score * 100);
+               
+                test_score.Render2(g_screen, NULL);
+                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                BackButton.Render2(g_screen, NULL);
+                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_frame_width() - 30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                PlayButton.Render2(g_screen, NULL);
+                game_score.settext(highscore);
+                game_score.Loadfromrendertext(Gameover_font, g_screen);
+                game_score.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
+                SDL_RenderPresent(g_screen);
+            }
         }
         SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
 
@@ -263,7 +285,7 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
                     HelpButton.HelpButton(g_event, g_screen, menu, help);
                     ExitButton.ExitButton(g_event, g_screen, QuitMenu, end);
@@ -288,8 +310,10 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
-                    BackButton.BackButton(g_event, g_screen, menu, help);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help,score);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                 }
                 test_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
@@ -481,45 +505,49 @@ int main(int argc, char* argv[])
                             AmoObject* p_amo_threat = amo_list_threat.at(iat);
                             if (p_amo_threat != NULL)
                             {
-                                bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
-                                if (ret_col_threat)
+                                if (SDL_GetTicks() - invi_timer >= 1000)
                                 {
-                                    p_threat->ResetAmo(p_amo_threat);
-                                    for (int ex = 0; ex < explosion_frame; ex++)
+                                    bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
+                                    if (ret_col_threat)
                                     {
-                                        int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
-                                        int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
-
-                                        exp_threat.set_frame(ex);
-                                        exp_threat.SetRect(x_pos, y_pos);
-                                        exp_threat.render_explosion(g_screen);
-                                        SDL_RenderPresent(g_screen);
-                                    }
-                                    //p_threat->ResetAmo(p_amo_threat);
-                                    //p_player.Reset(0); 
-                                    SDL_Delay(500);
-                                    death_counts++;
-                                    if (death_counts <= 2)
-                                    {
-                                        //SDL_Delay(500);
-                                        p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
-                                        player_health.minus_health();
-                                        player_health.show_heart(g_screen);
-                                        for (int i = 0; i < NUM_THREAT; i++) {
-                                            p_threat->Reset(-100);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        SDLCommonFunction::CheckHighScore(player_score);
-                                        /*if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                                        p_threat->ResetAmo(p_amo_threat);
+                                        for (int ex = 0; ex < explosion_frame; ex++)
                                         {
-                                            close();
-                                            std::cout << std::endl << player_score;
-                                            return 0;
+                                            int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                            int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                            exp_threat.set_frame(ex);
+                                            exp_threat.SetRect(x_pos, y_pos);
+                                            exp_threat.render_explosion(g_screen);
+                                            SDL_RenderPresent(g_screen);
                                         }
-                                        */
-                                        GameOver = true;
+                                        //p_threat->ResetAmo(p_amo_threat);
+                                        //p_player.Reset(0); 
+                                        SDL_Delay(500);
+                                        death_counts++;
+                                        if (death_counts <= 2)
+                                        {
+                                            //SDL_Delay(500);
+                                            p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                            player_health.minus_health();
+                                            player_health.show_heart(g_screen);
+                                            for (int i = 0; i < NUM_THREAT; i++) {
+                                                p_threat->Reset(-100);
+                                            }
+                                            invi_timer = SDL_GetTicks();
+                                        }
+                                        else
+                                        {
+                                            SDLCommonFunction::CheckHighScore(player_score);
+                                            /*if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                                            {
+                                                close();
+                                                std::cout << std::endl << player_score;
+                                                return 0;
+                                            }
+                                            */
+                                            GameOver = true;
+                                        }
                                     }
                                 }
                             }
@@ -528,7 +556,7 @@ int main(int argc, char* argv[])
 
 
                     //game score
-                    std::string score_value = std::to_string(player_score*100);
+                    std::string score_value = std::to_string(player_score * 100);
                     string_score += score_value;
                     game_mark.settext(string_score);
 
