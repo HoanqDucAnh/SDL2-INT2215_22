@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
                         end = true;
 
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
                     HelpButton.HelpButton(g_event, g_screen, menu, help);
                     ExitButton.ExitButton(g_event, g_screen, QuitMenu, end);
@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     BackButton.BackButton(g_event, g_screen, menu, help);
                 }
                 test_help.Render2(g_screen, NULL);
@@ -264,7 +264,7 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
                     HelpButton.HelpButton(g_event, g_screen, menu, help);
                     ExitButton.ExitButton(g_event, g_screen, QuitMenu, end);
@@ -289,7 +289,7 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     BackButton.BackButton(g_event, g_screen, menu, help);
                 }
                 test_help.Render2(g_screen, NULL);

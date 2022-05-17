@@ -17,7 +17,7 @@ public:
     int get_frame_width() const {return width_frame;}
     int get_frame_height() const {return height_frame;}
 	bool Inside(SDL_Event event);
-	void PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &play,bool &QuitMenu);
+	void PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &play,bool &QuitMenu, bool &help);
 	void HelpButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
 	void ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu,bool &end);
 	void BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
