@@ -95,7 +95,7 @@ void GameButton::ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu,
 		LoadTexture("ExitButton.png",screen);
 	}
 }
-void GameButton::BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help)
+void GameButton::BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help, bool& score)
 {
     if(Inside(event))
 	{
@@ -104,6 +104,7 @@ void GameButton::BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool
 		{
 		    menu=true;
 		    help=false;
+			score = false;
 		}
 	}
 	else

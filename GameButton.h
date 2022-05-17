@@ -20,7 +20,7 @@ public:
 	void PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &play,bool &QuitMenu);
 	void HelpButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
 	void ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu,bool &end);
-	void BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help);
+	void BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help, bool &score);
 	void HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& menu, bool& score);
 	void MenuButton(SDL_Event event, SDL_Renderer* screen, int &score, bool &menu, bool& QuitMenu, bool& Gameover,bool &end);
 private:

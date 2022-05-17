@@ -13,6 +13,7 @@ BaseObject g_background;
 BaseObject test_menu;
 BaseObject test_help;
 BaseObject test_pause;
+BaseObject test_score;
 
 GameButton PlayButton;
 GameButton HelpButton;
@@ -28,7 +29,7 @@ Mix_Chunk* Menu = NULL;
 Mix_Chunk* Game = NULL;
 
 Text game_time, game_mark;
-Text game_over;
+Text game_over, game_score;
 Text game_over_mark;
 
 int player_score = 0;
@@ -105,6 +106,8 @@ void close()
     test_help.Free();
     test_menu.Free();
     test_pause.Free();
+    test_score.Free();
+
     Gameover.Free();
     SDL_DestroyRenderer(g_screen);
     g_screen = NULL;
@@ -137,6 +140,7 @@ int main(int argc, char* argv[])
     test_menu.loadImg("menu.png", g_screen);
     test_help.loadImg("help.png", g_screen);
     test_pause.loadImg("pause.png", g_screen);
+    test_score.loadImg("HighScore.png", g_screen);
     Gameover.loadImg("GameOver.png", g_screen);
 
     Timer fps_timer;
@@ -153,7 +157,7 @@ int main(int argc, char* argv[])
     game_mark.Setcolor(Text::WHITE_TEXT);
     game_over.Setcolor(Text::WHITE_TEXT);
     game_over_mark.Setcolor(Text::WHITE_TEXT);
-    
+    game_score.Setcolor(Text::WHITE_TEXT);
 
     while (!end) {
         while (!QuitMenu)
@@ -194,7 +198,7 @@ int main(int argc, char* argv[])
                         end = true;
                     }
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
-                    BackButton.BackButton(g_event, g_screen, menu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                 }
                 test_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
@@ -203,7 +207,7 @@ int main(int argc, char* argv[])
                 BackButton.Render2(g_screen, NULL);
                 SDL_RenderPresent(g_screen);
             }
-            /*if (score)
+            if (score)
             {
                 while (SDL_PollEvent(&g_event) != 0)
                 {
@@ -212,9 +216,21 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                  }
-                 
-            }*/
+                std::string s = "sdfsdfsdf";
+               
+                test_score.Render2(g_screen, NULL);
+                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                BackButton.Render2(g_screen, NULL);
+                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_frame_width() - 30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                PlayButton.Render2(g_screen, NULL);
+                game_score.settext(s);
+                game_score.Loadfromrendertext(Gameover_font, g_screen);
+                game_score.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
+                SDL_RenderPresent(g_screen);
+            }
         }
         SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
 
@@ -289,7 +305,7 @@ int main(int argc, char* argv[])
                         end = true;
                     }
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
-                    BackButton.BackButton(g_event, g_screen, menu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help,score);
                 }
                 test_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
@@ -525,7 +541,7 @@ int main(int argc, char* argv[])
 
 
                     //game score
-                    std::string score_value = std::to_string(player_score*100);
+                    std::string score_value = std::to_string(player_score);
                     string_score += score_value;
                     game_mark.settext(string_score);
 
