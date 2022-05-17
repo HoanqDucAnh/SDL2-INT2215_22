@@ -99,7 +99,6 @@ void SDLCommonFunction::CheckHighScore(int score)
 
     inp.close();
 
-    remove("highscore.dat");
     std::ofstream out;
 
     if (hscore < score)
@@ -119,6 +118,7 @@ int SDLCommonFunction::FetchHighScore()
     int hscore;
 
     std::ifstream inp;
+
     inp.open("highscore.dat");
 
     inp >> hscore;
