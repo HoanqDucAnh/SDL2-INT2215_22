@@ -39,6 +39,7 @@ void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* de
         bool ret = p_amo->loadImg("egg.png", des);
         if (ret)
         {
+           
             p_amo->set_is_move(true);
             p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
             p_amo->SetRect(this->rect_.x + WIDTH_THREAT / 2 , this->rect_.y - HEIGHT_THREAT / 2 );

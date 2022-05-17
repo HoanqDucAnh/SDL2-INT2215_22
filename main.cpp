@@ -13,16 +13,26 @@ BaseObject g_background;
 BaseObject test_menu;
 BaseObject test_help;
 BaseObject test_pause;
-TTF_Font*  Gameover_font ;
+
 GameButton PlayButton;
 GameButton HelpButton;
 GameButton ExitButton;
 GameButton BackButton;
 GameButton ScoreButton;
 GameButton RestartButton;
+
+TTF_Font* g_font = NULL;
+TTF_Font* Gameover_font;
+
+Mix_Chunk* Menu = NULL;
+Mix_Chunk* Game = NULL;
+
+Text game_time, game_mark;
+Text game_over;
+Text game_over_mark;
+
 int player_score = 0;
 int time_value;
-TTF_Font* g_font = NULL;
 
 bool InitData()
 {
@@ -108,11 +118,9 @@ void close()
 
 int main(int argc, char* argv[])
 {
-    Timer fps_timer;
-
-
 
     int bkgn_x = 0;
+
     if (InitData() == false)
     {
         std::cerr << "init error";
@@ -130,21 +138,23 @@ int main(int argc, char* argv[])
     test_help.loadImg("help.png", g_screen);
     test_pause.loadImg("pause.png", g_screen);
     Gameover.loadImg("GameOver.png", g_screen);
+
+    Timer fps_timer;
+
     bool play = false;
     bool menu = true;
     bool help = false;
     bool score = false;
     bool QuitMenu = false;
-
+    bool end = false;
     //game text
-    Text game_time,game_mark;
-    Text game_over;
-    Text game_over_mark;
+    
     game_time.Setcolor(Text::WHITE_TEXT);
     game_mark.Setcolor(Text::WHITE_TEXT);
     game_over.Setcolor(Text::WHITE_TEXT);
     game_over_mark.Setcolor(Text::WHITE_TEXT);
-    bool end = false;
+    
+
     while (!end) {
         while (!QuitMenu)
         {
@@ -200,27 +210,22 @@ int main(int argc, char* argv[])
                     if (g_event.type == SDL_QUIT)
                     {
                         QuitMenu = true;
-
+                        end = true;
                     }
-
+                 }
+                 
             }*/
         }
         SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
-        bool paused = false;
-        bool GameOver = false;
 
         //create health
         PlayerHealth player_health;
         player_health.loadImg("heart.png", g_screen);
         player_health.init_heart(g_screen);
 
-
         //player
         MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
         p_player.loadImg("player.png", g_screen);
-
-        //threat
-        ThreatsObject* p_threats = new ThreatsObject[20];
 
         //explsion
         ExplosionObj exp_threat;
@@ -229,24 +234,24 @@ int main(int argc, char* argv[])
             std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
             return -1;
         }
-
         exp_threat.set_clip();
 
-
+        //threat
+        ThreatsObject* p_threats = new ThreatsObject[20];
         for (int i = 0; i < NUM_THREAT; i++) {
             ThreatsObject* p_threat = (p_threats + i);
-
             p_threat->loadImg("threat.png", g_screen);
             p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
             p_threat->set_y_val(4);
             AmoObject* p_bullet = new AmoObject();
             p_threat->InitAmo(p_bullet, 5, g_screen);
-
         }
 
         //player death counts
         int death_counts = 0;
 
+        bool paused = false;
+        bool GameOver = false;
         //main game loop
         while (play) {
             if (menu)

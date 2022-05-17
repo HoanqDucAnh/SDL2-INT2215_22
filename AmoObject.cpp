@@ -16,11 +16,19 @@ AmoObject::~AmoObject()
 // Di chuyển đạn cuả nhân vật
 void AmoObject::HandleMove(const int& x_border, const int& y_border)
 {
-    rect_.y -= 3;
-    if (rect_.y > y_border)
+
+    x_pos -= x_val_ * cos(angle * PI / 180);
+    y_pos -= y_val_ * sin(angle * PI / 180);
+    if (y_pos<0 || y_pos>y_border)
     {
         is_move_ = false;
     }
+    if (x_pos<0 || x_pos>x_border)
+    {
+        is_move_ = false;
+    }
+    rect_.x = x_pos;
+    rect_.y = y_pos;
 }
 
 // Di chuyển đạn của quái

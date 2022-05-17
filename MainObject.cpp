@@ -42,14 +42,18 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_RIGHT: x_val_ += DOT_VEL; break;
 			case SDLK_SPACE:
 
+				for (int i = 0; i < 5; i++) {
 				AmoObject* p_amo = new AmoObject();    
-				p_amo->loadImg("bullet.png", des);
-				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-				p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
-				p_amo->set_is_move(true);
-				p_amo->Set_y_val(20);
-
-				p_amo_list.push_back(p_amo);
+				
+					p_amo->loadImg("bullet.png", des);
+					p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+					p_amo->set_is_move(true);
+					p_amo->set_angle(30+30*i);
+					p_amo->Set_y_val(2);
+					p_amo->Set_x_val(2);
+					p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
+					p_amo_list.push_back(p_amo);
+				}
 		}
 	}
 	//If a key was released
@@ -69,7 +73,8 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 				p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 				p_amo->set_is_move(true);
-				p_amo->Set_y_val(20);
+				p_amo->Set_y_val(2);
+				p_amo->Set_x_val(2);
 
 				p_amo_list.push_back(p_amo);
 		}
@@ -85,8 +90,8 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 			p_amo->set_is_move(true);
-			p_amo->Set_y_val(20);
-
+			p_amo->Set_y_val(2);
+			p_amo->Set_x_val(2);
 			p_amo_list.push_back(p_amo);
 		}
 		/*else if (e.button.button == SDL_BUTTON_LEFT)
@@ -111,7 +116,7 @@ void MainObject::MakeAmo(SDL_Renderer* des)
 		{
 			if (p_amo->get_is_move() == true)
 			{
-				p_amo->Render(des, NULL, rect_.x, rect_.y);
+				p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
 				p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
 			}
 			else

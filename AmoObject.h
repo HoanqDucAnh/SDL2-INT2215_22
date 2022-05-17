@@ -34,6 +34,15 @@ public:
         y_val_ = val;
     }
 
+    void set_angle(const double& angle_) { angle = angle_; }
+    void set_starting_point(const double& start) { starting_point = start; }
+
+    void set_pos(const double& xPos, const double& yPos)
+    {
+        x_pos = xPos;
+        y_pos = yPos;
+    }
+
     int Get_x_val() const
     {
         return x_val_;
@@ -48,8 +57,15 @@ public:
         rect_.h = height;
     }
 private:
+    double x_pos;
+    double y_pos;
+
     int x_val_;
     int y_val_;
+
+    double angle;
+    double starting_point;
+
     bool is_move_;
 };
 #endif // AMO_OBJECT_H_
