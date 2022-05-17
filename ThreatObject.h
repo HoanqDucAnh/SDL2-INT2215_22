@@ -21,7 +21,6 @@ public:
     void HandleInputAction(SDL_Event events);
     void HandleMove(const int& x_border, const int& y_border);
     void HandleMoveBoss(const int& x_border, const int& y_border);
-    void HandleMoveMeteor(const int& x_border, const int& y_border);
     void set_x_val(const int& val)
     {
         x_val_ = val;

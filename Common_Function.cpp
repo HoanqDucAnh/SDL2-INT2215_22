@@ -113,17 +113,3 @@ void SDLCommonFunction::CheckHighScore(int score)
         out.close();
     }
 }
-
-int SDLCommonFunction::FetchHighScore()
-{
-    int hscore;
-
-    std::ifstream inp;
-    inp.open("highscore.dat");
-
-    inp >> hscore;
-
-    inp.close();
-    
-    return hscore;
-}

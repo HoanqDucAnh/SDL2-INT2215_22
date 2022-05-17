@@ -175,21 +175,6 @@ void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
         rect_.x = 300;
 }
 
-void ThreatsObject::HandleMoveMeteor(const int& x_border, const int& y_border)
-{
-    rect_.y -= 2;
-    if (rect_.y > SCREEN_HEIGHT)
-    {
-        rect_.y = 0;
-        int rand_x = rand() % 1100;
-        if (rand_x > SCREEN_WIDTH)
-        {
-            rand_x = SCREEN_WIDTH * 0.3;
-        }
-        rect_.x = rand_x;
-    }
-}
-
 void ThreatsObject::Reset1() {
     direction = false;
     p_amo_list.erase(p_amo_list.begin(), p_amo_list.begin() + p_amo_list.size());

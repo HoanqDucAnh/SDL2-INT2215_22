@@ -37,7 +37,6 @@ namespace SDLCommonFunction
 {
 	bool CheckCollision(const SDL_Rect& obj1, const SDL_Rect& obj2);
 	void CheckHighScore(int score);
-	int FetchHighScore();
 }
 
 
