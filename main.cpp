@@ -382,6 +382,9 @@ int main(int argc, char* argv[])
                         p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                     }
 
+   //                 if (player_score >= 20)
+     //                   ThreatsObject* 
+
                     p_player.MakeAmo(g_screen);
                     p_player.Render(g_screen, NULL);
 
@@ -451,7 +454,7 @@ int main(int argc, char* argv[])
                                         exp_threat.SetRect(x_pos, y_pos);
                                         exp_threat.render_explosion(g_screen);
                                         SDL_RenderPresent(g_screen);
-                                        SDL_Delay(4);
+                                        SDL_Delay(2);
                                     }
 
                                     p_player.DestroyAmo(ia);
@@ -550,7 +553,7 @@ int main(int argc, char* argv[])
                     SDL_RenderPresent(g_screen);
 
                     int real_time = fps_timer.get_ticks();
-                    int time_one_frame = (1000 / 3) / FRAME_PER_SEC; //ms
+                    int time_one_frame = (1200 / 3) / FRAME_PER_SEC; //ms
 
                     if (real_time < time_one_frame) {
                         int delay_time = time_one_frame - real_time;
