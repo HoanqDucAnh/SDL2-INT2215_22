@@ -177,7 +177,7 @@ void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
 
 void ThreatsObject::HandleMoveMeteor(const int& x_border, const int& y_border)
 {
-    rect_.y -= 2;
+    rect_.y += 2;
     if (rect_.y > SCREEN_HEIGHT)
     {
         rect_.y = 0;

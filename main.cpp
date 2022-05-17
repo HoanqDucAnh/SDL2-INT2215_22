@@ -269,6 +269,15 @@ int main(int argc, char* argv[])
             p_threat->InitAmo(p_bullet, 5, g_screen);
         }
 
+        ThreatsObject* meteors = new ThreatsObject[10];
+        for (int i = 0; i < NUM_THREAT; i++) {
+            ThreatsObject* meteor = (meteors + i);
+            meteor->loadImg("meteor.png", g_screen);
+            meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
+            //meteor->set_x_val(4);
+        }
+
+
         //player death counts
         int death_counts = 0;
 
@@ -392,6 +401,7 @@ int main(int argc, char* argv[])
                         bkgn_x = 0;
                     }
 
+                    //spaceship threat create
                     for (int ii = 0; ii < NUM_THREAT; ii++) {
                         ThreatsObject* p_threat = (p_threats + ii);
                         if (p_threat->get_dir())
@@ -404,6 +414,15 @@ int main(int argc, char* argv[])
                         }
                         p_threat->Render(g_screen, NULL, 100, 100);
                         p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                    }
+
+                    //meteor threat create
+                    if (player_score >= 5) {
+                        for (int ii = 0; ii < NUM_THREAT; ii++) {
+                            ThreatsObject* meteor = meteors + ii;
+                            meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            meteor->Render2(g_screen, NULL);
+                        }
                     }
 
    //                 if (player_score >= 20)
