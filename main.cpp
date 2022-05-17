@@ -520,7 +520,7 @@ int main(int argc, char* argv[])
 
 
                     //game score
-                    std::string score_value = std::to_string(player_score);
+                    std::string score_value = std::to_string(player_score*100);
                     string_score += score_value;
                     game_mark.settext(string_score);
 
