@@ -198,13 +198,10 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-<<<<<<< HEAD
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
-                    BackButton.BackButton(g_event, g_screen, menu, help, score);
-=======
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help);
->>>>>>> 2146ae62bf6e1c9422e8c268999c6ca47682381b
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                 }
                 test_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
@@ -222,17 +219,20 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
+                    
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
                     BackButton.BackButton(g_event, g_screen, menu, help, score);
                  }
-                std::string s = "sdfsdfsdf";
+
+                int score = SDLCommonFunction::FetchHighScore();
+                std::string highscore = std::to_string(score * 100);
                
                 test_score.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
                 BackButton.Render2(g_screen, NULL);
                 PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_frame_width() - 30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
                 PlayButton.Render2(g_screen, NULL);
-                game_score.settext(s);
+                game_score.settext(highscore);
                 game_score.Loadfromrendertext(Gameover_font, g_screen);
                 game_score.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
                 SDL_RenderPresent(g_screen);
@@ -310,13 +310,10 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-<<<<<<< HEAD
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu);
-                    BackButton.BackButton(g_event, g_screen, menu, help,score);
-=======
                     PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help);
->>>>>>> 2146ae62bf6e1c9422e8c268999c6ca47682381b
+                    BackButton.BackButton(g_event, g_screen, menu, help,score);
+                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.BackButton(g_event, g_screen, menu, help, score);
                 }
                 test_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
@@ -559,7 +556,7 @@ int main(int argc, char* argv[])
 
 
                     //game score
-                    std::string score_value = std::to_string(player_score);
+                    std::string score_value = std::to_string(player_score * 100);
                     string_score += score_value;
                     game_mark.settext(string_score);
 
