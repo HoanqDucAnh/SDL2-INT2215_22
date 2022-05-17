@@ -225,7 +225,6 @@ int main(int argc, char* argv[])
                  }
 
                 int score = SDLCommonFunction::FetchHighScore();
-
                 std::string highscore = std::to_string(score * 100);
                
                 test_score.Render2(g_screen, NULL);
@@ -566,7 +565,6 @@ int main(int argc, char* argv[])
                                                 return 0;
                                             }
                                             */
-                                            player_score = 0;
                                             GameOver = true;
                                         }
                                     }
