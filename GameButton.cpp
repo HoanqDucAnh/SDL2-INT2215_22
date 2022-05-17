@@ -46,16 +46,17 @@ bool GameButton::Inside(SDL_Event event)
 	}
 	return 0;
 }
-void GameButton::PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &play,bool &QuitMenu)
+void GameButton::PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &play,bool &QuitMenu, bool &help)
 {
 	if(Inside(event))
 	{
 	    LoadTexture("PlayButton2.png",screen);
 		if(event.type==SDL_MOUSEBUTTONDOWN)
 		{
-		    play=true;
-		    QuitMenu=true;
-			menu=false;
+			play = true;
+			QuitMenu = true;
+			menu = false;
+			help = false;
 		}
 	}
 	else
