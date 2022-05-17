@@ -33,6 +33,7 @@ Text game_over_mark;
 
 int player_score = 0;
 int time_value;
+int invi_timer = 0;
 
 bool InitData()
 {
@@ -481,45 +482,49 @@ int main(int argc, char* argv[])
                             AmoObject* p_amo_threat = amo_list_threat.at(iat);
                             if (p_amo_threat != NULL)
                             {
-                                bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
-                                if (ret_col_threat)
+                                if (SDL_GetTicks() - invi_timer >= 1000)
                                 {
-                                    p_threat->ResetAmo(p_amo_threat);
-                                    for (int ex = 0; ex < explosion_frame; ex++)
+                                    bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
+                                    if (ret_col_threat)
                                     {
-                                        int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
-                                        int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
-
-                                        exp_threat.set_frame(ex);
-                                        exp_threat.SetRect(x_pos, y_pos);
-                                        exp_threat.render_explosion(g_screen);
-                                        SDL_RenderPresent(g_screen);
-                                    }
-                                    //p_threat->ResetAmo(p_amo_threat);
-                                    //p_player.Reset(0); 
-                                    SDL_Delay(500);
-                                    death_counts++;
-                                    if (death_counts <= 2)
-                                    {
-                                        //SDL_Delay(500);
-                                        p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
-                                        player_health.minus_health();
-                                        player_health.show_heart(g_screen);
-                                        for (int i = 0; i < NUM_THREAT; i++) {
-                                            p_threat->Reset(-100);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        SDLCommonFunction::CheckHighScore(player_score);
-                                        /*if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                                        p_threat->ResetAmo(p_amo_threat);
+                                        for (int ex = 0; ex < explosion_frame; ex++)
                                         {
-                                            close();
-                                            std::cout << std::endl << player_score;
-                                            return 0;
+                                            int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                            int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                            exp_threat.set_frame(ex);
+                                            exp_threat.SetRect(x_pos, y_pos);
+                                            exp_threat.render_explosion(g_screen);
+                                            SDL_RenderPresent(g_screen);
                                         }
-                                        */
-                                        GameOver = true;
+                                        //p_threat->ResetAmo(p_amo_threat);
+                                        //p_player.Reset(0); 
+                                        SDL_Delay(500);
+                                        death_counts++;
+                                        if (death_counts <= 2)
+                                        {
+                                            //SDL_Delay(500);
+                                            p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                            player_health.minus_health();
+                                            player_health.show_heart(g_screen);
+                                            for (int i = 0; i < NUM_THREAT; i++) {
+                                                p_threat->Reset(-100);
+                                            }
+                                            invi_timer = SDL_GetTicks();
+                                        }
+                                        else
+                                        {
+                                            SDLCommonFunction::CheckHighScore(player_score);
+                                            /*if (MessageBox(NULL, L"YOU DIED!", L"Info", MB_OK) == IDOK)
+                                            {
+                                                close();
+                                                std::cout << std::endl << player_score;
+                                                return 0;
+                                            }
+                                            */
+                                            GameOver = true;
+                                        }
                                     }
                                 }
                             }
