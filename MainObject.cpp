@@ -54,6 +54,19 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 					p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
 					p_amo_list.push_back(p_amo);
 				}
+				break;
+			case SDLK_SLASH:
+				if (!cheat_sw)
+				{
+					cheat_sw = true;
+					std::cout << "cheat is on boiii!!! U R GOD!\n";
+				}
+				else
+				{
+					cheat_sw = false;
+					std::cout << "no mor cheet for u boi\n";
+				}
+				break;
 		}
 	}
 	//If a key was released
@@ -77,9 +90,10 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 				p_amo->Set_x_val(2);
 
 				p_amo_list.push_back(p_amo);
+				break;
 		}
 	}
-	//else if (e.type == SDL_OUSEBUTTONDOWN) // Sự kiện khi ấn chuột. Bắn đạn
+	//else if (e.type == SDL_OUSEBUTTONDOWN) // Sự kiện khi ấn space. Bắn đạn
 	else if (e.type == SDL_KEYDOWN)
 	{
 		AmoObject* p_amo = new AmoObject();
@@ -188,6 +202,11 @@ void MainObject::DestroyAmo(const int& idx)
 			}
 		}
 	//}
+}
+
+bool MainObject::cheatsw()
+{
+	return cheat_sw;
 }
 
 void MainObject::reset_main_pos(int x, int y)

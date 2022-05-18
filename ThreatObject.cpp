@@ -161,6 +161,8 @@ void ThreatsObject::Reset(const int& xborder)
     
 }
 
+//void ThreatsObject::ResetMeteor(const int&)
+
 void ThreatsObject::ResetAmo(AmoObject* p_amo)
 {
     p_amo->SetRect(rect_.x + rect_.h, rect_.y + rect_.h);
