@@ -466,6 +466,8 @@ int main(int argc, char* argv[])
 
                             }
                             else {
+                                SDLCommonFunction::CheckHighScore(player_score);
+
                                 GameOver = true;
                             }
                         }
