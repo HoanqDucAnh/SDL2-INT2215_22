@@ -9,8 +9,8 @@
 class MainObject : public BaseObject
 {
 public:
-    static const int  DOT_WIDTH = 67;
-    static const int DOT_HEIGHT = 86;
+    static const int  DOT_WIDTH = 85;
+    static const int DOT_HEIGHT = 51;
 
     static const int DOT_VEL = 2;
 

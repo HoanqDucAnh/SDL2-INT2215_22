@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.h";
+#include "Text.cpp";
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -259,7 +259,7 @@ int main(int argc, char* argv[])
         exp_threat.set_clip();
 
         //threat
-        ThreatsObject* p_threats = new ThreatsObject[20];
+        ThreatsObject* p_threats = new ThreatsObject[3];
         for (int i = 0; i < NUM_THREAT; i++) {
             ThreatsObject* p_threat = (p_threats + i);
             p_threat->loadImg("threat.png", g_screen);
@@ -269,12 +269,11 @@ int main(int argc, char* argv[])
             p_threat->InitAmo(p_bullet, 5, g_screen);
         }
 
-        ThreatsObject* meteors = new ThreatsObject[10];
+        ThreatsObject* meteors = new ThreatsObject[3];
         for (int i = 0; i < NUM_THREAT; i++) {
             ThreatsObject* meteor = (meteors + i);
             meteor->loadImg("meteor.png", g_screen);
             meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
-            //meteor->set_x_val(4);
         }
 
         ThreatsObject* boss = new ThreatsObject();
@@ -441,7 +440,7 @@ int main(int argc, char* argv[])
                         }
                     }
                     //meteor threat create
-                    if (player_score <= 40  && player_score >= 5) {
+                    if (player_score <= 40  && player_score >= 15) {
                         for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
                             ThreatsObject* meteor = meteors + ii;
                             meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);

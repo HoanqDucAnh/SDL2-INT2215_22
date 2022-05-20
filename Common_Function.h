@@ -21,8 +21,6 @@ const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 800;
 const int SCREEN_BPP = 32;
 const int NUM_THREAT = 3;
-//const int SPEED_MAIN = 8;
-//const int NUM_LIVES = 3;
 const int START_XPOS_MAIN = SCREEN_WIDTH / 2;
 const int START_YPOS_MAIN = SCREEN_HEIGHT - 100;
 //màu color key 

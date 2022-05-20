@@ -5,12 +5,11 @@ ThreatsObject::ThreatsObject()
 {
     rect_.x = 0;
     rect_.y = 0;
-    rect_.w = WIDTH_THREAT;
-    rect_.h = HEIGHT_THREAT;
+    rect_.w = 0;
+    rect_.h = 0;
 
     x_val_ = 0;
     y_val_ = 0;
-
 }
 
 // Hàm hủy quái
@@ -30,6 +29,7 @@ ThreatsObject::~ThreatsObject()
         p_amo_list.clear();
     }
 }
+
 
 void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
 {
