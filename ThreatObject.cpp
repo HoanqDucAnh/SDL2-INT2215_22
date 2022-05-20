@@ -42,7 +42,7 @@ void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* 
         p_amo->set_angle(30 + 30 * i);
         p_amo->Set_y_val(2);
         p_amo->Set_x_val(2);
-        p_amo->set_pos(object->rect_.x + object->rect_.w / 2 - 230, object->rect_.y + object->rect_.h / 2 + 200);
+        p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 200);
         p_amo_list.push_back(p_amo);
     }
 
@@ -50,30 +50,31 @@ void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* 
 
 void ThreatsObject::MakeAmo1(SDL_Renderer* des, ThreatsObject* object)
 {
-    for (int i = 0; i < p_amo_list.size(); i++)
+    for (int i = 0; i < p_amo_list.size()/2; i++)
     {
         AmoObject* p_amo = p_amo_list.at(i);
         if (p_amo != NULL)
         {
             if (p_amo->get_is_move() == true)
             {
-                p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
                 p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+                p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
+                //p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
             }
             else
             {
                 p_amo->set_is_move(true);
                 p_amo->set_angle(30 + 30 * i);
-                p_amo->Set_y_val(2);
-                p_amo->Set_x_val(2);
+                p_amo->Set_y_val(1);
+                p_amo->Set_x_val(1);
 
                 p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 200);
-                /*p_amo_list.erase(p_amo_list.begin() + i);
-                if (p_amo != NULL)
-                {
-                    delete p_amo;
-                    p_amo = NULL;
-                }*/
+                p_amo_list.erase(p_amo_list.begin() + i);
+                //if (p_amo != NULL)
+                //{
+                  //  delete p_amo;
+                   // p_amo = NULL;
+                //}
             }
         }
     }

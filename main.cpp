@@ -35,6 +35,8 @@ Text game_over_mark;
 int player_score = 0;
 int time_value;
 int invi_timer = 0;
+int boss_shoot_time = 0;
+
 
 bool InitData()
 {
@@ -281,8 +283,8 @@ int main(int argc, char* argv[])
         boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
         boss->set_x_val(2);
 
-        AmoObject* p_boss = new AmoObject();
-        boss->InitAmo2(p_boss, g_screen, boss);
+        //AmoObject* p_boss = new AmoObject();
+        //boss->InitAmo2(p_boss, g_screen, boss);
 
         //player death counts
         int death_counts = 0;
@@ -451,6 +453,12 @@ int main(int argc, char* argv[])
                     if (player_score > 40) {
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                         boss->Render2(g_screen, NULL);
+                        if (SDL_GetTicks() - boss_shoot_time >= 400) {
+                            AmoObject* p_boss = new AmoObject();
+                            boss->InitAmo2(p_boss, g_screen, boss);
+                            boss_shoot_time = SDL_GetTicks();
+                        }
+                        
                         boss->MakeAmo1(g_screen, boss);
                     }
 
