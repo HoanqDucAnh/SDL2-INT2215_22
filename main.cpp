@@ -277,6 +277,13 @@ int main(int argc, char* argv[])
             //meteor->set_x_val(4);
         }
 
+        ThreatsObject* boss = new ThreatsObject();
+        boss->loadImg("boss.png", g_screen);
+        boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
+        boss->set_x_val(2);
+
+        AmoObject* p_boss = new AmoObject();
+        boss->InitAmo2(p_boss, g_screen, boss);
 
         //player death counts
         int death_counts = 0;
@@ -418,27 +425,34 @@ int main(int argc, char* argv[])
                     }
 
                     //spaceship threat create
-                    for (int ii = 0; ii < NUM_THREAT; ii++) {
-                        ThreatsObject* p_threat = (p_threats + ii);
-                        if (p_threat->get_dir())
-                        {
-                            p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    if (player_score <= 40) {
+                        for (int ii = 0; ii < NUM_THREAT; ii++) {
+                            ThreatsObject* p_threat = (p_threats + ii);
+                            if (p_threat->get_dir())
+                            {
+                                p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            }
+                            else
+                            {
+                                p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            }
+                            p_threat->Render(g_screen, NULL, 100, 100);
+                            p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                         }
-                        else
-                        {
-                            p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
-                        }
-                        p_threat->Render(g_screen, NULL, 100, 100);
-                        p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                     }
-
                     //meteor threat create
-                    if (player_score >= 50) {
+                    if (player_score <= 40  && player_score >= 5) {
                         for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
                             ThreatsObject* meteor = meteors + ii;
                             meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
                             meteor->Render2(g_screen, NULL);
                         }
+                    }
+
+                    if (player_score > 40) {
+                        boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+                        boss->Render2(g_screen, NULL);
+                        boss->MakeAmo1(g_screen, boss);
                     }
 
 

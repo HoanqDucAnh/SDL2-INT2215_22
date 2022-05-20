@@ -9,8 +9,8 @@
 class MainObject : public BaseObject
 {
 public:
-    static const int  DOT_WIDTH = 85;
-    static const int DOT_HEIGHT = 51;
+    static const int  DOT_WIDTH = 67;
+    static const int DOT_HEIGHT = 86;
 
     static const int DOT_VEL = 2;
 
@@ -29,11 +29,9 @@ public:
     {
         return p_amo_list;
     }
-
+    bool cheatsw();
     int fetchScore();
     void incScore();
-
-    bool cheatsw();
 
     void MakeAmo(SDL_Renderer* des);
     void DestroyAmo(const int& idx);
@@ -49,7 +47,6 @@ private:
 
     //Player's score
     int score = 0;
-
     bool cheat_sw = false;
 };
 

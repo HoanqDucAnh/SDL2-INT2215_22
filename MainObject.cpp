@@ -93,7 +93,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 				break;
 		}
 	}
-	//else if (e.type == SDL_OUSEBUTTONDOWN) // Sự kiện khi ấn space. Bắn đạn
+	//else if (e.type == SDL_OUSEBUTTONDOWN) // Sự kiện khi ấn chuột. Bắn đạn
 	else if (e.type == SDL_KEYDOWN)
 	{
 		AmoObject* p_amo = new AmoObject();
@@ -120,6 +120,8 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		}*/
 	}
 }
+
+
 
 void MainObject::MakeAmo(SDL_Renderer* des)
 {
@@ -204,11 +206,6 @@ void MainObject::DestroyAmo(const int& idx)
 	//}
 }
 
-bool MainObject::cheatsw()
-{
-	return cheat_sw;
-}
-
 void MainObject::reset_main_pos(int x, int y)
 {
 	x_pos_ = x;
@@ -220,6 +217,11 @@ void MainObject::reset_main_pos(int x, int y)
 int MainObject::fetchScore()
 {
 	return score;
+}
+
+bool MainObject::cheatsw()
+{
+	return cheat_sw;
 }
 
 void MainObject::incScore()
