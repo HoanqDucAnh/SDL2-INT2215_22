@@ -3,8 +3,8 @@
 
 ThreatsObject::ThreatsObject()
 {
-    rect_.x = 0 ;
-    rect_.y = 0;
+    rect_.x = SCREEN_WIDTH * 0.5 ;
+    rect_.y = SCREEN_HEIGHT;
     rect_.w = WIDTH_THREAT;
     rect_.h = HEIGHT_THREAT;
 
@@ -31,6 +31,7 @@ ThreatsObject::~ThreatsObject()
     }
 }
 
+// Đạn của quái
 void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des)
 {
     if (p_amo)
@@ -38,61 +39,12 @@ void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* de
         bool ret = p_amo->loadImg("egg.png", des);
         if (ret)
         {
-
+           
             p_amo->set_is_move(true);
             p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-            p_amo->SetRect(this->rect_.x + WIDTH_THREAT / 2, this->rect_.y - HEIGHT_THREAT / 2);
+            p_amo->SetRect(this->rect_.x + WIDTH_THREAT / 2 , this->rect_.y - HEIGHT_THREAT / 2 );
             p_amo->Set_y_val(speed);
             p_amo_list.push_back(p_amo);
-        }
-    }
-}
-
-// Đạn của quái
-void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
-{
-        for (int i = 0; i < 12; i++) {
-            AmoObject* p_amo = new AmoObject();
-
-            p_amo->loadImg("egg.png", des);
-            p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-            p_amo->set_is_move(true);
-            p_amo->set_angle(30 + 30 * i);
-            p_amo->Set_y_val(2);
-            p_amo->Set_x_val(2);
-            p_amo->set_pos(object->rect_.x + object->rect_.w / 2 - 230, object->rect_.y + object->rect_.h / 2 + 200);
-            p_amo_list.push_back(p_amo);
-        }
-    
-}
-
-void ThreatsObject::MakeAmo1(SDL_Renderer* des, ThreatsObject* object)
-{
-    for (int i = 0; i < p_amo_list.size(); i++)
-    {
-        AmoObject* p_amo = p_amo_list.at(i);
-        if (p_amo != NULL)
-        {
-            if (p_amo->get_is_move() == true)
-            {
-                p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
-                p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
-            }
-            else
-            {
-                p_amo->set_is_move(true);
-                p_amo->set_angle(30 + 30 * i);
-                p_amo->Set_y_val(2);
-                p_amo->Set_x_val(2);
-
-                p_amo->set_pos(object->rect_.x + object->rect_.w / 2 , object->rect_.y + object->rect_.h / 2 + 200);
-                /*p_amo_list.erase(p_amo_list.begin() + i);
-                if (p_amo != NULL)
-                {
-                    delete p_amo;
-                    p_amo = NULL;
-                }*/
-            }
         }
     }
 }
@@ -209,6 +161,8 @@ void ThreatsObject::Reset(const int& xborder)
     
 }
 
+//void ThreatsObject::ResetMeteor(const int&)
+
 void ThreatsObject::ResetAmo(AmoObject* p_amo)
 {
     p_amo->SetRect(rect_.x + rect_.h, rect_.y + rect_.h);
@@ -216,19 +170,11 @@ void ThreatsObject::ResetAmo(AmoObject* p_amo)
 
 void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
 {
-    
-    rect_.x = SCREEN_HEIGHT / 2 - 200;
-    /*if (rect_.x > SCREEN_WIDTH / 2)
-    {
-        rect_.x -= 1;
-        rect_.x = -100;
-    }*/
-    
-    if (rect_.y >= 50) {
-        rect_.y = 50;
-    }
-    rect_.y += 1;
-    
+    rect_.x += x_val_;
+    if (rect_.x > SCREEN_WIDTH - 400)
+        rect_.x = 300;
+    else if (rect_.x < 300)
+        rect_.x = 300;
 }
 
 void ThreatsObject::HandleMoveMeteor(const int& x_border, const int& y_border)
