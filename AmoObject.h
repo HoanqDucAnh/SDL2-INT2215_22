@@ -67,5 +67,6 @@ private:
     double starting_point;
 
     bool is_move_;
+    
 };
 #endif // AMO_OBJECT_H_

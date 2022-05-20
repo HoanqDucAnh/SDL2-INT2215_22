@@ -31,6 +31,8 @@ void AmoObject::HandleMove(const int& x_border, const int& y_border)
     rect_.y = y_pos;
 }
 
+
+
 // Di chuyển đạn của quái
 void AmoObject::HandleMoveOfThreat()
 {

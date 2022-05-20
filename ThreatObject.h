@@ -48,8 +48,9 @@ public:
     {
         direction = direct;
     }
-
     void InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des);
+    void InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void MakeAmo1(SDL_Renderer* des,ThreatsObject* boss);
     void SetAmoList(std::vector<AmoObject*>& amo_list)
     {
         p_amo_list = amo_list;
