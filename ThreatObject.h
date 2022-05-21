@@ -23,6 +23,13 @@ public:
     void HandleMoveBoss(const int& x_border, const int& y_border);
     void HandleMoveMeteor(const int& x_border, const int& y_border);
     void InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmo3(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmo4(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTestLeft(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTestRight(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTestMid(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTest1(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTest2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object);
     void MakeAmo1(SDL_Renderer* des, ThreatsObject* boss);
     void set_x_val(const int& val)
     {

@@ -14,7 +14,7 @@ AmoObject::~AmoObject()
 }
 
 // Di chuyển đạn cuả nhân vật
-void AmoObject::HandleMove(const int& x_border, const int& y_border)
+void AmoObject::HandleMoveBoss(const int& x_border, const int& y_border)
 {
 
     x_pos -= x_val_ * cos(angle * PI / 180);
@@ -30,6 +30,21 @@ void AmoObject::HandleMove(const int& x_border, const int& y_border)
     rect_.x = x_pos;
     rect_.y = y_pos;
 }
+
+void AmoObject::HandleMoveMain(const int& x_border, const int& y_border) {
+    y_pos -= 2;
+    if (y_pos<0 || y_pos>y_border)
+    {
+        is_move_ = false;
+    }
+    if (x_pos<0 || x_pos>x_border)
+    {
+        is_move_ = false;
+    }
+    rect_.x = x_pos;
+    rect_.y = y_pos;
+}
+
 
 // Di chuyển đạn của quái
 void AmoObject::HandleMoveOfThreat()

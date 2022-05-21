@@ -13,8 +13,9 @@ class AmoObject : public BaseObject
 public:
     AmoObject();
     ~AmoObject();
-  
-    void HandleMove(const int& x_border, const int& y_border);
+    void HandleMoveTest(const int& x_border, const int& y_border);
+    void HandleMoveMain(const int& x_border, const int& y_border);
+    void HandleMoveBoss(const int& x_border, const int& y_border);
     void HandleMoveOfThreat();
 
     bool get_is_move() const

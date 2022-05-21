@@ -41,21 +41,31 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_LEFT: x_val_ -= DOT_VEL; break;
 			case SDLK_RIGHT: x_val_ += DOT_VEL; break;
 			case SDLK_SPACE:
-
-				for (int i = 0; i < 12; i++) {
+				/*
+				for (int i = 0; i < 5; i++) {
 				AmoObject* p_amo = new AmoObject();    
 				
 					p_amo->loadImg("bullet.png", des);
 					p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 					p_amo->set_is_move(true);
-					p_amo->set_angle(30+30*i);
+					p_amo->set_angle(80+5*i); 
 					p_amo->Set_y_val(2);
 					p_amo->Set_x_val(2);
 					p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
 					p_amo_list.push_back(p_amo);
-				}
+				}*/
+				AmoObject* p_amo = new AmoObject();
+
+				p_amo->loadImg("bullet.png", des);
+				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+				p_amo->set_is_move(true);
+				
+				p_amo->Set_y_val(2);
+				
+				p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
+				p_amo_list.push_back(p_amo);
 				break;
-			case SDLK_SLASH:
+			/*case SDLK_SLASH:
 				if (!cheat_sw)
 				{
 					cheat_sw = true;
@@ -67,6 +77,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 					std::cout << "no mor cheet for u boi\n";
 				}
 				break;
+				*/
 		}
 	}
 	//If a key was released
@@ -133,7 +144,7 @@ void MainObject::MakeAmo(SDL_Renderer* des)
 			if (p_amo->get_is_move() == true)
 			{
 				p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
-				p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+				p_amo->HandleMoveMain(SCREEN_WIDTH, SCREEN_HEIGHT);
 			}
 			else
 			{

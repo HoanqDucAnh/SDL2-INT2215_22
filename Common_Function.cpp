@@ -103,7 +103,7 @@ void SDLCommonFunction::CheckHighScore(int score)
 
     if (hscore < score)
     {
-        remove("highscore.dat");
+        
 
         out.open("highscore.dat");
 
@@ -111,6 +111,7 @@ void SDLCommonFunction::CheckHighScore(int score)
 
         out.close();
     }
+    
 }
 
 int SDLCommonFunction::FetchHighScore()

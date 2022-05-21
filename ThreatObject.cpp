@@ -33,21 +33,164 @@ ThreatsObject::~ThreatsObject()
 
 void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
 {
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
         p_amo->loadImg("egg.png", des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
-        p_amo->set_angle(30 + 30 * i);
+        p_amo->set_angle(0 + 15 * i);
         p_amo->Set_y_val(2);
         p_amo->Set_x_val(2);
-        p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 200);
+        p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 150);
         p_amo_list.push_back(p_amo);
     }
 
 }
 
+void ThreatsObject::InitAmo3(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+{
+    for (int i = 0; i < 30; i++) {
+        AmoObject* p_amo = new AmoObject();
+
+        p_amo->loadImg("egg.png", des);
+        p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+        p_amo->set_is_move(true);
+        p_amo->set_angle(60 + 30 * i);
+        p_amo->Set_y_val(2);
+        p_amo->Set_x_val(2);
+        p_amo->set_pos(object->rect_.x + object->rect_.w / 2 - BOSS_WIDTH/2+50, object->rect_.y + object->rect_.h / 2 - BOSS_HEIGHT/4+25);
+        p_amo_list.push_back(p_amo);
+    }
+
+}
+
+void ThreatsObject::InitAmo4(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+{
+    for (int i = 0; i < 30; i++) {
+        AmoObject* p_amo = new AmoObject();
+
+        p_amo->loadImg("egg.png", des);
+        p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+        p_amo->set_is_move(true);
+        p_amo->set_angle(60 + 30 * i);
+        p_amo->Set_y_val(2);
+        p_amo->Set_x_val(2);
+        p_amo->set_pos(object->rect_.x + object->rect_.w / 2 + BOSS_WIDTH / 2-50, object->rect_.y + object->rect_.h / 2 - BOSS_HEIGHT / 4 +25);
+        p_amo_list.push_back(p_amo);
+    }
+
+}
+void ThreatsObject::InitAmoTestLeft(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+{
+    for (int j = 0; j < 24; j++)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            AmoObject* p_amo = new AmoObject();
+            p_amo->set_is_move(true);
+            p_amo->loadImg("danvang.png", des);
+            p_amo->set_angle(15 * j);
+            p_amo->Set_y_val(2);
+            p_amo->Set_x_val(2);
+            if (i % 2 == 0)
+            {
+                p_amo->set_pos(object->rect_.x + object->rect_.w / 2 - BOSS_WIDTH / 2 + 50 + 10 * (i - 1), object->rect_.y + object->rect_.h / 2 );
+            }
+            else
+            {
+                p_amo->set_pos(object->rect_.x + object->rect_.w / 2 - BOSS_WIDTH / 2 + 50 , object->rect_.y + object->rect_.h / 2 + 10 * (i - 2) );
+            }
+            p_amo_list.push_back(p_amo);
+        }
+    }
+}
+
+void ThreatsObject::InitAmoTestMid(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object) {
+    for (int j = 0; j < 24; j++)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            AmoObject* p_amo = new AmoObject();
+            p_amo->set_is_move(true);
+            p_amo->loadImg("danvang.png", des);
+            p_amo->set_angle(15 * j);
+            p_amo->Set_y_val(2);
+            p_amo->Set_x_val(2);
+            if (i % 2 == 0)
+            {
+                p_amo->set_pos(object->rect_.x + object->rect_.w / 2  + 10 * (i - 1), object->rect_.y + object->rect_.h / 2 + 150);
+            }
+            else
+            {
+                p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 10 * (i - 2) + 150);
+            }
+            p_amo_list.push_back(p_amo);
+        }
+    }
+}
+
+void ThreatsObject::InitAmoTestRight(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+{
+    for (int j = 0; j < 24; j++)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            AmoObject* p_amo = new AmoObject();
+            p_amo->set_is_move(true);
+            p_amo->loadImg("danvang.png", des);
+            p_amo->set_angle(15 * j);
+            p_amo->Set_y_val(2);
+            p_amo->Set_x_val(2);
+            if (i % 2 == 0)
+            {
+                p_amo->set_pos(object->rect_.x + object->rect_.w / 2 + BOSS_WIDTH / 2 - 50 + 10 * (i - 1), object->rect_.y + object->rect_.h / 2);
+            }
+            else
+            {
+                p_amo->set_pos(object->rect_.x + object->rect_.w / 2 + BOSS_WIDTH / 2 - 50, object->rect_.y + object->rect_.h / 2 + 10 * (i - 2));
+            }
+            p_amo_list.push_back(p_amo);
+        }
+    }
+}
+void ThreatsObject::InitAmoTest1(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object) {
+    for (int i = 0; i < 24; i++)
+    {
+        AmoObject* p_bullet = new AmoObject();
+        p_bullet->loadImg("dantim.png", des);
+        p_bullet->set_is_move(true);
+        p_bullet->set_angle(0 + 15 * i);
+        p_bullet->Set_x_val(1);
+        p_bullet->Set_y_val(2);
+        p_bullet->set_pos(object->rect_.x + object->rect_.w / 2 - (p_bullet->GetRect().w) / 2, object->rect_.y + BOSS_HEIGHT / 2);
+        p_amo_list.push_back(p_bullet);
+    }
+    /*for (int i = 0; i < 24; i++)
+    {
+        AmoObject* p_bullet = new AmoObject();
+        p_bullet->loadImg("BulletThreat6.png", des);
+        p_bullet->set_is_move(true);
+        p_bullet->set_angle(0 + 15 * i);
+        p_bullet->Set_x_val(2);
+        p_bullet->Set_y_val(1);
+        p_bullet->set_pos(object->rect_.x + object->rect_.w / 2 - (p_bullet->GetRect().w) / 2, object->rect_.y + BOSS_HEIGHT / 2);
+        p_amo_list.push_back(p_bullet);
+    }*/
+}
+void ThreatsObject::InitAmoTest2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object) {
+    for (int i = 0; i < 24; i++)
+    {
+        AmoObject* p_bullet = new AmoObject();
+        p_bullet->loadImg("danxanh.png", des);
+        p_bullet->set_is_move(true);
+        p_bullet->set_angle(0 + 15 * i);
+        p_bullet->Set_x_val(2);
+        p_bullet->Set_y_val(1);
+        p_bullet->set_pos(object->rect_.x + object->rect_.w / 2 - (p_bullet->GetRect().w) / 2, object->rect_.y + BOSS_HEIGHT / 2);
+        p_amo_list.push_back(p_bullet);
+    }
+}
 void ThreatsObject::MakeAmo1(SDL_Renderer* des, ThreatsObject* object)
 {
     for (int i = 0; i < p_amo_list.size()/2; i++)
@@ -57,16 +200,16 @@ void ThreatsObject::MakeAmo1(SDL_Renderer* des, ThreatsObject* object)
         {
             if (p_amo->get_is_move() == true)
             {
-                p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+                p_amo->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                 p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
                 //p_amo->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
             }
             else
             {
                 p_amo->set_is_move(true);
-                p_amo->set_angle(30 + 30 * i);
-                p_amo->Set_y_val(1);
-                p_amo->Set_x_val(1);
+                //p_amo->set_angle(30 + 30 * i);
+                //p_amo->Set_y_val(1);
+                //p_amo->Set_x_val(1);
 
                 p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 200);
                 p_amo_list.erase(p_amo_list.begin() + i);
@@ -218,17 +361,24 @@ void ThreatsObject::ResetAmo(AmoObject* p_amo)
 
 void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
 {
-    rect_.x = SCREEN_HEIGHT / 2 - 200;
+    rect_.x = SCREEN_WIDTH / 2 - BOSS_WIDTH/2;
     /*if (rect_.x > SCREEN_WIDTH / 2)
     {
         rect_.x -= 1;
         rect_.x = -100;
     }*/
-
-    if (rect_.y >= 50) {
-        rect_.y = 50;
+    if (rect_.y >= 0) {
+        rect_.y = 0;
     }
     rect_.y += 1;
+    /*rect_.x++;
+    if (rect_.x = 800) {
+        rect_.x -= 1;
+    }
+    else if (rect_.x = 100) {
+        rect_.x += 1;
+    }
+    */
 }
 
 void ThreatsObject::HandleMoveMeteor(const int& x_border, const int& y_border)
