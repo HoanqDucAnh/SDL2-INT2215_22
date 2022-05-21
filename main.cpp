@@ -94,7 +94,7 @@ bool InitData()
 
 bool LoadBackground()
 {
-    bool ret = g_background.loadImg("background.png", g_screen);
+    bool ret = g_background.loadImg("img/background.png", g_screen);
     if (ret == false)
         return false;
 
@@ -138,11 +138,36 @@ int main(int argc, char* argv[])
 
     }
 
+<<<<<<< Updated upstream
     test_menu.loadImg("menu.png", g_screen);
     test_help.loadImg("help.png", g_screen);
     test_pause.loadImg("pause.png", g_screen);
     test_score.loadImg("HighScore.png", g_screen);
     Gameover.loadImg("GameOver.png", g_screen);
+=======
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        std::cerr << "mixer error";
+        return -1;
+    }
+    // Read file audio wav
+    g_sound_fire[0] = Mix_LoadWAV("audio/lazersound.wav");
+    g_sound_fire[1] = Mix_LoadWAV("audio/rightfire.wav");
+    g_sound_explo[0] = Mix_LoadWAV("audio/explosion.wav");
+    g_sound_explo[1] = Mix_LoadWAV("audio/chickdie.wav");
+    if (g_sound_fire[0] == NULL || g_sound_fire[1] == NULL || g_sound_explo[0] == NULL || g_sound_explo[1] == NULL)
+    {
+        std::cerr << "load audio error";
+        return -1;
+    }
+
+
+    test_menu.loadImg("img/menu.png", g_screen);
+    test_help.loadImg("img/help.png", g_screen);
+    test_pause.loadImg("img/pause.png", g_screen);
+    test_score.loadImg("img/HighScore.png", g_screen);
+    Gameover.loadImg("img/GameOver.png", g_screen);
+>>>>>>> Stashed changes
 
     Timer fps_timer;
 
@@ -242,16 +267,16 @@ int main(int argc, char* argv[])
 
         //create health
         PlayerHealth player_health;
-        player_health.loadImg("heart.png", g_screen);
+        player_health.loadImg("img/heart.png", g_screen);
         player_health.init_heart(g_screen);
 
         //player
         MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
-        p_player.loadImg("player.png", g_screen);
+        p_player.loadImg("img/player.png", g_screen);
 
         //explsion
         ExplosionObj exp_threat;
-        bool check = exp_threat.loadImg("exp_eff.png", g_screen);
+        bool check = exp_threat.loadImg("img/exp_eff.png", g_screen);
         if (!check) {
             std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
             return -1;
@@ -262,7 +287,7 @@ int main(int argc, char* argv[])
         ThreatsObject* p_threats = new ThreatsObject[20];
         for (int i = 0; i < NUM_THREAT; i++) {
             ThreatsObject* p_threat = (p_threats + i);
-            p_threat->loadImg("threat.png", g_screen);
+            p_threat->loadImg("img/threat.png", g_screen);
             p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
             p_threat->set_y_val(4);
             AmoObject* p_bullet = new AmoObject();
@@ -272,11 +297,21 @@ int main(int argc, char* argv[])
         ThreatsObject* meteors = new ThreatsObject[10];
         for (int i = 0; i < NUM_THREAT; i++) {
             ThreatsObject* meteor = (meteors + i);
-            meteor->loadImg("meteor.png", g_screen);
+            meteor->loadImg("img/meteor.png", g_screen);
             meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
             //meteor->set_x_val(4);
         }
 
+<<<<<<< Updated upstream
+=======
+        ThreatsObject* boss = new ThreatsObject();
+        boss->loadImg("img/boss.png", g_screen);
+        boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
+        boss->set_x_val(2);
+
+        //AmoObject* p_boss = new AmoObject();
+        //boss->InitAmo2(p_boss, g_screen, boss);
+>>>>>>> Stashed changes
 
         //player death counts
         int death_counts = 0;
@@ -418,6 +453,7 @@ int main(int argc, char* argv[])
                     }
 
                     //spaceship threat create
+<<<<<<< Updated upstream
                     for (int ii = 0; ii < NUM_THREAT; ii++) {
                         ThreatsObject* p_threat = (p_threats + ii);
                         if (p_threat->get_dir())
@@ -427,6 +463,23 @@ int main(int argc, char* argv[])
                         else
                         {
                             p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
+=======
+                    if (player_score <= 40) {
+                        for (int ii = 0; ii < NUM_THREAT; ii++) {
+                            ThreatsObject* p_threat = (p_threats + ii);
+                            if (p_threat->get_dir())
+                            {
+                                p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            }
+                            else
+                            {
+                                p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            }
+                            p_threat->Render(g_screen, NULL, 100, 100);
+                            p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                            //p_threat = NULL;
+                            //delete p_threat;
+>>>>>>> Stashed changes
                         }
                         p_threat->Render(g_screen, NULL, 100, 100);
                         p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -438,6 +491,23 @@ int main(int argc, char* argv[])
                             ThreatsObject* meteor = meteors + ii;
                             meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
                             meteor->Render2(g_screen, NULL);
+<<<<<<< Updated upstream
+=======
+                            //meteor = NULL;
+                            //delete meteor;
+                        }
+                    }
+
+                    if (player_score > 40) {
+                        boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+                        boss->Render2(g_screen, NULL);
+                        if (SDL_GetTicks() - boss_shoot_time >= 400) {
+                            AmoObject* p_boss = new AmoObject();
+                            boss->InitAmo2(p_boss, g_screen, boss);
+                            boss_shoot_time = SDL_GetTicks(); 
+                            //p_boss = NULL;
+                            //delete p_boss;
+>>>>>>> Stashed changes
                         }
                     }
 
@@ -491,6 +561,11 @@ int main(int argc, char* argv[])
                                     }
                                 }
                             }
+<<<<<<< Updated upstream
+=======
+                            //p_threat = NULL;
+                            //delete p_threat;
+>>>>>>> Stashed changes
                         }
 
                         //player & meteor collision
@@ -530,6 +605,11 @@ int main(int argc, char* argv[])
                                     }
                                 }
                             }
+<<<<<<< Updated upstream
+=======
+                            //meteor = NULL;
+                            //delete meteor;
+>>>>>>> Stashed changes
                         }
 
                         //threat ammo & player collision
@@ -588,7 +668,15 @@ int main(int argc, char* argv[])
                                         }
                                     }
                                 }
+<<<<<<< Updated upstream
                             }
+=======
+                                //p_amo_threat = NULL;
+                                //delete p_amo_threat;
+                            }
+                            //p_threat = NULL;
+                            //delete p_threat;
+>>>>>>> Stashed changes
                         }
                     }
 
@@ -631,7 +719,15 @@ int main(int argc, char* argv[])
                                     break;
                                 }
                             }
+<<<<<<< Updated upstream
                         }
+=======
+                            //p_amo = NULL;
+                            //delete p_amo;
+                        }
+                        //p_threat = NULL;
+                        //delete p_threat;
+>>>>>>> Stashed changes
                     }
 
                     

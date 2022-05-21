@@ -45,7 +45,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 				for (int i = 0; i < 12; i++) {
 				AmoObject* p_amo = new AmoObject();    
 				
-					p_amo->loadImg("bullet.png", des);
+					p_amo->loadImg("imd/bullet.png", des);
 					p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 					p_amo->set_is_move(true);
 					p_amo->set_angle(30+30*i);
@@ -82,7 +82,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_SPACE:
 
 				AmoObject* p_amo = new AmoObject();
-				p_amo->loadImg("bullet.png", des);
+				p_amo->loadImg("img/bullet.png", des);
 				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 				p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 				p_amo->set_is_move(true);
@@ -100,7 +100,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 		//if (e.button.button == SDL_BUTTON_RIGHT)
 		if (e.key.keysym.sym == SDLK_z)
 		{
-			p_amo->loadImg("bullet.png",des);
+			p_amo->loadImg("img/bullet.png",des);
 			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
 			p_amo->set_is_move(true);

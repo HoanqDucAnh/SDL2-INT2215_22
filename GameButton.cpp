@@ -50,7 +50,7 @@ void GameButton::PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool
 {
 	if(Inside(event))
 	{
-	    LoadTexture("PlayButton2.png",screen);
+	    LoadTexture("img/PlayButton2.png",screen);
 		if(event.type==SDL_MOUSEBUTTONDOWN)
 		{
 			play = true;
@@ -61,14 +61,14 @@ void GameButton::PlayButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool
 	}
 	else
 	{
-		LoadTexture("PlayButton.png",screen);
+		LoadTexture("img/PlayButton.png",screen);
 	}
 }
 void GameButton::HelpButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help)
 {
 	if(Inside(event))
 	{
-	    LoadTexture("HelpButton2.png",screen);
+	    LoadTexture("img/HelpButton2.png",screen);
 		if(event.type==SDL_MOUSEBUTTONDOWN)
 		{
 		    help=true;
@@ -77,14 +77,14 @@ void GameButton::HelpButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool
 	}
 	else
 	{
-		LoadTexture("HelpButton.png",screen);
+		LoadTexture("img/HelpButton.png",screen);
 	}
 }
 void GameButton::ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu, bool &end)
 {
     if(Inside(event))
 	{
-	    LoadTexture("ExitButton2.png",screen);
+	    LoadTexture("img/ExitButton2.png",screen);
 		if(event.type==SDL_MOUSEBUTTONDOWN)
 		{
 		    QuitMenu=!QuitMenu;
@@ -93,14 +93,14 @@ void GameButton::ExitButton(SDL_Event event,SDL_Renderer* screen,bool &QuitMenu,
 	}
 	else
 	{
-		LoadTexture("ExitButton.png",screen);
+		LoadTexture("img/ExitButton.png",screen);
 	}
 }
 void GameButton::BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool &help, bool& score)
 {
     if(Inside(event))
 	{
-	    LoadTexture("BackButton2.png",screen);
+	    LoadTexture("img/BackButton2.png",screen);
 		if(event.type==SDL_MOUSEBUTTONDOWN)
 		{
 		    menu=true;
@@ -110,7 +110,7 @@ void GameButton::BackButton(SDL_Event event,SDL_Renderer* screen,bool &menu,bool
 	}
 	else
 	{
-		LoadTexture("BackButton.png",screen);
+		LoadTexture("img/BackButton.png",screen);
 	}
 }
 
@@ -118,7 +118,7 @@ void GameButton::HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& me
 {
 	if (Inside(event))
 	{
-		LoadTexture("Score2.png", screen);
+		LoadTexture("img/Score2.png", screen);
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			score = true;
@@ -127,13 +127,13 @@ void GameButton::HighScoreButton(SDL_Event event, SDL_Renderer* screen, bool& me
 	}
 	else
 	{
-		LoadTexture("Score.png", screen);
+		LoadTexture("img/Score.png", screen);
 	}
 }
 void GameButton::MenuButton(SDL_Event event, SDL_Renderer* screen,int &score, bool &menu, bool& QuitMenu, bool &play,bool &end) {
 	if (Inside(event))
 	{
-		LoadTexture("MainMenu2.png", screen);
+		LoadTexture("img/MainMenu2.png", screen);
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			play = false;
@@ -145,6 +145,6 @@ void GameButton::MenuButton(SDL_Event event, SDL_Renderer* screen,int &score, bo
 	}
 	else
 	{
-		LoadTexture("MainMenu.png", screen);
+		LoadTexture("img/MainMenu.png", screen);
 	}
 }
