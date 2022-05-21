@@ -7,9 +7,8 @@
 #include <windows.h>
 #include <SDL_image.h>
 #include <fstream>
-#include <SDL_mixer.h>
+#include <SDL_mixer.cpp>
 #include <SDL_ttf.h>
-
 
 static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;
