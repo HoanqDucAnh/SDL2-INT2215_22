@@ -32,6 +32,8 @@ const int COLOR_KEY_B = 180;
 const double PI = 3.141592653589793238463;
 const int RENDER_DRAW_COLOR = 0xff;
 
+static Mix_Chunk* g_sound_fire[3];
+static Mix_Chunk* g_sound_explo[2];
 
 namespace SDLCommonFunction
 {
