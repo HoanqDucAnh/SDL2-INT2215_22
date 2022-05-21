@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp";
+#include "Text.h";
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -139,6 +139,23 @@ int main(int argc, char* argv[])
         return -1;
 
     }
+
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        std::cerr << "mixer error";
+        return -1;
+    }
+    // Read file audio wav
+    g_sound_fire[0] = Mix_LoadWAV("audio/lazersound.wav");
+    g_sound_fire[1] = Mix_LoadWAV("audio/rightfire.wav");
+    g_sound_explo[0] = Mix_LoadWAV("audio/explosion.wav");
+    g_sound_explo[1] = Mix_LoadWAV("audio/chickdie.wav");
+    if (g_sound_fire[0] == NULL || g_sound_fire[1] == NULL || g_sound_explo[0] == NULL || g_sound_explo[1] == NULL)
+    {
+        std::cerr << "load audio error";
+        return -1;
+    }
+
 
     test_menu.loadImg("menu.png", g_screen);
     test_help.loadImg("help.png", g_screen);
@@ -439,6 +456,8 @@ int main(int argc, char* argv[])
                             }
                             p_threat->Render(g_screen, NULL, 100, 100);
                             p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                            p_threat = NULL;
+                            delete p_threat;
                         }
                     }
                     //meteor threat create
@@ -447,6 +466,8 @@ int main(int argc, char* argv[])
                             ThreatsObject* meteor = meteors + ii;
                             meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
                             meteor->Render2(g_screen, NULL);
+                            meteor = NULL;
+                            delete meteor;
                         }
                     }
 
@@ -456,7 +477,9 @@ int main(int argc, char* argv[])
                         if (SDL_GetTicks() - boss_shoot_time >= 400) {
                             AmoObject* p_boss = new AmoObject();
                             boss->InitAmo2(p_boss, g_screen, boss);
-                            boss_shoot_time = SDL_GetTicks();
+                            boss_shoot_time = SDL_GetTicks(); 
+                            p_boss = NULL;
+                            delete p_boss;
                         }
                         
                         boss->MakeAmo1(g_screen, boss);
@@ -512,6 +535,8 @@ int main(int argc, char* argv[])
                                     }
                                 }
                             }
+                            p_threat = NULL;
+                            delete p_threat;
                         }
 
                         //player & meteor collision
@@ -551,6 +576,8 @@ int main(int argc, char* argv[])
                                     }
                                 }
                             }
+                            meteor = NULL;
+                            delete meteor;
                         }
 
                         //threat ammo & player collision
@@ -609,7 +636,11 @@ int main(int argc, char* argv[])
                                         }
                                     }
                                 }
+                                p_amo_threat = NULL;
+                                delete p_amo_threat;
                             }
+                            p_threat = NULL;
+                            delete p_threat;
                         }
                     }
 
@@ -652,7 +683,11 @@ int main(int argc, char* argv[])
                                     break;
                                 }
                             }
+                            p_amo = NULL;
+                            delete p_amo;
                         }
+                        p_threat = NULL;
+                        delete p_threat;
                     }
 
                     
@@ -697,6 +732,13 @@ int main(int argc, char* argv[])
             else
             {
                 SDL_ShowCursor(SDL_ENABLE);
+                for (int ii = 0; ii < NUM_THREAT; ii++)
+                {
+                    ThreatsObject* p_threat = (p_threats + ii);
+                    p_threat->~ThreatsObject();
+                    p_threat = NULL;
+                    delete p_threat;
+                }
                 while (SDL_PollEvent(&g_event) != 0)
                 {
                     if (g_event.type == SDL_QUIT)
