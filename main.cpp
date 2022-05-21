@@ -6,14 +6,14 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp";
+#include "Text.h";
 
 BaseObject Gameover;
 BaseObject g_background;
-BaseObject test_menu;
-BaseObject test_help;
-BaseObject test_pause;
-BaseObject test_score;
+BaseObject load_menu;
+BaseObject load_help;
+BaseObject load_pause;
+BaseObject load_score;
 
 GameButton PlayButton;
 GameButton HelpButton;
@@ -106,10 +106,10 @@ bool LoadBackground()
 void close()
 {
     g_background.Free();
-    test_help.Free();
-    test_menu.Free();
-    test_pause.Free();
-    test_score.Free();
+    load_help.Free();
+    load_menu.Free();
+    load_pause.Free();
+    load_score.Free();
 
     Gameover.Free();
     SDL_DestroyRenderer(g_screen);
@@ -140,10 +140,10 @@ int main(int argc, char* argv[])
 
     }
 
-    test_menu.loadImg("menu.png", g_screen);
-    test_help.loadImg("help.png", g_screen);
-    test_pause.loadImg("pause.png", g_screen);
-    test_score.loadImg("HighScore.png", g_screen);
+    load_menu.loadImg("menu.png", g_screen);
+    load_help.loadImg("help.png", g_screen);
+    load_pause.loadImg("pause.png", g_screen);
+    load_score.loadImg("HighScore.png", g_screen);
     Gameover.loadImg("GameOver.png", g_screen);
 
     Timer fps_timer;
@@ -175,16 +175,16 @@ int main(int argc, char* argv[])
                         end = true;
 
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
-                    HelpButton.HelpButton(g_event, g_screen, menu, help);
-                    ExitButton.ExitButton(g_event, g_screen, QuitMenu, end);
+                    PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
+                    ScoreButton.HighScore(g_event, g_screen, menu, score);
+                    HelpButton.Help(g_event, g_screen, menu, help);
+                    ExitButton.Exit(g_event, g_screen, QuitMenu, end);
                 }
-                PlayButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 40);
-                ScoreButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 120);
-                HelpButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 200);
-                ExitButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 280);
-                test_menu.Render2(g_screen, NULL);
+                PlayButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 40);
+                ScoreButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 120);
+                HelpButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 200);
+                ExitButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 280);
+                load_menu.Render2(g_screen, NULL);
                 HelpButton.Render2(g_screen, NULL);
                 ScoreButton.Render2(g_screen, NULL);
                 PlayButton.Render2(g_screen, NULL);
@@ -200,14 +200,14 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help, score);
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help, score);
+                    PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.Back(g_event, g_screen, menu, help, score);
+                    PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.Back(g_event, g_screen, menu, help, score);
                 }
-                test_help.Render2(g_screen, NULL);
-                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
-                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_frame_width() - 30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                load_help.Render2(g_screen, NULL);
+                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
+                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_width_frame() - 30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
                 PlayButton.Render2(g_screen, NULL);
                 BackButton.Render2(g_screen, NULL);
                 SDL_RenderPresent(g_screen);
@@ -222,17 +222,17 @@ int main(int argc, char* argv[])
                         end = true;
                     }
                     
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help, score);
+                    PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.Back(g_event, g_screen, menu, help, score);
                  }
 
                 int score = SDLCommonFunction::FetchHighScore();
                 std::string highscore = std::to_string(score * 100);
                
-                test_score.Render2(g_screen, NULL);
-                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                load_score.Render2(g_screen, NULL);
+                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
                 BackButton.Render2(g_screen, NULL);
-                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_frame_width() - 30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_width_frame() - 30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
                 PlayButton.Render2(g_screen, NULL);
                 game_score.settext(highscore);
                 game_score.Loadfromrendertext(Gameover_font, g_screen);
@@ -317,16 +317,16 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    ScoreButton.HighScoreButton(g_event, g_screen, menu, score);
-                    HelpButton.HelpButton(g_event, g_screen, menu, help);
-                    ExitButton.ExitButton(g_event, g_screen, QuitMenu, end);
+                    PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
+                    ScoreButton.HighScore(g_event, g_screen, menu, score);
+                    HelpButton.Help(g_event, g_screen, menu, help);
+                    ExitButton.Exit(g_event, g_screen, QuitMenu, end);
                 }
-                PlayButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 40);
-                ScoreButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 120);
-                HelpButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 200);
-                ExitButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 + 280);
-                test_menu.Render2(g_screen, NULL);
+                PlayButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 40);
+                ScoreButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 120);
+                HelpButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 200);
+                ExitButton.SetRect(SCREEN_WIDTH / 2 - PlayButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 + 280);
+                load_menu.Render2(g_screen, NULL);
                 HelpButton.Render2(g_screen, NULL);
                 ScoreButton.Render2(g_screen, NULL);
                 PlayButton.Render2(g_screen, NULL);
@@ -342,14 +342,13 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help,score);
-                    PlayButton.PlayButton(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.BackButton(g_event, g_screen, menu, help, score);
+                    PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
+                    BackButton.Back(g_event, g_screen, menu, help,score);
+                    
                 }
-                test_help.Render2(g_screen, NULL);
-                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
-                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_frame_width() - 30, SCREEN_HEIGHT - BackButton.get_frame_height() - 30);
+                load_help.Render2(g_screen, NULL);
+                BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
+                PlayButton.SetRect(SCREEN_WIDTH - PlayButton.get_width_frame() - 30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
                 PlayButton.Render2(g_screen, NULL);
                 BackButton.Render2(g_screen, NULL);
                 SDL_RenderPresent(g_screen);
@@ -379,8 +378,8 @@ int main(int argc, char* argv[])
                             }
                         }
                     }
-                    test_pause.SetRect(0, SCREEN_HEIGHT / 3 - test_pause.GetRect().h);
-                    test_pause.Render2(g_screen, NULL);
+                    load_pause.SetRect(0, SCREEN_HEIGHT / 3 - load_pause.GetRect().h);
+                    load_pause.Render2(g_screen, NULL);
                     SDL_RenderPresent(g_screen);
                 }
                 else if (!paused)
@@ -426,7 +425,7 @@ int main(int argc, char* argv[])
                     }
 
                     //spaceship threat create
-                    if (player_score <= 40) {
+                    if (player_score <= 40 && player_score >= 15 ) {
                         for (int ii = 0; ii < NUM_THREAT; ii++) {
                             ThreatsObject* p_threat = (p_threats + ii);
                             if (p_threat->get_dir())
@@ -450,17 +449,34 @@ int main(int argc, char* argv[])
                         }
                     }
 
-                    if (player_score > 40) {
+                    //if (player_score > 40) {
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                         boss->Render2(g_screen, NULL);
                         if (SDL_GetTicks() - boss_shoot_time >= 400) {
                             AmoObject* p_boss = new AmoObject();
-                            boss->InitAmo2(p_boss, g_screen, boss);
+                            if (player_score < 5) {
+                                boss->InitAmo2(p_boss, g_screen, boss);
+                                boss->InitAmo3(p_boss, g_screen, boss);
+                                boss->InitAmo4(p_boss, g_screen, boss);
+                            }
+                            //player_score <= 20 && player_score > 5
+                            if (player_score <= 20 && player_score > 5) {
+                                
+                                boss->InitAmoTestLeft(p_boss, g_screen, boss);
+                                boss->InitAmoTestMid(p_boss, g_screen, boss);
+                                boss->InitAmoTestRight(p_boss, g_screen, boss);
+                                
+                            }
+                            //player_score > 20
+                            if (player_score <= 20 && player_score > 5) {
+                                boss->InitAmoTest1(p_boss, g_screen, boss);
+                                boss->InitAmoTest2(p_boss, g_screen, boss);
+                            }
                             boss_shoot_time = SDL_GetTicks();
                         }
                         
                         boss->MakeAmo1(g_screen, boss);
-                    }
+                    //}
 
 
                     p_player.MakeAmo(g_screen);
@@ -704,17 +720,17 @@ int main(int argc, char* argv[])
                         play = false;
                         end = true;
                     }
-                    RestartButton.MenuButton(g_event, g_screen,player_score, menu, QuitMenu, play, end);
-                    ExitButton.ExitButton(g_event, g_screen, play, end);
+                    RestartButton.Menu(g_event, g_screen,player_score, menu, QuitMenu, play, end);
+                    ExitButton.Exit(g_event, g_screen, play, end);
                 }
                 Gameover.Render2(g_screen, NULL);
                 game_over.Loadfromrendertext(Gameover_font, g_screen);
                 game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
                 game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
                 game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
-                RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_frame_height() + 150);
+                RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
                 RestartButton.Render2(g_screen, NULL);
-                ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_frame_width() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_frame_height() + 250);
+                ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
                 ExitButton.Render2(g_screen, NULL);
 
 
