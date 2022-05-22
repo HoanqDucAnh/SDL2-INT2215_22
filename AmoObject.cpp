@@ -17,7 +17,6 @@ bool AmoObject::LoadTexture(std::string path, SDL_Renderer* screen) {
     return ret;
 }
 
-// Di chuyển đạn cuả nhân vật
 void AmoObject::HandleMoveBoss(const int& x_border, const int& y_border)
 {
 
@@ -35,8 +34,9 @@ void AmoObject::HandleMoveBoss(const int& x_border, const int& y_border)
     rect_.y = y_pos;
 }
 
+// Di chuyển đạn cuả nhân vật
 void AmoObject::HandleMoveMain(const int& x_border, const int& y_border) {
-    y_pos -= 2;
+    y_pos -= 4;
     if (y_pos<0 || y_pos>y_border)
     {
         is_move_ = false;

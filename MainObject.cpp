@@ -30,7 +30,7 @@ MainObject::MainObject(int x, int y)
 	y_val_ = 0;
 }
 
-void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
+void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fire_sound[2]) {
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 	{
 		//Adjust the velocity
@@ -53,29 +53,39 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 				}
 				break;
 			case SDLK_SPACE:
-				/*
-				for (int i = 0; i < 5; i++) {
-				AmoObject* p_amo = new AmoObject();    
-				
-					p_amo->loadImg("bullet.png", des);
+				if (ammo_type == 0)
+				{
+					AmoObject* p_amo = new AmoObject();
+
+					Mix_PlayChannel(-1, fire_sound[0], 0);
+
+					p_amo->loadImg("img//bullet.png", des);
 					p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 					p_amo->set_is_move(true);
-					p_amo->set_angle(80+5*i); 
+
 					p_amo->Set_y_val(2);
-					p_amo->Set_x_val(2);
+
 					p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
 					p_amo_list.push_back(p_amo);
-				}*/
-				AmoObject* p_amo = new AmoObject();
+				}
+				if (ammo_type == 1)
+				{
+					Mix_PlayChannel(-1, fire_sound[0], 0);
 
-				p_amo->loadImg("img//bullet.png", des);
-				p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-				p_amo->set_is_move(true);
-				
-				p_amo->Set_y_val(2);
-				
-				p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
-				p_amo_list.push_back(p_amo);
+					Mix_PlayChannel(-1, fire_sound[1], 0);
+					for (int i = 0; i < 5; i++) {
+						AmoObject* p_amo = new AmoObject();
+
+						p_amo->loadImg("img//dantim.png", des);
+						p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+						p_amo->set_is_move(true);
+						p_amo->set_angle(80 + 5 * i);
+						p_amo->Set_y_val(2);
+						p_amo->Set_x_val(2);
+						p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
+						p_amo_list.push_back(p_amo);
+					}
+				}
 				break;
 				/*
 			case SDLK_SLASH:
@@ -103,7 +113,7 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 			case SDLK_DOWN: y_val_ -= DOT_VEL; break;
 			case SDLK_LEFT: x_val_ += DOT_VEL; break;
 			case SDLK_RIGHT: x_val_ -= DOT_VEL; break;
-			case SDLK_SPACE:
+			/*case SDLK_SPACE:
 
 				AmoObject* p_amo = new AmoObject();
 				p_amo->loadImg("img//bullet.png", des);
@@ -115,33 +125,8 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des) {
 
 				p_amo_list.push_back(p_amo);
 				break;
+				*/
 		}
-	}
-     // Sự kiện khi ấn chuột. Bắn đạn
-	else if (e.type == SDL_KEYDOWN)
-	{
-		AmoObject* p_amo = new AmoObject();
-		//if (e.button.button == SDL_BUTTON_RIGHT)
-		if (e.key.keysym.sym == SDLK_z)
-		{
-			p_amo->loadImg("img//bullet.png",des);
-			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
-			p_amo->set_is_move(true);
-			p_amo->Set_y_val(2);
-			p_amo->Set_x_val(2);
-			p_amo_list.push_back(p_amo);
-		}
-		/*else if (e.button.button == SDL_BUTTON_LEFT)
-		{
-			p_amo->loadImg("laser.png", des);
-			p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
-			p_amo->SetRect(this->rect_.x + DOT_WIDTH / 2 - 10, this->rect_.y - DOT_HEIGHT / 2);
-			p_amo->set_is_move(true);
-			p_amo->Set_y_val(20);
-
-			p_amo_list.push_back(p_amo);
-		}*/
 	}
 }
 
@@ -170,6 +155,12 @@ void MainObject::MakeAmo(SDL_Renderer* des)
 			}
 		}
 	}
+}
+
+
+void MainObject::SetAmoType(int type)
+{
+	ammo_type = type;
 }
 
 

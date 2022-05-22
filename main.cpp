@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp"
+#include "Text.h"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -46,7 +46,6 @@ bool InitData()
         std::cout << "SDL NO INTI\n";
         return false;
     }
-
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
@@ -90,7 +89,6 @@ bool InitData()
             success = true;
         }
     }
-
     return success;
 }
 
@@ -110,6 +108,14 @@ void close()
     load_menu.Free();
     load_pause.Free();
     load_score.Free();
+
+    Mix_FreeChunk(g_sound_explo[0]);
+    Mix_FreeChunk(g_sound_explo[1]);
+    Mix_FreeChunk(g_sound_explo[2]);
+    Mix_FreeChunk(g_sound_fire[0]);
+    Mix_FreeChunk(g_sound_fire[1]);
+
+    Mix_FreeMusic(music);
 
     Gameover.Free();
     SDL_DestroyRenderer(g_screen);
@@ -145,6 +151,23 @@ int main(int argc, char* argv[])
     load_pause.loadImg("img//pause.png", g_screen);
     load_score.loadImg("img//HighScore.png", g_screen);
     Gameover.loadImg("img//GameOver.png", g_screen);
+
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    {
+        return -1;
+    }
+
+    // Read file audio (wav)
+    g_sound_fire[0] = Mix_LoadWAV("audio//lazersound.wav");
+    g_sound_fire[1] = Mix_LoadWAV("audio//rightfire.wav");
+    g_sound_explo[0] = Mix_LoadWAV("audio//explosion.wav");
+    g_sound_explo[1] = Mix_LoadWAV("audio//chickdie.wav");
+    g_sound_explo[2] = Mix_LoadWAV("audio//botdie.wav");
+
+    music = Mix_LoadMUS("audio//mission.wav");
+
+    if (g_sound_fire[0] == NULL || g_sound_fire[1] == NULL || g_sound_explo[0] == NULL || g_sound_explo[1] == NULL || g_sound_explo[2] == NULL || music == NULL)
+        return -1;
 
     Timer fps_timer;
 
@@ -210,6 +233,9 @@ int main(int argc, char* argv[])
     
 
     while (!end) {
+
+        Mix_PlayMusic(music, -1);
+
         while (!QuitMenu)
         {
             if (menu)
@@ -297,6 +323,7 @@ int main(int argc, char* argv[])
         bool GameOver = false;
         //main game loop
         while (play) {
+
             if (menu)
             {
                 while (SDL_PollEvent(&g_event) != 0)
@@ -346,6 +373,7 @@ int main(int argc, char* argv[])
             {
                 if (paused)
                 {
+                    Mix_PauseMusic();
                     SDL_WarpMouseInWindow(g_window, p_player.GetRect().x, p_player.GetRect().y);
                     while (SDL_PollEvent(&g_event) != 0)
                     {
@@ -375,6 +403,8 @@ int main(int argc, char* argv[])
                 {
                     fps_timer.start();
 
+                    Mix_ResumeMusic();
+
                     while (SDL_PollEvent(&g_event) != 0)
                     {
                         if (g_event.type == SDL_QUIT)
@@ -394,13 +424,14 @@ int main(int argc, char* argv[])
                                 end = true;
                             }
                         }
-                        p_player.HandleInputAction(g_event, g_screen);
+                        p_player.HandleInputAction(g_event, g_screen, g_sound_fire);
                     }
                     SDL_RenderClear(g_screen);
                     SDL_ShowCursor(SDL_DISABLE);
 
                     //Main game functions
                     p_player.HandleMove();
+
                     //SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
                     SDL_RenderClear(g_screen);
 
@@ -442,6 +473,7 @@ int main(int argc, char* argv[])
                                         if (is_col)
                                         {
                                             p_threat->Reset(-100);
+                                            Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                             for (int ex = 0; ex < explosion_frame; ex++)
                                             {
                                                 int x_player_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
@@ -463,6 +495,7 @@ int main(int argc, char* argv[])
                                                 invi_timer = SDL_GetTicks();
                                             }
                                             else {
+                                                Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                                 SDLCommonFunction::CheckHighScore(player_score);
                                                 GameOver = true;
                                                 //delete[] p_threats;
@@ -482,6 +515,7 @@ int main(int argc, char* argv[])
                                                 if (ret_col_threat)
                                                 {
                                                     p_threat->ResetAmo(p_amo_threat);
+                                                    Mix_PlayChannel(-1, g_sound_explo[1], 0);
                                                     for (int ex = 0; ex < explosion_frame; ex++)
                                                     {
                                                         int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
@@ -509,6 +543,7 @@ int main(int argc, char* argv[])
                                                     }
                                                     else
                                                     {
+                                                        Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                                         SDLCommonFunction::CheckHighScore(player_score);
                                                         GameOver = true;
                                                         //delete[] p_threats;
@@ -529,6 +564,7 @@ int main(int argc, char* argv[])
                                         bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
                                         if (ret_col)
                                         {
+                                            Mix_PlayChannel(2, g_sound_explo[2], 0);
                                             for (int ex = 0; ex < explosion_frame; ex++)
                                             {
                                                 int x_pos = (p_threat->GetRect().x + p_threat->GetRect().w * 0.5) - exp_frame_width * 0.5;
@@ -561,7 +597,7 @@ int main(int argc, char* argv[])
                         }
                     }
 
-                    //meteor threat create
+                    //meteor threat init & collision
                     if (player_score >= 15 && player_score <40) {
                         for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
                             ThreatsObject* meteor = (meteors + ii);
@@ -575,6 +611,7 @@ int main(int argc, char* argv[])
                                         if (is_col)
                                         {
                                             meteor->Reset(-100);
+                                            Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                             for (int ex = 0; ex < explosion_frame; ex++)
                                             {
                                                 int x_player_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
@@ -594,6 +631,7 @@ int main(int argc, char* argv[])
                                                 invi_timer = SDL_GetTicks();
                                             }
                                             else {
+                                                Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                                 SDLCommonFunction::CheckHighScore(player_score);
                                                 GameOver = true;
                                             }
@@ -610,6 +648,9 @@ int main(int argc, char* argv[])
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                         boss->Render2(g_screen, NULL);
                         boss->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+                        //upgraded canon
+                        p_player.SetAmoType(1);
                     }
 
                     /*
@@ -644,6 +685,9 @@ int main(int argc, char* argv[])
 
                     p_player.MakeAmo(g_screen);
                     p_player.Render(g_screen, NULL);
+
+                    // render health
+                    player_health.show_heart(g_screen);
 
                     //player score 
                     std::string string_score = "Score ";
@@ -709,6 +753,38 @@ int main(int argc, char* argv[])
                 SDL_RenderPresent(g_screen);
             }
         }
+       /* //music switch
+        if (g_event.key.keysym.sym == SDLK_9)
+        {
+            //If there is no music playing
+            if (Mix_PlayingMusic() == 0)
+            {
+                //Play the music
+                if (Mix_PlayMusic(music, -1) == -1)
+                {
+                    return 1;
+                }
+            }
+            //If music is being played
+            else
+            {
+                //If the music is paused
+                if (Mix_PausedMusic() == 1)
+                {
+                    //Resume the music
+                    Mix_ResumeMusic();
+                }
+                //If the music is playing
+                else
+                {
+                    //Pause the music
+                    Mix_PauseMusic();
+                }
+            }
+        }
+        */
+
+
     }
     close();
     return 0;

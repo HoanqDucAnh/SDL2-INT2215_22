@@ -16,7 +16,7 @@ public:
 
     MainObject(int x, int y);
     bool loadImg(std::string path, SDL_Renderer* screen);
-    void HandleInputAction(SDL_Event events,SDL_Renderer* des);
+    void HandleInputAction(SDL_Event events,SDL_Renderer* des, Mix_Chunk* fire_sound[2]);
     void HandleMove();
     void Render(SDL_Renderer* des, SDL_Rect* clip);
     // Đạn của nhân vật lưu trong vector
@@ -29,6 +29,8 @@ public:
     {
         return p_amo_list;
     }
+    void SetAmoType(int type);
+
     bool cheatsw();
     int fetchScore();
     void incScore();
@@ -47,6 +49,8 @@ private:
 
     //Player's score
     int score = 0;
+    
+    int ammo_type = 0;
     bool cheat_sw = false;
 };
 
