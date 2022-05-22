@@ -6,9 +6,8 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.h";
+#include "Text.cpp"
 
-BaseObject Test1;
 BaseObject Gameover;
 BaseObject g_background;
 BaseObject load_menu;
@@ -69,7 +68,7 @@ bool InitData()
         {
             SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
             int ImgFlags = IMG_INIT_PNG;
-            if (!(IMG_Init(ImgFlags) && ImgFlags)) 
+            if (!(IMG_Init(ImgFlags) && ImgFlags))
             {
                 std::cout << "NO SDL IMAGE" << std::endl;
                 success = false;
@@ -97,7 +96,7 @@ bool InitData()
 
 bool LoadBackground()
 {
-    bool ret = g_background.loadImg("img//background.png", g_screen);
+    bool ret = g_background.loadImg("background.png", g_screen);
     if (ret == false)
         return false;
 
@@ -107,7 +106,6 @@ bool LoadBackground()
 void close()
 {
     g_background.Free();
-    Test1.Free();
     load_help.Free();
     load_menu.Free();
     load_pause.Free();
@@ -167,22 +165,13 @@ int main(int argc, char* argv[])
 
     }
 
-    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-    {
-        std::cerr << "mixer error";
-        return -1;
-    }
-    // Read file audio wav
-    g_sound_fire[0] = Mix_LoadWAV("audio//lazersound.wav");
-    g_sound_fire[1] = Mix_LoadWAV("audio//rightfire.wav");
-    g_sound_explo[0] = Mix_LoadWAV("audio//explosion.wav");
-    g_sound_explo[1] = Mix_LoadWAV("audio//chickdie.wav");
-    if (g_sound_fire[0] == NULL || g_sound_fire[1] == NULL || g_sound_explo[0] == NULL || g_sound_explo[1] == NULL)
-    {
-        std::cerr << "load audio error";
-        return -1;
-    }
+    load_menu.loadImg("menu.png", g_screen);
+    load_help.loadImg("help.png", g_screen);
+    load_pause.loadImg("pause.png", g_screen);
+    load_score.loadImg("HighScore.png", g_screen);
+    Gameover.loadImg("GameOver.png", g_screen);
 
+<<<<<<< HEAD
     load_menu.loadImg("img//menu.png", g_screen);
     load_help.loadImg("img//help.png", g_screen);
     load_pause.loadImg("img//pause.png", g_screen);
@@ -190,6 +179,8 @@ int main(int argc, char* argv[])
     Gameover.loadImg("img//GameOver.png", g_screen);
 
     //Test1.loadImg("dantim.png", g_screen);
+=======
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
     Timer fps_timer;
 
     bool play = false;
@@ -206,19 +197,21 @@ int main(int argc, char* argv[])
     game_over_mark.Setcolor(Text::WHITE_TEXT);
     game_score.Setcolor(Text::WHITE_TEXT);
 
+
+    //create health
     PlayerHealth player_health;
-    player_health.loadImg("img//heart.png", g_screen);
+    player_health.loadImg("heart.png", g_screen);
     player_health.init_heart(g_screen);
 
     //player
     MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
-    p_player.loadImg("img//player.png", g_screen);
+    p_player.loadImg("player.png", g_screen);
 
     //std::vector<ThreatsObject*> threats_list = MakeThreadList();
 
     //explsion
     ExplosionObj exp_threat;
-    bool check = exp_threat.loadImg("img//exp_eff.png", g_screen);
+    bool check = exp_threat.loadImg("exp_eff.png", g_screen);
     if (!check) {
         std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
         return -1;
@@ -229,24 +222,33 @@ int main(int argc, char* argv[])
     ThreatsObject* p_threats = new ThreatsObject[3];
     for (int i = 0; i < NUM_THREAT; i++) {
         ThreatsObject* p_threat = (p_threats + i);
-        p_threat->loadImg("img//threat.png", g_screen);
+        p_threat->loadImg("threat.png", g_screen);
         p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
         p_threat->set_y_val(4);
-        AmoObject* p_bullet = new AmoObject();
-        p_threat->InitAmo(p_bullet, 5, g_screen);
+        AmoObject* p_amo = new AmoObject();
+        p_threat->InitAmo(p_amo, 5, g_screen);
     }
 
-    ThreatsObject* meteors = new ThreatsObject[3];
-    for (int i = 0; i < NUM_THREAT; i++) {
+    //meteor
+    ThreatsObject* meteors = new ThreatsObject[2];
+    for (int i = 0; i < NUM_THREAT-1; i++) {
         ThreatsObject* meteor = (meteors + i);
-        meteor->loadImg("img//meteor.png", g_screen);
+        meteor->loadImg("meteor.png", g_screen);
         meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
 
     }
 
+    //boss
     ThreatsObject* boss = new ThreatsObject();
-    boss->loadImg("img//boss.png", g_screen);
+    boss->loadImg("boss.png", g_screen);
     boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
+<<<<<<< HEAD
+=======
+    boss->set_x_val(2);
+    AmoObject* p_amo = new AmoObject();
+    boss->InitAmo(p_amo, 7, g_screen);
+    
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
 
     while (!end) {
         while (!QuitMenu)
@@ -329,32 +331,13 @@ int main(int argc, char* argv[])
         SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
 
 
-        //AmoObject* p_boss = new AmoObject();
-        //boss->InitAmo2(p_boss, g_screen, boss);
-
         //player death counts
         int death_counts = 0;
 
         bool paused = false;
         bool GameOver = false;
         //main game loop
-
         while (play) {
-
-            /*if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_z)
-            {
-                if (cheat_sw)
-                {
-                    cheat_sw = false;
-                    std::cout << "cheat off";
-                }
-                else
-                {
-                    cheat_sw = true;
-                    std::cout << "cheat on";
-                }
-            } */
-
             if (menu)
             {
                 while (SDL_PollEvent(&g_event) != 0)
@@ -459,12 +442,10 @@ int main(int argc, char* argv[])
 
                     //Main game functions
                     p_player.HandleMove();
-
-                    SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+                    //SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
                     SDL_RenderClear(g_screen);
 
                     //Background Scrolling
-
                     bkgn_x += 1;
                     g_background.Render1(g_screen, NULL, 0, bkgn_x);
                     g_background.Render1(g_screen, NULL, 0, bkgn_x - SCREEN_HEIGHT);
@@ -473,15 +454,145 @@ int main(int argc, char* argv[])
                         bkgn_x = 0;
                     }
 
-
-                    //spaceship threat create
-                    if (player_score <= 40 && player_score >= 15) {
+                    int exp_frame_width = exp_threat.get_fr_width();
+                    int exp_frame_height = exp_threat.get_fr_height();
+                        //spaceship threat create
+                    if (player_score < 40) {
                         for (int ii = 0; ii < NUM_THREAT; ii++) {
                             ThreatsObject* p_threat = (p_threats + ii);
-                            if (p_threat->get_dir())
-                            {
-                                p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            if (p_threat) {
+                                if (p_threat->get_dir())
+                                {
+                                    p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
+                                }
+                                else
+                                {
+                                    p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
+                                }
+                                p_threat->Render(g_screen, NULL, 100, 100);
+                                p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+                                //collision check
+                                //int exp_frame_width = exp_threat.get_fr_width();
+                                //int exp_frame_height = exp_threat.get_fr_height();
+                                if (!p_player.cheatsw())
+                                {
+                                    //nguoi va cham voi quai
+                                    bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), p_threat->GetRect());
+                                    if (SDL_GetTicks() - invi_timer >= 1500)
+                                    {
+                                        if (is_col)
+                                        {
+                                            p_threat->Reset(-100);
+                                            for (int ex = 0; ex < explosion_frame; ex++)
+                                            {
+                                                int x_player_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                                int y_player_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_width * 0.5;
+
+                                                exp_threat.set_frame(ex);
+                                                exp_threat.SetRect(x_player_pos, y_player_pos);
+                                                exp_threat.render_explosion(g_screen);
+                                                SDL_RenderPresent(g_screen);
+                                            }
+                                            SDL_Delay(500);
+                                            death_counts++;
+                                            if (death_counts <= 2) {
+
+                                                p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                                player_health.minus_health();
+                                                player_health.show_heart(g_screen);
+
+                                                invi_timer = SDL_GetTicks();
+                                            }
+                                            else {
+                                                SDLCommonFunction::CheckHighScore(player_score);
+                                                GameOver = true;
+                                                //delete[] p_threats;
+                                            }
+                                        }
+                                    }
+                                    //va cham nguoi va dan quai
+                                    std::vector<AmoObject*> amo_list_threat = p_threat->GetAmoList();
+                                    for (int iat = 0; iat < amo_list_threat.size(); iat++)
+                                    {
+                                        AmoObject* p_amo_threat = amo_list_threat.at(iat);
+                                        if (p_amo_threat != NULL)
+                                        {
+                                            if (SDL_GetTicks() - invi_timer >= 1500)
+                                            {
+                                                bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
+                                                if (ret_col_threat)
+                                                {
+                                                    p_threat->ResetAmo(p_amo_threat);
+                                                    for (int ex = 0; ex < explosion_frame; ex++)
+                                                    {
+                                                        int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                                        int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                                        exp_threat.set_frame(ex);
+                                                        exp_threat.SetRect(x_pos, y_pos);
+                                                        exp_threat.render_explosion(g_screen);
+                                                        SDL_RenderPresent(g_screen);
+                                                    }
+                                                    //p_threat->ResetAmo(p_amo_threat);
+                                                    //p_player.Reset(0); 
+                                                    SDL_Delay(500);
+                                                    death_counts++;
+                                                    if (death_counts <= 2)
+                                                    {
+                                                        //SDL_Delay(500);
+                                                        p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                                        player_health.minus_health();
+                                                        player_health.show_heart(g_screen);
+                                                        for (int i = 0; i < NUM_THREAT; i++) {
+                                                            p_threat->Reset(-100);
+                                                        }
+                                                        invi_timer = SDL_GetTicks();
+                                                    }
+                                                    else
+                                                    {
+                                                        SDLCommonFunction::CheckHighScore(player_score);
+                                                        GameOver = true;
+                                                        //delete[] p_threats;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                //nguoi ban trung quai
+
+                                std::vector<AmoObject*> amo_list = p_player.GetAmoList();
+                                for (int ia = 0; ia < amo_list.size(); ia++)
+                                {
+                                    AmoObject* p_amo = amo_list.at(ia);
+                                    if (p_amo != NULL)
+                                    {
+                                        bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
+                                        if (ret_col)
+                                        {
+                                            for (int ex = 0; ex < explosion_frame; ex++)
+                                            {
+                                                int x_pos = (p_threat->GetRect().x + p_threat->GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                                int y_pos = (p_threat->GetRect().y + p_threat->GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                                exp_threat.set_frame(ex);
+                                                exp_threat.SetRect(x_pos, y_pos);
+                                                exp_threat.render_explosion(g_screen);
+                                                SDL_RenderPresent(g_screen);
+                                                SDL_Delay(2);
+                                            }
+
+                                            p_player.DestroyAmo(ia);
+                                            p_threat->Reset(-100);
+                                            player_score++;
+
+                                            break;
+                                        }
+                                    }
+                                }
                             }
+<<<<<<< HEAD
                             else
                             {
                                 p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -490,22 +601,76 @@ int main(int argc, char* argv[])
                             p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                             p_threat = NULL;
                             delete p_threat;
+=======
+
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
                         }
                     }
 
                     //meteor threat create
+                    if (player_score >= 15 && player_score <40) {
+                        for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
+                            ThreatsObject* meteor = (meteors + ii);
+                            if (meteor) {
+                                meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
+                                meteor->Render2(g_screen, NULL);
+                                if (!p_player.cheatsw()) {
+                                    bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), meteor->GetRect());
+                                    if (SDL_GetTicks() - invi_timer >= 1500)
+                                    {
+                                        if (is_col)
+                                        {
+                                            meteor->Reset(-100);
+                                            for (int ex = 0; ex < explosion_frame; ex++)
+                                            {
+                                                int x_player_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                                int y_player_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_width * 0.5;
 
+<<<<<<< HEAD
                     for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
                         ThreatsObject* meteor = (meteors + ii);
                         meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
                         meteor->Render2(g_screen, NULL);
                         meteor = NULL;
                         delete meteor;
+=======
+                                                exp_threat.set_frame(ex);
+                                                exp_threat.SetRect(x_player_pos, y_player_pos);
+                                                exp_threat.render_explosion(g_screen);
+                                                SDL_RenderPresent(g_screen);
+                                            }
+                                            SDL_Delay(500);
+                                            death_counts++;
+                                            if (death_counts <= 2) {
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
 
+                                                p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                                player_health.minus_health();
+                                                player_health.show_heart(g_screen);
+
+                                                invi_timer = SDL_GetTicks();
+                                            }
+                                            else {
+                                                SDLCommonFunction::CheckHighScore(player_score);
+                                                GameOver = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
+                    if (player_score >= 40)
+                    {
+                        boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+                        boss->Render2(g_screen, NULL);
+                        boss->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                    }
 
+                    /*
                     //if (player_score > 40) {
+<<<<<<< HEAD
                         
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                         boss->Render2(g_screen, NULL);
@@ -532,6 +697,23 @@ int main(int argc, char* argv[])
                             boss->InitAmoTestLeft(g_screen, boss);
                             boss->InitAmoTestMid(g_screen, boss);
                             boss->InitAmoTestRight(g_screen, boss);
+=======
+                    boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    boss->Render2(g_screen, NULL);
+                    if (SDL_GetTicks() - boss_shoot_time >= 400) {
+                        AmoObject* p_boss = new AmoObject();
+                        if (player_score < 5) {
+                            boss->InitAmo2(g_screen, boss);
+                            boss->InitAmo3(g_screen, boss);
+                            boss->InitAmo4(g_screen, boss);
+                        }
+                        //player_score <= 20 && player_score > 5
+                        if (player_score <= 20 && player_score > 5) {
+
+                            boss->InitAmoTestLeft( g_screen, boss);
+                            boss->InitAmoTestMid(g_screen, boss);
+                            boss->InitAmoTestRight( g_screen, boss);
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
 
                         }
                         //player_score > 20
@@ -540,10 +722,8 @@ int main(int argc, char* argv[])
                             boss->InitAmoTest2(g_screen, boss);
                         }
                         boss_shoot_time = SDL_GetTicks();
-                        boss->Free();
-                        //p_boss = NULL;
-                        //delete p_boss;
                     }
+<<<<<<< HEAD
                     */
                     //}
 
@@ -555,10 +735,20 @@ int main(int argc, char* argv[])
                     for (int i = 0; i < threats_list.size(); i++) {
                         ThreatsObject* p_threat = threats_list.at(i);
                         if (p_threat != NULL) {
+=======
+
+                    boss->MakeAmo1(g_screen, boss);
+                    //}
+                    */
+
+                    p_player.MakeAmo(g_screen);
+                    p_player.Render(g_screen, NULL);
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
 
                             p_threat->Render2(g_screen, NULL);
                             p_threat->MakeAmo1(g_screen, p_threat);
 
+<<<<<<< HEAD
                         }
                     }
                     */
@@ -843,11 +1033,82 @@ int main(int argc, char* argv[])
 
 
 
+=======
+                    ////player score 
+                    //std::string string_score = "Score ";
+                    //std::string string_gameover = "Your Score";
+
+                    ////game score
+                    //std::string score_value = std::to_string(player_score * 100);
+                    //string_score += score_value;
+                    //game_mark.settext(string_score);
+                    //game_mark.Loadfromrendertext(g_font, g_screen);
+                    //game_mark.loadtexttoscreen(g_screen, 350, 0);
+                    //std::string score_gameover = std::to_string(player_score * 100);
+                    //game_over_mark.settext(score_gameover);
+                    //game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                    //game_over.settext(string_gameover);
+                    //game_over.Loadfromrendertext(Gameover_font, g_screen);
+
+                    ////push game time to screen
+                    //std::string string_time = "Time ";
+                    //time_value = SDL_GetTicks() / 1000;
+                    //std::string string_value = std::to_string(time_value);
+                    //string_time += string_value;
+                    //game_time.settext(string_time);
+                    //game_time.Loadfromrendertext(g_font, g_screen);
+                    //game_time.loadtexttoscreen(g_screen, 150, 0);
+
+                    SDL_RenderPresent(g_screen);
+
+                    int real_time = fps_timer.get_ticks();
+                    int time_one_frame = (1200 / 3) / FRAME_PER_SEC; //ms
+
+                    if (real_time < time_one_frame) {
+                        int delay_time = time_one_frame - real_time;
+                        if (delay_time >= 0) {
+                            SDL_Delay(delay_time - 1);
+                        }
+                    }
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
                 }
             }
+            else
+            {
+                SDL_ShowCursor(SDL_ENABLE);
+                while (SDL_PollEvent(&g_event) != 0)
+                {
+                    if (g_event.type == SDL_QUIT)
+                    {
+                        play = false;
+                        end = true;
+                    }
+                    RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end);
+                    ExitButton.Exit(g_event, g_screen, play, end);
+                }
+                Gameover.Render2(g_screen, NULL);
+                game_over.Loadfromrendertext(Gameover_font, g_screen);
+                game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
+                game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
+                RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
+                RestartButton.Render2(g_screen, NULL);
+                ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
+                ExitButton.Render2(g_screen, NULL);
 
+<<<<<<< HEAD
             close();
             return 0;
 
         }
     }
+=======
+
+                SDL_RenderPresent(g_screen);
+            }
+        }
+    }
+    close();
+    return 0;
+}
+>>>>>>> 67ba9e691a1096d12c7ab7e6f45759723b33b238
