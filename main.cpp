@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.h"
+#include "Text.cpp"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -122,31 +122,6 @@ void close()
     SDL_Quit();
 }
 
-/*std::vector<ThreatsObject*> MakeThreadList()
-{
-    std::vector<ThreatsObject*> list_threats;
-
-    ThreatsObject* boss = new ThreatsObject();
-    boss->loadImg("img//boss.png", g_screen);
-    boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
-    boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
-    if (SDL_GetTicks() - boss_shoot_time >= 400) {
-    for (int i = 0; i < 24; i++) {
-        AmoObject* p_amo = new AmoObject();
-        //if (SDL_GetTicks() - boss_shoot_time >= 400) {
-
-            boss->InitAmoTest1(p_amo, g_screen, boss, i);
-
-            boss_shoot_time = SDL_GetTicks();
-
-        //}
-    }
-    }
-    //boss->MakeAmo1(g_screen, boss);
-    list_threats.push_back(boss);
-    return list_threats;
-}
-*/
 int main(int argc, char* argv[])
 {
 
@@ -197,8 +172,6 @@ int main(int argc, char* argv[])
     MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
     p_player.loadImg("img//player.png", g_screen);
 
-    //std::vector<ThreatsObject*> threats_list = MakeThreadList();
-
     //explsion
     ExplosionObj exp_threat;
     bool check = exp_threat.loadImg("img//exp_eff.png", g_screen);
@@ -216,7 +189,7 @@ int main(int argc, char* argv[])
         p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
         p_threat->set_y_val(4);
         AmoObject* p_amo = new AmoObject();
-        p_threat->InitAmo(p_amo, 5, g_screen);
+        p_threat->InitAmo(p_amo, 2, g_screen);
     }
 
     //meteor
@@ -225,7 +198,6 @@ int main(int argc, char* argv[])
         ThreatsObject* meteor = (meteors + i);
         meteor->loadImg("img//meteor.png", g_screen);
         meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
-
     }
 
     //boss

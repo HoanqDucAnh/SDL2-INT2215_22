@@ -70,7 +70,6 @@ public:
     }
     void set_type_threat(const double type_) { type = type_; }
     int get_type_threat() const { return type; }
-    void SetType(SDL_Renderer* des);
     bool LoadTexture(std::string path, SDL_Renderer* screen);
     void MakeAmo(SDL_Renderer* des, const int& x_limit, const int& y_limit);
     void Reset(const int& yborder);
