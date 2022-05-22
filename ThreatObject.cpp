@@ -30,13 +30,19 @@ ThreatsObject::~ThreatsObject()
     }
 }
 
+bool ThreatsObject::LoadTexture(std::string path, SDL_Renderer* screen)
+{
+    bool ret = BaseObject::loadImg(path, screen);
+    return ret;
+}
 
-void ThreatsObject::InitAmo2( SDL_Renderer* des, ThreatsObject* object)
+
+void ThreatsObject::InitAmo2(SDL_Renderer* des, ThreatsObject* object)
 {
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
-        p_amo->loadImg("egg.png", des);
+        p_amo->loadImg("egg, dess",des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
         p_amo->set_angle(0 + 15 * i);
@@ -70,7 +76,7 @@ void ThreatsObject::InitAmo4( SDL_Renderer* des, ThreatsObject* object)
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
-        p_amo->loadImg("egg.png", des);
+        
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
         p_amo->set_angle(60 + 30 * i);
@@ -154,21 +160,17 @@ void ThreatsObject::InitAmoTestRight( SDL_Renderer* des, ThreatsObject* object)
         }
     }
 }
-void ThreatsObject::InitAmoTest1(SDL_Renderer* des, ThreatsObject* object) {
+void ThreatsObject::InitAmoTest1(AmoObject* p_amo, SDL_Renderer* des, ThreatsObject* object, int x) {
    
-    for (int i = 0; i < 30; i++) {
-        AmoObject* p_amo = new AmoObject();
-
-        p_amo->loadImg("danvang.png", des);
+    
+        p_amo->loadImg("egg.png", des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
-        p_amo->set_angle(0 + 15 * i);
+        p_amo->set_angle(0 + 15 * x);
         p_amo->Set_y_val(2);
         p_amo->Set_x_val(2);
         p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 150);
         p_amo_list.push_back(p_amo);
-        
-    }
     
     /*for (int i = 0; i < 24; i++)
     {

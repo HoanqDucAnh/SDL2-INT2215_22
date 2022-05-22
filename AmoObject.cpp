@@ -12,6 +12,10 @@ AmoObject::AmoObject()
 AmoObject::~AmoObject()
 {
 }
+bool AmoObject::LoadTexture(std::string path, SDL_Renderer* screen) {
+    bool ret = BaseObject::loadImg(path, screen);
+    return ret;
+}
 
 // Di chuyển đạn cuả nhân vật
 void AmoObject::HandleMoveBoss(const int& x_border, const int& y_border)
