@@ -31,7 +31,7 @@ ThreatsObject::~ThreatsObject()
 }
 
 
-void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+void ThreatsObject::InitAmo2( SDL_Renderer* des, ThreatsObject* object)
 {
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
@@ -48,7 +48,7 @@ void ThreatsObject::InitAmo2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* 
 
 }
 
-void ThreatsObject::InitAmo3(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+void ThreatsObject::InitAmo3( SDL_Renderer* des, ThreatsObject* object)
 {
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
@@ -65,7 +65,7 @@ void ThreatsObject::InitAmo3(AmoObject* boss, SDL_Renderer* des, ThreatsObject* 
 
 }
 
-void ThreatsObject::InitAmo4(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+void ThreatsObject::InitAmo4( SDL_Renderer* des, ThreatsObject* object)
 {
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
@@ -81,7 +81,7 @@ void ThreatsObject::InitAmo4(AmoObject* boss, SDL_Renderer* des, ThreatsObject* 
     }
 
 }
-void ThreatsObject::InitAmoTestLeft(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+void ThreatsObject::InitAmoTestLeft( SDL_Renderer* des, ThreatsObject* object)
 {
     for (int j = 0; j < 24; j++)
     {
@@ -106,7 +106,7 @@ void ThreatsObject::InitAmoTestLeft(AmoObject* boss, SDL_Renderer* des, ThreatsO
     }
 }
 
-void ThreatsObject::InitAmoTestMid(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object) {
+void ThreatsObject::InitAmoTestMid( SDL_Renderer* des, ThreatsObject* object) {
     for (int j = 0; j < 24; j++)
     {
         for (int i = 0; i < 4; i++)
@@ -130,7 +130,7 @@ void ThreatsObject::InitAmoTestMid(AmoObject* boss, SDL_Renderer* des, ThreatsOb
     }
 }
 
-void ThreatsObject::InitAmoTestRight(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object)
+void ThreatsObject::InitAmoTestRight( SDL_Renderer* des, ThreatsObject* object)
 {
     for (int j = 0; j < 24; j++)
     {
@@ -154,18 +154,22 @@ void ThreatsObject::InitAmoTestRight(AmoObject* boss, SDL_Renderer* des, Threats
         }
     }
 }
-void ThreatsObject::InitAmoTest1(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object) {
-    for (int i = 0; i < 24; i++)
-    {
-        AmoObject* p_bullet = new AmoObject();
-        p_bullet->loadImg("dantim.png", des);
-        p_bullet->set_is_move(true);
-        p_bullet->set_angle(0 + 15 * i);
-        p_bullet->Set_x_val(1);
-        p_bullet->Set_y_val(2);
-        p_bullet->set_pos(object->rect_.x + object->rect_.w / 2 - (p_bullet->GetRect().w) / 2, object->rect_.y + BOSS_HEIGHT / 2);
-        p_amo_list.push_back(p_bullet);
+void ThreatsObject::InitAmoTest1(SDL_Renderer* des, ThreatsObject* object) {
+   
+    for (int i = 0; i < 30; i++) {
+        AmoObject* p_amo = new AmoObject();
+
+        p_amo->loadImg("danvang.png", des);
+        p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+        p_amo->set_is_move(true);
+        p_amo->set_angle(0 + 15 * i);
+        p_amo->Set_y_val(2);
+        p_amo->Set_x_val(2);
+        p_amo->set_pos(object->rect_.x + object->rect_.w / 2, object->rect_.y + object->rect_.h / 2 + 150);
+        p_amo_list.push_back(p_amo);
+        
     }
+    
     /*for (int i = 0; i < 24; i++)
     {
         AmoObject* p_bullet = new AmoObject();
@@ -178,7 +182,7 @@ void ThreatsObject::InitAmoTest1(AmoObject* boss, SDL_Renderer* des, ThreatsObje
         p_amo_list.push_back(p_bullet);
     }*/
 }
-void ThreatsObject::InitAmoTest2(AmoObject* boss, SDL_Renderer* des, ThreatsObject* object) {
+void ThreatsObject::InitAmoTest2( SDL_Renderer* des, ThreatsObject* object) {
     for (int i = 0; i < 24; i++)
     {
         AmoObject* p_bullet = new AmoObject();

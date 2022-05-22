@@ -6,8 +6,9 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp";
+#include "Text.h";
 
+BaseObject Test1;
 BaseObject Gameover;
 BaseObject g_background;
 BaseObject load_menu;
@@ -106,6 +107,7 @@ bool LoadBackground()
 void close()
 {
     g_background.Free();
+    Test1.Free();
     load_help.Free();
     load_menu.Free();
     load_pause.Free();
@@ -162,6 +164,7 @@ int main(int argc, char* argv[])
     load_score.loadImg("img//HighScore.png", g_screen);
     Gameover.loadImg("img//GameOver.png", g_screen);
 
+    Test1.loadImg("dantim.png", g_screen);
     Timer fps_timer;
 
     bool play = false;
@@ -171,12 +174,52 @@ int main(int argc, char* argv[])
     bool QuitMenu = false;
     bool end = false;
     //game text
-    
+
     game_time.Setcolor(Text::WHITE_TEXT);
     game_mark.Setcolor(Text::WHITE_TEXT);
     game_over.Setcolor(Text::WHITE_TEXT);
     game_over_mark.Setcolor(Text::WHITE_TEXT);
     game_score.Setcolor(Text::WHITE_TEXT);
+
+    PlayerHealth player_health;
+    player_health.loadImg("img//heart.png", g_screen);
+    player_health.init_heart(g_screen);
+
+    //player
+    MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
+    p_player.loadImg("img//player.png", g_screen);
+
+    //explsion
+    ExplosionObj exp_threat;
+    bool check = exp_threat.loadImg("img//exp_eff.png", g_screen);
+    if (!check) {
+        std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
+        return -1;
+    }
+    exp_threat.set_clip();
+
+    //threat
+    ThreatsObject* p_threats = new ThreatsObject[3];
+    for (int i = 0; i < NUM_THREAT; i++) {
+        ThreatsObject* p_threat = (p_threats + i);
+        p_threat->loadImg("img//threat.png", g_screen);
+        p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
+        p_threat->set_y_val(4);
+        AmoObject* p_bullet = new AmoObject();
+        p_threat->InitAmo(p_bullet, 5, g_screen);
+    }
+
+    ThreatsObject* meteors = new ThreatsObject[3];
+    for (int i = 0; i < NUM_THREAT; i++) {
+        ThreatsObject* meteor = (meteors + i);
+        meteor->loadImg("img//meteor.png", g_screen);
+        meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
+    }
+
+    ThreatsObject* boss = new ThreatsObject();
+    boss->loadImg("img//boss.png", g_screen);
+    boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
+    boss->set_x_val(2);
 
     while (!end) {
         while (!QuitMenu)
@@ -237,14 +280,14 @@ int main(int argc, char* argv[])
                         QuitMenu = true;
                         end = true;
                     }
-                    
+
                     PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
                     BackButton.Back(g_event, g_screen, menu, help, score);
-                 }
+                }
 
                 int score = SDLCommonFunction::FetchHighScore();
                 std::string highscore = std::to_string(score * 100);
-               
+
                 load_score.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
                 BackButton.Render2(g_screen, NULL);
@@ -258,46 +301,6 @@ int main(int argc, char* argv[])
         }
         SDL_WarpMouseInWindow(g_window, SCREEN_WIDTH / 2 - 32, SCREEN_HEIGHT - 100);
 
-        //create health
-        PlayerHealth player_health;
-        player_health.loadImg("img//heart.png", g_screen);
-        player_health.init_heart(g_screen);
-
-        //player
-        MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
-        p_player.loadImg("img//player.png", g_screen);
-
-        //explsion
-        ExplosionObj exp_threat;
-        bool check = exp_threat.loadImg("img//exp_eff.png", g_screen);
-        if (!check) {
-            std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
-            return -1;
-        }
-        exp_threat.set_clip();
-
-        //threat
-        ThreatsObject* p_threats = new ThreatsObject[3];
-        for (int i = 0; i < NUM_THREAT; i++) {
-            ThreatsObject* p_threat = (p_threats + i);
-            p_threat->loadImg("img//threat.png", g_screen);
-            p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
-            p_threat->set_y_val(4);
-            AmoObject* p_bullet = new AmoObject();
-            p_threat->InitAmo(p_bullet, 5, g_screen);
-        }
-
-        ThreatsObject* meteors = new ThreatsObject[3];
-        for (int i = 0; i < NUM_THREAT; i++) {
-            ThreatsObject* meteor = (meteors + i);
-            meteor->loadImg("img//meteor.png", g_screen);
-            meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
-        }
-
-        ThreatsObject* boss = new ThreatsObject();
-        boss->loadImg("img//boss.png", g_screen);
-        boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
-        boss->set_x_val(2);
 
         //AmoObject* p_boss = new AmoObject();
         //boss->InitAmo2(p_boss, g_screen, boss);
@@ -308,8 +311,9 @@ int main(int argc, char* argv[])
         bool paused = false;
         bool GameOver = false;
         //main game loop
+
         while (play) {
-         
+
             /*if (g_event.type == SDL_KEYDOWN && g_event.key.keysym.sym == SDLK_z)
             {
                 if (cheat_sw)
@@ -322,7 +326,7 @@ int main(int argc, char* argv[])
                     cheat_sw = true;
                     std::cout << "cheat on";
                 }
-            }*/
+            } */
 
             if (menu)
             {
@@ -359,8 +363,8 @@ int main(int argc, char* argv[])
                         end = true;
                     }
                     PlayButton.Play(g_event, g_screen, menu, play, QuitMenu, help);
-                    BackButton.Back(g_event, g_screen, menu, help,score);
-                    
+                    BackButton.Back(g_event, g_screen, menu, help, score);
+
                 }
                 load_help.Render2(g_screen, NULL);
                 BackButton.SetRect(30, SCREEN_HEIGHT - BackButton.get_height_frame() - 30);
@@ -401,7 +405,7 @@ int main(int argc, char* argv[])
                 else if (!paused)
                 {
                     fps_timer.start();
-                    
+
                     while (SDL_PollEvent(&g_event) != 0)
                     {
                         if (g_event.type == SDL_QUIT)
@@ -423,8 +427,8 @@ int main(int argc, char* argv[])
                         }
                         p_player.HandleInputAction(g_event, g_screen);
                     }
-                    
-                    
+
+
                     //Main game functions
                     p_player.HandleMove();
 
@@ -432,6 +436,7 @@ int main(int argc, char* argv[])
                     SDL_RenderClear(g_screen);
 
                     //Background Scrolling
+
                     bkgn_x += 1;
                     g_background.Render1(g_screen, NULL, 0, bkgn_x);
                     g_background.Render1(g_screen, NULL, 0, bkgn_x - SCREEN_HEIGHT);
@@ -440,8 +445,9 @@ int main(int argc, char* argv[])
                         bkgn_x = 0;
                     }
 
+
                     //spaceship threat create
-                    if (player_score <= 40 && player_score >= 15 ) {
+                    if (player_score <= 40 && player_score >= 15) {
                         for (int ii = 0; ii < NUM_THREAT; ii++) {
                             ThreatsObject* p_threat = (p_threats + ii);
                             if (p_threat->get_dir())
@@ -456,51 +462,67 @@ int main(int argc, char* argv[])
                             p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                             p_threat = NULL;
                             delete p_threat;
+                            p_threat->Free();
                         }
                     }
+
                     //meteor threat create
-                    if (player_score <= 40  && player_score >= 15) {
-                        for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
-                            ThreatsObject* meteor = meteors + ii;
-                            meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
-                            meteor->Render2(g_screen, NULL);
-                            meteor = NULL;
-                            delete meteor;
-                        }
+
+                    for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
+                        ThreatsObject* meteor = meteors + ii;
+                        meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
+                        meteor->Render2(g_screen, NULL);
+                        meteor = NULL;
+                        delete meteor;
+
                     }
+
 
                     //if (player_score > 40) {
-                        boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
-                        boss->Render2(g_screen, NULL);
-                        if (SDL_GetTicks() - boss_shoot_time >= 400) {
-                            AmoObject* p_boss = new AmoObject();
-                            if (player_score < 5) {
-                                boss->InitAmo2(p_boss, g_screen, boss);
-                                boss->InitAmo3(p_boss, g_screen, boss);
-                                boss->InitAmo4(p_boss, g_screen, boss);
-                            }
-                            //player_score <= 20 && player_score > 5
-                            if (player_score <= 20 && player_score > 5) {
-                                
-                                boss->InitAmoTestLeft(p_boss, g_screen, boss);
-                                boss->InitAmoTestMid(p_boss, g_screen, boss);
-                                boss->InitAmoTestRight(p_boss, g_screen, boss);
-                                
-                            }
-                            //player_score > 20
-                            if (player_score <= 20 && player_score > 5) {
-                                boss->InitAmoTest1(p_boss, g_screen, boss);
-                                boss->InitAmoTest2(p_boss, g_screen, boss);
-                            }
-                            boss_shoot_time = SDL_GetTicks();
-                            p_boss = NULL;
-                            delete p_boss;
+                    
+                    boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    boss->Render2(g_screen, NULL);
+                    
+                    
+                    
+                    if (SDL_GetTicks() - boss_shoot_time >= 400) {
+                        //AmoObject* p_boss = new AmoObject();
+                        boss->InitAmoTest1(g_screen, boss);
+                        boss_shoot_time = SDL_GetTicks();
+                    }
+                    
+                    boss->MakeAmo1(g_screen, boss);
+                    //delete p_bullet;
+                    SDL_RenderPresent(g_screen);
+                    //}
+                    //SDL_RenderPresent(g_screen);
+                        /*
+                        //player_score <= 20 && player_score > 5
+                        if (player_score <= 20 && player_score > 5) {
+
+                            boss->InitAmoTestLeft( g_screen, boss);
+                            boss->InitAmoTestMid( g_screen, boss);
+                            boss->InitAmoTestRight( g_screen, boss);
+
                         }
-                        
-                        boss->MakeAmo1(g_screen, boss);
+                        //player_score > 20
+                        if (player_score <= 20 && player_score > 5) {
+                            boss->InitAmoTest1( g_screen, boss);
+                            boss->InitAmoTest2( g_screen, boss);
+                        }
+                        boss_shoot_time = SDL_GetTicks();
+                        boss->Free();
+                        //p_boss = NULL;
+                        //delete p_boss;
+                    }
+                    
+                    
+                    boss->MakeAmo1(g_screen, boss);
+                    SDL_RenderPresent(g_screen);
+                    
                     //}
 
-
+                    /*
                     p_player.MakeAmo(g_screen);
                     p_player.Render(g_screen, NULL);
 
@@ -510,7 +532,7 @@ int main(int argc, char* argv[])
 
                     int exp_frame_width = exp_threat.get_fr_width();
                     int exp_frame_height = exp_threat.get_fr_height();
-                    
+
                     if (!p_player.cheatsw())
                     {
                         //player & threat collision
@@ -622,7 +644,7 @@ int main(int argc, char* argv[])
                                                 SDL_RenderPresent(g_screen);
                                             }
                                             //p_threat->ResetAmo(p_amo_threat);
-                                            //p_player.Reset(0); 
+                                            //p_player.Reset(0);
                                             SDL_Delay(500);
                                             death_counts++;
                                             if (death_counts <= 2)
@@ -645,7 +667,7 @@ int main(int argc, char* argv[])
                                                     std::cout << std::endl << player_score;
                                                     return 0;
                                                 }
-                                                */
+                                                vi tri can xoa 1
                                                 GameOver = true;
                                             }
                                         }
@@ -659,7 +681,7 @@ int main(int argc, char* argv[])
                         }
                     }
 
-                    //player score 
+                    //player score
                     std::string string_score = "Score ";
                     std::string string_gameover = "Your Score";
                     //player ammo & threat collision
@@ -705,13 +727,13 @@ int main(int argc, char* argv[])
                         delete p_threat;
                     }
 
-                    
+
 
 
                     //game score
                     std::string score_value = std::to_string(player_score * 100);
-                    string_score += score_value;
-                    game_mark.settext(string_score);
+                    //string_score += score_value;
+                    //game_mark.settext(string_score);
 
                     game_mark.Loadfromrendertext(g_font, g_screen);
                     game_mark.loadtexttoscreen(g_screen, 350, 0);
@@ -742,43 +764,52 @@ int main(int argc, char* argv[])
                             SDL_Delay(delay_time - 1);
                         }
                     }
+                    SDL_RenderPresent(g_screen);
+                */
                 }
-            }
-            else
-            {
-                SDL_ShowCursor(SDL_ENABLE);
-                for (int ii = 0; ii < NUM_THREAT; ii++)
-                {
-                    ThreatsObject* p_threat = (p_threats + ii);
-                    p_threat->~ThreatsObject();
-                    p_threat = NULL;
-                    delete p_threat;
                 }
-                while (SDL_PollEvent(&g_event) != 0)
+                else
                 {
-                    if (g_event.type == SDL_QUIT)
+                    SDL_ShowCursor(SDL_ENABLE);
+                    for (int ii = 0; ii < NUM_THREAT; ii++)
                     {
-                        play = false;
-                        end = true;
+                        ThreatsObject* p_threat = (p_threats + ii);
+                        p_threat->~ThreatsObject();
+                        p_threat = NULL;
+                        delete p_threat;
                     }
-                    RestartButton.Menu(g_event, g_screen,player_score, menu, QuitMenu, play, end);
-                    ExitButton.Exit(g_event, g_screen, play, end);
+                    while (SDL_PollEvent(&g_event) != 0)
+                    {
+                        if (g_event.type == SDL_QUIT)
+                        {
+                            play = false;
+                            end = true;
+                        }
+                        RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end);
+                        ExitButton.Exit(g_event, g_screen, play, end);
+                    }
+                    Gameover.Render2(g_screen, NULL);
+                    game_over.Loadfromrendertext(Gameover_font, g_screen);
+                    game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
+                    game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                    game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
+                    RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
+                    RestartButton.Render2(g_screen, NULL);
+                    ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
+                    ExitButton.Render2(g_screen, NULL);
+
+
+                    SDL_RenderPresent(g_screen);
+
+
+
+
                 }
-                Gameover.Render2(g_screen, NULL);
-                game_over.Loadfromrendertext(Gameover_font, g_screen);
-                game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
-                game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
-                game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
-                RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
-                RestartButton.Render2(g_screen, NULL);
-                ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
-                ExitButton.Render2(g_screen, NULL);
 
-
-                SDL_RenderPresent(g_screen);
             }
-        }
+
+            close();
+            return 0;
+        
     }
-    close();
-    return 0;
 }
