@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp"
+#include "Text.h"
 
 BaseObject Gameover;
 BaseObject g_background;
