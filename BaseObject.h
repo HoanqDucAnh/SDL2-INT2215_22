@@ -29,6 +29,7 @@ public:
     void Render1(SDL_Renderer* des, const SDL_Rect* clip, int x, int y); 
     void Free();
     
+    
 protected:
     SDL_Rect rect_;
     SDL_Texture* p_object_; //Surface nguồn
