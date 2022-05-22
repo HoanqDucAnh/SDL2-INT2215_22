@@ -15,9 +15,9 @@ public:
 		RED_TEXT = 2,
 		YELLLOW_TEXT = 3,
 	};
-
-	bool Loadfromrendertext(TTF_Font* font, SDL_Renderer* screen); //load text to screen
 	void free();
+	bool Loadfromrendertext(TTF_Font* font, SDL_Renderer* screen); //load text to screen
+	
 
 	void Setcolor(Uint8 green, Uint8 red, Uint8 blue);
 	void Setcolor(int type); //my color

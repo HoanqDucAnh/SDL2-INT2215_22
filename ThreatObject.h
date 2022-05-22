@@ -27,8 +27,8 @@ public:
     void InitAmo4( SDL_Renderer* des, ThreatsObject* object);
     void InitAmoTestLeft( SDL_Renderer* des, ThreatsObject* object);
     void InitAmoTestRight( SDL_Renderer* des, ThreatsObject* object);
-    void InitAmoTestMid(AmoObject* p_amo, const int& speed, SDL_Renderer* des, ThreatsObject* objects);
-    void InitAmoTest1( SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTestMid(AmoObject* p_amo, const int& speed, SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTest1(AmoObject* p_amo, SDL_Renderer* des, ThreatsObject* object, int x);
     void InitAmoTest2( SDL_Renderer* des, ThreatsObject* object);
     void MakeAmo1(SDL_Renderer* des, ThreatsObject* boss);
     void set_x_val(const int& val)
@@ -58,6 +58,7 @@ public:
         direction = direct;
     }
 
+
     void InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* des);
     void SetAmoList(std::vector<AmoObject*>& amo_list)
     {
@@ -67,6 +68,10 @@ public:
     {
         return p_amo_list;
     }
+    void set_type_threat(const double type_) { type = type_; }
+    int get_type_threat() const { return type; }
+    void SetType(SDL_Renderer* des);
+    bool LoadTexture(std::string path, SDL_Renderer* screen);
     void MakeAmo(SDL_Renderer* des, const int& x_limit, const int& y_limit);
     void Reset(const int& yborder);
     void ResetAmo(AmoObject* p_amo);
@@ -75,6 +80,8 @@ private:
     int x_val_;
     int y_val_;
     bool direction;
+
+    int type;
 
     std::vector<AmoObject*> p_amo_list;
 };

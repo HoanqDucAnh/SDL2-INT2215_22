@@ -122,6 +122,31 @@ void close()
     SDL_Quit();
 }
 
+/*std::vector<ThreatsObject*> MakeThreadList()
+{
+    std::vector<ThreatsObject*> list_threats;
+
+    ThreatsObject* boss = new ThreatsObject();
+    boss->loadImg("img//boss.png", g_screen);
+    boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
+    boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+    if (SDL_GetTicks() - boss_shoot_time >= 400) {
+    for (int i = 0; i < 24; i++) {
+        AmoObject* p_amo = new AmoObject();
+        //if (SDL_GetTicks() - boss_shoot_time >= 400) {
+
+            boss->InitAmoTest1(p_amo, g_screen, boss, i);
+
+            boss_shoot_time = SDL_GetTicks();
+
+        //}
+    }
+    }
+    //boss->MakeAmo1(g_screen, boss);
+    list_threats.push_back(boss);
+    return list_threats;
+}
+*/
 int main(int argc, char* argv[])
 {
 
@@ -172,6 +197,8 @@ int main(int argc, char* argv[])
     MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
     p_player.loadImg("img//player.png", g_screen);
 
+    //std::vector<ThreatsObject*> threats_list = MakeThreadList();
+
     //explsion
     ExplosionObj exp_threat;
     bool check = exp_threat.loadImg("img//exp_eff.png", g_screen);
@@ -198,6 +225,7 @@ int main(int argc, char* argv[])
         ThreatsObject* meteor = (meteors + i);
         meteor->loadImg("img//meteor.png", g_screen);
         meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
+
     }
 
     //boss
@@ -396,7 +424,8 @@ int main(int argc, char* argv[])
                         }
                         p_player.HandleInputAction(g_event, g_screen);
                     }
-
+                    SDL_RenderClear(g_screen);
+                    SDL_ShowCursor(SDL_DISABLE);
 
                     //Main game functions
                     p_player.HandleMove();
@@ -549,7 +578,14 @@ int main(int argc, char* argv[])
                                     }
                                 }
                             }
-
+                            else
+                            {
+                                p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
+                            }
+                            p_threat->Render(g_screen, NULL, 100, 100);
+                            p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                            p_threat = NULL;
+                            delete p_threat;
                         }
                     }
 
@@ -571,7 +607,6 @@ int main(int argc, char* argv[])
                                             {
                                                 int x_player_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
                                                 int y_player_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_width * 0.5;
-
                                                 exp_threat.set_frame(ex);
                                                 exp_threat.SetRect(x_player_pos, y_player_pos);
                                                 exp_threat.render_explosion(g_screen);
@@ -580,7 +615,6 @@ int main(int argc, char* argv[])
                                             SDL_Delay(500);
                                             death_counts++;
                                             if (death_counts <= 2) {
-
                                                 p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
                                                 player_health.minus_health();
                                                 player_health.show_heart(g_screen);
@@ -627,12 +661,11 @@ int main(int argc, char* argv[])
                         }
                         //player_score > 20
                         if (player_score <= 20 && player_score > 5) {
-                            boss->InitAmoTest1( g_screen, boss);
-                            boss->InitAmoTest2( g_screen, boss);
+                            boss->InitAmoTest1(g_screen, boss);
+                            boss->InitAmoTest2(g_screen, boss);
                         }
                         boss_shoot_time = SDL_GetTicks();
                     }
-
                     boss->MakeAmo1(g_screen, boss);
                     //}
                     */
@@ -640,12 +673,10 @@ int main(int argc, char* argv[])
                     p_player.MakeAmo(g_screen);
                     p_player.Render(g_screen, NULL);
 
-                    //render health
-                    player_health.show_heart(g_screen);
-
                     //player score 
                     std::string string_score = "Score ";
                     std::string string_gameover = "Your Score";
+
 
                     //game score
                     std::string score_value = std::to_string(player_score * 100);
@@ -703,8 +734,6 @@ int main(int argc, char* argv[])
                 RestartButton.Render2(g_screen, NULL);
                 ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
                 ExitButton.Render2(g_screen, NULL);
-
-
                 SDL_RenderPresent(g_screen);
             }
         }

@@ -13,6 +13,10 @@ class AmoObject : public BaseObject
 public:
     AmoObject();
     ~AmoObject();
+    bool LoadTexture(std::string path, SDL_Renderer* screen);
+    void set_type_amo(const double type_) { type = type_; }
+    int get_type_amo() const { return type; }
+    void SetType(SDL_Renderer* des);
     void HandleMoveTest(const int& x_border, const int& y_border);
     void HandleMoveMain(const int& x_border, const int& y_border);
     void HandleMoveBoss(const int& x_border, const int& y_border);
@@ -66,6 +70,8 @@ private:
 
     double angle;
     double starting_point;
+
+    int type;
 
     bool is_move_;
 };

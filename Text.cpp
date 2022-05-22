@@ -32,7 +32,7 @@ bool Text::Loadfromrendertext(TTF_Font* font, SDL_Renderer* screen)
 
 void Text::free()
 {
-	if (textture) {
+	if (textture != NULL) {
 		SDL_DestroyTexture(textture);
 		textture = NULL;
 	}

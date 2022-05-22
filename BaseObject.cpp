@@ -3,9 +3,9 @@
 
 BaseObject::BaseObject()
 {
+    p_object_ = NULL;
     rect_.x = 0;
     rect_.y = 0;
-    p_object_ = NULL;
     rect_.w = 0;
     rect_.h = 0;
 }
@@ -33,7 +33,6 @@ bool BaseObject::loadImg(std::string path, SDL_Renderer* screen)
     }
 
     p_object_ = new_texture;
-
     return p_object_ != NULL;
 }
 
