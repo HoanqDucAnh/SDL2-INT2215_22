@@ -27,7 +27,7 @@ public:
     void InitAmo4( SDL_Renderer* des, ThreatsObject* object);
     void InitAmoTestLeft( SDL_Renderer* des, ThreatsObject* object);
     void InitAmoTestRight( SDL_Renderer* des, ThreatsObject* object);
-    void InitAmoTestMid( SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTestMid(AmoObject* p_amo, const int& speed, SDL_Renderer* des, ThreatsObject* objects);
     void InitAmoTest1( SDL_Renderer* des, ThreatsObject* object);
     void InitAmoTest2( SDL_Renderer* des, ThreatsObject* object);
     void MakeAmo1(SDL_Renderer* des, ThreatsObject* boss);

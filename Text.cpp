@@ -15,6 +15,7 @@ Text::~Text()
 
 bool Text::Loadfromrendertext(TTF_Font* font, SDL_Renderer* screen)
 {
+	free();
 	SDL_Surface* text_surface = TTF_RenderText_Solid(font, text_content.c_str(), text_color);
 	if (!text_surface) {
 		std::cerr << "cant load text, error: " << SDL_GetError() << std::endl;

@@ -36,7 +36,7 @@ void ThreatsObject::InitAmo2( SDL_Renderer* des, ThreatsObject* object)
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
-        p_amo->loadImg("egg.png", des);
+        p_amo->loadImg("img//danxanhla.png", des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
         p_amo->set_angle(0 + 15 * i);
@@ -53,7 +53,7 @@ void ThreatsObject::InitAmo3( SDL_Renderer* des, ThreatsObject* object)
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
-        p_amo->loadImg("egg.png", des);
+        p_amo->loadImg("img//danxanhla.png", des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
         p_amo->set_angle(60 + 30 * i);
@@ -70,7 +70,7 @@ void ThreatsObject::InitAmo4( SDL_Renderer* des, ThreatsObject* object)
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
-        p_amo->loadImg("egg.png", des);
+        p_amo->loadImg("img//danxanhla.png", des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
         p_amo->set_angle(60 + 30 * i);
@@ -89,7 +89,7 @@ void ThreatsObject::InitAmoTestLeft( SDL_Renderer* des, ThreatsObject* object)
         {
             AmoObject* p_amo = new AmoObject();
             p_amo->set_is_move(true);
-            p_amo->loadImg("danvang.png", des);
+            p_amo->loadImg("img//danvang.png", des);
             p_amo->set_angle(15 * j);
             p_amo->Set_y_val(2);
             p_amo->Set_x_val(2);
@@ -106,17 +106,17 @@ void ThreatsObject::InitAmoTestLeft( SDL_Renderer* des, ThreatsObject* object)
     }
 }
 
-void ThreatsObject::InitAmoTestMid( SDL_Renderer* des, ThreatsObject* object) {
+void ThreatsObject::InitAmoTestMid(AmoObject* p_amo, const int& speed, SDL_Renderer* des, ThreatsObject* object) {
     for (int j = 0; j < 24; j++)
     {
         for (int i = 0; i < 4; i++)
         {
             AmoObject* p_amo = new AmoObject();
             p_amo->set_is_move(true);
-            p_amo->loadImg("danvang.png", des);
+            p_amo->loadImg("img//danvang.png", des);
             p_amo->set_angle(15 * j);
-            p_amo->Set_y_val(2);
-            p_amo->Set_x_val(2);
+            p_amo->Set_y_val(speed);
+            p_amo->Set_x_val(speed);
             if (i % 2 == 0)
             {
                 p_amo->set_pos(object->rect_.x + object->rect_.w / 2  + 10 * (i - 1), object->rect_.y + object->rect_.h / 2 + 150);
@@ -138,7 +138,7 @@ void ThreatsObject::InitAmoTestRight( SDL_Renderer* des, ThreatsObject* object)
         {
             AmoObject* p_amo = new AmoObject();
             p_amo->set_is_move(true);
-            p_amo->loadImg("danvang.png", des);
+            p_amo->loadImg("img//danvang.png", des);
             p_amo->set_angle(15 * j);
             p_amo->Set_y_val(2);
             p_amo->Set_x_val(2);
@@ -159,7 +159,7 @@ void ThreatsObject::InitAmoTest1(SDL_Renderer* des, ThreatsObject* object) {
     for (int i = 0; i < 30; i++) {
         AmoObject* p_amo = new AmoObject();
 
-        p_amo->loadImg("danvang.png", des);
+        p_amo->loadImg("img//danvang.png", des);
         p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_amo->set_is_move(true);
         p_amo->set_angle(0 + 15 * i);
@@ -186,7 +186,7 @@ void ThreatsObject::InitAmoTest2( SDL_Renderer* des, ThreatsObject* object) {
     for (int i = 0; i < 24; i++)
     {
         AmoObject* p_bullet = new AmoObject();
-        p_bullet->loadImg("danxanh.png", des);
+        p_bullet->loadImg("img//danxanh.png", des);
         p_bullet->set_is_move(true);
         p_bullet->set_angle(0 + 15 * i);
         p_bullet->Set_x_val(2);
@@ -231,7 +231,7 @@ void ThreatsObject::InitAmo(AmoObject* p_amo, const int& speed, SDL_Renderer* de
 {
     if (p_amo)
     {
-        bool ret = p_amo->loadImg("egg.png", des);
+        bool ret = p_amo->loadImg("img//danxanhla.png", des);
         if (ret)
         {
             p_amo->set_is_move(true);

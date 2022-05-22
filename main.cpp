@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp"
+#include "Text.h"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -96,7 +96,7 @@ bool InitData()
 
 bool LoadBackground()
 {
-    bool ret = g_background.loadImg("background.png", g_screen);
+    bool ret = g_background.loadImg("img//background.png", g_screen);
     if (ret == false)
         return false;
 
@@ -140,11 +140,11 @@ int main(int argc, char* argv[])
 
     }
 
-    load_menu.loadImg("menu.png", g_screen);
-    load_help.loadImg("help.png", g_screen);
-    load_pause.loadImg("pause.png", g_screen);
-    load_score.loadImg("HighScore.png", g_screen);
-    Gameover.loadImg("GameOver.png", g_screen);
+    load_menu.loadImg("img//menu.png", g_screen);
+    load_help.loadImg("img//help.png", g_screen);
+    load_pause.loadImg("img//pause.png", g_screen);
+    load_score.loadImg("img//HighScore.png", g_screen);
+    Gameover.loadImg("img//GameOver.png", g_screen);
 
     Timer fps_timer;
 
@@ -165,16 +165,16 @@ int main(int argc, char* argv[])
 
     //create health
     PlayerHealth player_health;
-    player_health.loadImg("heart.png", g_screen);
+    player_health.loadImg("img//heart.png", g_screen);
     player_health.init_heart(g_screen);
 
     //player
     MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
-    p_player.loadImg("player.png", g_screen);
+    p_player.loadImg("img//player.png", g_screen);
 
     //explsion
     ExplosionObj exp_threat;
-    bool check = exp_threat.loadImg("exp_eff.png", g_screen);
+    bool check = exp_threat.loadImg("img//exp_eff.png", g_screen);
     if (!check) {
         std::cerr << "unable to open explosion eff, " << SDL_GetError() << std::endl;
         return -1;
@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
     ThreatsObject* p_threats = new ThreatsObject[3];
     for (int i = 0; i < NUM_THREAT; i++) {
         ThreatsObject* p_threat = (p_threats + i);
-        p_threat->loadImg("threat.png", g_screen);
+        p_threat->loadImg("img//threat.png", g_screen);
         p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
         p_threat->set_y_val(4);
         AmoObject* p_amo = new AmoObject();
@@ -196,13 +196,13 @@ int main(int argc, char* argv[])
     ThreatsObject* meteors = new ThreatsObject[2];
     for (int i = 0; i < NUM_THREAT-1; i++) {
         ThreatsObject* meteor = (meteors + i);
-        meteor->loadImg("meteor.png", g_screen);
+        meteor->loadImg("img//meteor.png", g_screen);
         meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
     }
 
     //boss
     ThreatsObject* boss = new ThreatsObject();
-    boss->loadImg("boss.png", g_screen);
+    boss->loadImg("img//boss.png", g_screen);
     boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
     boss->set_x_val(2);
     AmoObject* p_amo = new AmoObject();
@@ -414,7 +414,7 @@ int main(int argc, char* argv[])
 
                     int exp_frame_width = exp_threat.get_fr_width();
                     int exp_frame_height = exp_threat.get_fr_height();
-                        //spaceship threat create
+                    //spaceship threat create
                     if (player_score < 40) {
                         for (int ii = 0; ii < NUM_THREAT; ii++) {
                             ThreatsObject* p_threat = (p_threats + ii);
@@ -431,8 +431,7 @@ int main(int argc, char* argv[])
                                 p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
 
                                 //collision check
-                                //int exp_frame_width = exp_threat.get_fr_width();
-                                //int exp_frame_height = exp_threat.get_fr_height();
+
                                 if (!p_player.cheatsw())
                                 {
                                     //nguoi va cham voi quai
@@ -599,6 +598,7 @@ int main(int argc, char* argv[])
                         }
                     }
 
+                    //boss 
                     if (player_score >= 40)
                     {
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -643,30 +643,30 @@ int main(int argc, char* argv[])
                     //render health
                     player_health.show_heart(g_screen);
 
-                    ////player score 
-                    //std::string string_score = "Score ";
-                    //std::string string_gameover = "Your Score";
+                    //player score 
+                    std::string string_score = "Score ";
+                    std::string string_gameover = "Your Score";
 
-                    ////game score
-                    //std::string score_value = std::to_string(player_score * 100);
-                    //string_score += score_value;
-                    //game_mark.settext(string_score);
-                    //game_mark.Loadfromrendertext(g_font, g_screen);
-                    //game_mark.loadtexttoscreen(g_screen, 350, 0);
-                    //std::string score_gameover = std::to_string(player_score * 100);
-                    //game_over_mark.settext(score_gameover);
-                    //game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
-                    //game_over.settext(string_gameover);
-                    //game_over.Loadfromrendertext(Gameover_font, g_screen);
+                    //game score
+                    std::string score_value = std::to_string(player_score * 100);
+                    string_score += score_value;
+                    game_mark.settext(string_score);
+                    game_mark.Loadfromrendertext(g_font, g_screen);
+                    game_mark.loadtexttoscreen(g_screen, 350, 0);
+                    std::string score_gameover = std::to_string(player_score * 100);
+                    game_over_mark.settext(score_gameover);
+                    game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                    game_over.settext(string_gameover);
+                    game_over.Loadfromrendertext(Gameover_font, g_screen);
 
-                    ////push game time to screen
-                    //std::string string_time = "Time ";
-                    //time_value = SDL_GetTicks() / 1000;
-                    //std::string string_value = std::to_string(time_value);
-                    //string_time += string_value;
-                    //game_time.settext(string_time);
-                    //game_time.Loadfromrendertext(g_font, g_screen);
-                    //game_time.loadtexttoscreen(g_screen, 150, 0);
+                    //push game time to screen
+                    std::string string_time = "Time ";
+                    time_value = SDL_GetTicks() / 1000;
+                    std::string string_value = std::to_string(time_value);
+                    string_time += string_value;
+                    game_time.settext(string_time);
+                    game_time.Loadfromrendertext(g_font, g_screen);
+                    game_time.loadtexttoscreen(g_screen, 150, 0);
 
                     SDL_RenderPresent(g_screen);
 
