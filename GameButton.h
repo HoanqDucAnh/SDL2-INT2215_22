@@ -4,6 +4,7 @@
 #include "BaseObject.h"
 #include "MainObject.h"
 #include "ThreatObject.h"
+#include "PlayerHealth.h"
 
 
 using namespace std;
@@ -19,7 +20,7 @@ public:
 	// kiem tra bam vao nut
 	bool Inside(SDL_Event event);
 	//cac nut trong game
-	void Menu(SDL_Event event, SDL_Renderer* screen, int& score, bool& menu, bool& QuitMenu, bool& Gameover, bool& end, bool& win);
+	void Menu(SDL_Event event,int time, SDL_Renderer* screen, int& score, bool& menu, bool& QuitMenu, bool& Gameover, bool& end, bool& win, PlayerHealth& health);
 	void Play(SDL_Event event,SDL_Renderer* des,bool &menu,bool &play,bool &QuitMenu, bool &help);
 	void HighScore(SDL_Event event, SDL_Renderer* des, bool& menu, bool& score);
 	void Help(SDL_Event event, SDL_Renderer* des, bool& menu, bool& help);

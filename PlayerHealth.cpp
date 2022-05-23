@@ -25,7 +25,7 @@ void PlayerHealth::show_heart(SDL_Renderer* screen)
 	}
 }
 
-void PlayerHealth::init_heart(SDL_Renderer* screen)
+void PlayerHealth::init_heart()
 {
 	lives_count_ = 3;
 	if (heart_pos_list.size() > 0) {

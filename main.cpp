@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.h"
+#include "Text.cpp"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -37,7 +37,7 @@ Text game_over_mark;
 int player_score = 0;
 int time_value;
 int invi_timer = 0;
-int boss_health = 10;
+int boss_health = 70;
 
 
 bool InitData()
@@ -194,7 +194,7 @@ int main(int argc, char* argv[])
     //create health
     PlayerHealth player_health;
     player_health.loadImg("img//heart.png", g_screen);
-    player_health.init_heart(g_screen);
+    player_health.init_heart();
 
     //player
     MainObject p_player(START_XPOS_MAIN, START_YPOS_MAIN);
@@ -460,7 +460,7 @@ int main(int argc, char* argv[])
                         if (player_score < 40) {
                             for (int ii = 0; ii < NUM_THREAT; ii++) {
                                 ThreatsObject* p_threat = (p_threats + ii);
-                                if (p_threat) {
+                                //if (p_threat) {
                                     if (p_threat->get_dir())
                                     {
                                         p_threat->HandleMoveLtoR(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -508,7 +508,7 @@ int main(int argc, char* argv[])
                                                     Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                                     SDLCommonFunction::CheckHighScore(player_score);
                                                     GameOver = true;
-                                                    //delete[] p_threats;
+
                                                 }
                                             }
                                         }
@@ -556,7 +556,6 @@ int main(int argc, char* argv[])
                                                             Mix_PlayChannel(-1, g_sound_explo[0], 0);
                                                             SDLCommonFunction::CheckHighScore(player_score);
                                                             GameOver = true;
-                                                            //delete[] p_threats;
                                                         }
                                                     }
                                                 }
@@ -590,16 +589,15 @@ int main(int argc, char* argv[])
                                                 p_player.DestroyAmo(ia);
                                                 p_threat->Reset(-100);
                                                 player_score++;
-
                                                 break;
                                             }
                                         }
                                     }
-                                }
-                                else
+                                //}
+                                /*else
                                 {
                                     p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
-                                }
+                                }*/
                                 p_threat->Render(g_screen, NULL, 100, 100);
                                 p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                                 p_threat = NULL;
@@ -653,14 +651,14 @@ int main(int argc, char* argv[])
                         }
 
                         //boss 
-                        if (player_score >= 1)
+                        if (player_score >= 40)
                         {
                             boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                             boss->Render2(g_screen, NULL);
                             boss->MakeAmoMid(g_screen, boss);
 
                             //upgraded canon
-                            //p_player.SetAmoType(1);
+                            p_player.SetAmoType(1);
 
                             if (!p_player.cheatsw()) {
                                 //nguoi va cham voi boss
@@ -743,8 +741,7 @@ int main(int argc, char* argv[])
                                     }
                                 }
                             }
-                            //int boss_health = 10;
-                                //nguoi ban trung boss
+                            //nguoi ban trung boss
                             std::vector<AmoObject*> amo_list_player = p_player.GetAmoList();
                             for (int ia = 0; ia < amo_list_player.size(); ia++)
                             {
@@ -776,9 +773,6 @@ int main(int argc, char* argv[])
                                             win = true;
                                         }
                                         break;
-                                        //player_score += 40;
-
-
                                     }
                                 }
                             }
@@ -862,7 +856,7 @@ int main(int argc, char* argv[])
                         play = false;
                         end = false;
                     }
-                    RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end, win);
+                    RestartButton.Menu(g_event,time_value, g_screen, player_score, menu, QuitMenu, play, end, win,player_health);
                     ExitButton.Exit(g_event, g_screen, play, end);
                 }
                 Gameover.Render2(g_screen, NULL);
@@ -876,37 +870,6 @@ int main(int argc, char* argv[])
                 ExitButton.Render2(g_screen, NULL);
                 SDL_RenderPresent(g_screen);
             }
-            /*
-            //music switch
-            if (g_event.key.keysym.sym == SDLK_9)
-            {
-                //If there is no music playing
-                if (Mix_PlayingMusic() == 0)
-                {
-                    //Play the music
-                    if (Mix_PlayMusic(music, -1) == -1)
-                    {
-                        return 1;
-                    }
-                }
-                //If music is being played
-                else
-                {
-                    //If the music is paused
-                    if (Mix_PausedMusic() == 1)
-                    {
-                        //Resume the music
-                        Mix_ResumeMusic();
-                    }
-                    //If the music is playing
-                    else
-                    {
-                        //Pause the music
-                        Mix_PauseMusic();
-                    }
-                }
-            }
-            */
         }
     }
     close();

@@ -1,5 +1,6 @@
 #include "GameButton.h"
 #include "Common_Function.h"
+
 using namespace std;
 GameButton::GameButton()
 {
@@ -130,7 +131,7 @@ void GameButton::HighScore(SDL_Event event, SDL_Renderer* screen, bool& menu, bo
 		LoadTexture("img//Score.png", screen);
 	}
 }
-void GameButton::Menu(SDL_Event event, SDL_Renderer* screen,int &score, bool &menu, bool& QuitMenu, bool &play,bool &end, bool& win) {
+void GameButton::Menu(SDL_Event event,int time, SDL_Renderer* screen,int &score, bool &menu, bool& QuitMenu, bool &play,bool &end, bool& win,PlayerHealth& health) {
 	if (Inside(event))
 	{
 		LoadTexture("img//MainMenu2.png", screen);
@@ -140,8 +141,11 @@ void GameButton::Menu(SDL_Event event, SDL_Renderer* screen,int &score, bool &me
 			QuitMenu = false;
 			menu = true;
 			end = false;
+			time = 0;
 			score = 0;
 			win = false;
+			health.Reset();
+			health.init_heart();
 		}
 	}
 	else
