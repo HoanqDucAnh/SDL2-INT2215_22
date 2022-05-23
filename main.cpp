@@ -51,7 +51,7 @@ bool InitData()
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-    g_window = SDL_CreateWindow("Hardcore game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    g_window = SDL_CreateWindow("Space Fighter SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (g_window == NULL)
     {
         std::cout << "NO WINDOW" << std::endl;
@@ -234,7 +234,7 @@ int main(int argc, char* argv[])
 
     ThreatsObject* boss = new ThreatsObject();
     boss->loadImg("img//boss.png", g_screen);
-    boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
+    boss->SetRect(SCREEN_WIDTH / 2 - 150, -200);
     boss->set_x_val(2);
     AmoObject* p_amo = new AmoObject();
     boss->InitAmoTestRight(p_amo, 1, g_screen, boss);
@@ -651,7 +651,7 @@ int main(int argc, char* argv[])
                         }
 
                         //boss 
-                        if (player_score >= 4)
+                        if (player_score >= 40)
                         {
                             boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                             boss->Render2(g_screen, NULL);

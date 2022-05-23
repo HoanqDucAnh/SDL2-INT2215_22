@@ -229,26 +229,32 @@ void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
         rect_.x -= 1;
         rect_.x = -100;
     }*/
-    if (get_dir() == true)
+    if (rect_.y < 10)
     {
-        rect_.x += 1;
-        if (rect_.x > 200) 
-        {
-            rect_.x -= 1;
-            set_direction(false);
-        }
+        rect_.y++;
     }
-
-    if (get_dir() == false)
+    else
     {
-        rect_.x -= 1;
-        if (rect_.x < 0)
+        if (get_dir() == true)
         {
             rect_.x += 1;
-            set_direction(true);
+            if (rect_.x > 200)
+            {
+                rect_.x -= 1;
+                set_direction(false);
+            }
+        }
+
+        if (get_dir() == false)
+        {
+            rect_.x -= 1;
+            if (rect_.x < 0)
+            {
+                rect_.x += 1;
+                set_direction(true);
+            }
         }
     }
-    
     /*rect_.x++;
     if (rect_.x = 800) {
         rect_.x -= 1;
