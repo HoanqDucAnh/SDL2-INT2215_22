@@ -4,7 +4,7 @@
 #include <vector>
 #include "Common_Function.h"
 #include "BaseObject.h"
-#include "AmoObject.h"
+#include "Bullet.h"
 
 class MainObject : public BaseObject
 {
@@ -21,26 +21,26 @@ public:
     void Render(SDL_Renderer* des, SDL_Rect* clip);
     // Đạn của nhân vật lưu trong vector
     
-    void SetAmoList(std::vector<AmoObject*> amo_list)
+    void SetBulletList(std::vector<Bullet*> bullet_list)
     {
-        p_amo_list = amo_list;
+        p_bullet_list = bullet_list;
     }
-    std::vector<AmoObject*> GetAmoList() const
+    std::vector<Bullet*> GetBulletList() const
     {
-        return p_amo_list;
+        return p_bullet_list;
     }
-    void SetAmoType(int type);
+    void SetBulletType(int type);
 
     bool cheatsw();
     int fetchScore();
     void incScore();
 
-    void MakeAmo(SDL_Renderer* des);
-    void DestroyAmo(const int& idx);
+    void MakeBullet(SDL_Renderer* des);
+    void DestroyBullet(const int& idx);
     void reset_main_pos(int x, int y);
     void Reset(int x, int y);
 private:
-    std::vector<AmoObject*> p_amo_list;
+    std::vector<Bullet*> p_bullet_list;
     //The X and Y offsets of the dot
     int x_pos_, y_pos_;
 

@@ -56,20 +56,20 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fi
 			case SDLK_SPACE:
 				if (ammo_type == 0)
 				{
-					AmoObject* p_amo = new AmoObject();
+					Bullet* p_bullet = new Bullet();
 
 					Mix_PlayChannel(-1, fire_sound[0], 0);
 
-					p_amo->loadImg("img//bullet.png", des);
-					p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+					p_bullet->loadImg("img//bullet.png", des);
+					p_bullet->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 					
-					p_amo->set_is_move(true);
-					p_amo->set_angle(90);
-					p_amo->Set_y_val(2);
-					p_amo->Set_x_val(2);
+					p_bullet->set_is_move(true);
+					p_bullet->set_angle(90);
+					p_bullet->Set_y_val(2);
+					p_bullet->Set_x_val(2);
 
-					p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
-					p_amo_list.push_back(p_amo);
+					p_bullet->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_bullet->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
+					p_bullet_list.push_back(p_bullet);
 				}
 				if (ammo_type == 1)
 				{
@@ -77,17 +77,17 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fi
 
 					Mix_PlayChannel(-1, fire_sound[1], 0);
 					for (int i = 0; i < 5; i++) {
-				  		AmoObject* p_amo = new AmoObject();
-						p_amo->loadImg("img//bulletr.png", des);
-						p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+				  		Bullet* p_bullet = new Bullet();
+						p_bullet->loadImg("img//bulletr.png", des);
+						p_bullet->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
 
-						p_amo->set_angle(80 + 5 * i);
-						p_amo->Set_y_val(2);
-						p_amo->Set_x_val(2);
-						p_amo->set_is_move(true);
+						p_bullet->set_angle(80 + 5 * i);
+						p_bullet->Set_y_val(2);
+						p_bullet->Set_x_val(2);
+						p_bullet->set_is_move(true);
 
-						p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
-						p_amo_list.push_back(p_amo);
+						p_bullet->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_bullet->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
+						p_bullet_list.push_back(p_bullet);
 					}
 				}
 				break;
@@ -109,33 +109,33 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fi
 
 
 
-void MainObject::MakeAmo(SDL_Renderer* des)
+void MainObject::MakeBullet(SDL_Renderer* des)
 {
-	for (int i = 0; i < p_amo_list.size(); i++)
+	for (int i = 0; i < p_bullet_list.size(); i++)
 	{
-		AmoObject* p_amo = p_amo_list.at(i);
-		if (p_amo != NULL)
+		Bullet* p_bullet = p_bullet_list.at(i);
+		if (p_bullet != NULL)
 		{
-			if (p_amo->get_is_move() == true)
+			if (p_bullet->get_is_move() == true)
 			{
-				p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
+				p_bullet->Render(des, NULL, this->rect_.x, this->rect_.y);
 
 				if (ammo_type == 0)
 				{
-					p_amo->HandleMoveMain(SCREEN_WIDTH, SCREEN_HEIGHT);
+					p_bullet->HandleMoveMain(SCREEN_WIDTH, SCREEN_HEIGHT);
 				}
 				else if (ammo_type == 1)
 				{
-					p_amo->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+					p_bullet->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
 				}				
 			}
 			else
 			{
-				p_amo_list.erase(p_amo_list.begin() + i);
-				if (p_amo != NULL)
+				p_bullet_list.erase(p_bullet_list.begin() + i);
+				if (p_bullet != NULL)
 				{
-					delete p_amo;
-					p_amo = NULL;
+					delete p_bullet;
+					p_bullet = NULL;
 				}
 			}
 		}
@@ -143,7 +143,7 @@ void MainObject::MakeAmo(SDL_Renderer* des)
 }
 
 
-void MainObject::SetAmoType(int type)
+void MainObject::SetBulletType(int type)
 {
 	ammo_type = type;
 }
@@ -188,19 +188,19 @@ void MainObject::Render(SDL_Renderer* des, SDL_Rect* clip)
 	SDL_RenderCopy(des, p_object_, clip, &renderQuad);
 }
 
-void MainObject::DestroyAmo(const int& idx)
+void MainObject::DestroyBullet(const int& idx)
 {
-	//for (int i = 0; i < p_amo_list.size(); i++)
+	//for (int i = 0; i < p_bullet_list.size(); i++)
 	//{
-		if (idx < p_amo_list.size())
+		if (idx < p_bullet_list.size())
 		{
-			AmoObject* p_amo = p_amo_list.at(idx);
-			p_amo_list.erase(p_amo_list.begin() + idx);
+			Bullet* p_bullet = p_bullet_list.at(idx);
+			p_bullet_list.erase(p_bullet_list.begin() + idx);
 
-			if (p_amo != NULL)
+			if (p_bullet != NULL)
 			{
-				delete p_amo;
-				p_amo = NULL;
+				delete p_bullet;
+				p_bullet = NULL;
 			}
 		}
 	//}

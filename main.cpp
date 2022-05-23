@@ -2,11 +2,12 @@
 #include "BaseObject.h"
 #include "MainObject.h"
 #include "Timer.h"
-#include "ThreatObject.h"
+#include "Enemy.h"
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
 #include "Text.h"
+#include "Bullet.h"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -211,34 +212,34 @@ int main(int argc, char* argv[])
 
     //threat
 
-    ThreatsObject* p_threats = new ThreatsObject[3];
+    Enemy* p_threats = new Enemy[3];
     for (int i = 0; i < NUM_THREAT; i++) {
-        ThreatsObject* p_threat = (p_threats + i);
+        Enemy* p_threat = (p_threats + i);
         p_threat->loadImg("img//threat.png", g_screen);
         p_threat->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
         p_threat->set_y_val(4);
-        AmoObject* p_amo = new AmoObject();
-        p_threat->InitAmo(p_amo, 2, g_screen);
+        Bullet* p_bullet = new Bullet();
+        p_threat->InitBullet(p_bullet, 2, g_screen);
     }
 
     //meteor
 
-    ThreatsObject* meteors = new ThreatsObject[2];
+    Enemy* meteors = new Enemy[2];
     for (int i = 0; i < NUM_THREAT - 1; i++) {
-        ThreatsObject* meteor = (meteors + i);
+        Enemy* meteor = (meteors + i);
         meteor->loadImg("img//meteor.png", g_screen);
         meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
     }
 
     //boss
 
-    ThreatsObject* boss = new ThreatsObject();
+    Enemy* boss = new Enemy();
     boss->loadImg("img//boss.png", g_screen);
     boss->SetRect(SCREEN_WIDTH / 2 - 150, -200);
     boss->set_x_val(2);
-    AmoObject* p_amo = new AmoObject();
-    boss->InitAmoTestRight(p_amo, 1, g_screen, boss);
-    boss->InitAmo4(g_screen, boss);
+    Bullet* p_bullet = new Bullet();
+    boss->InitBulletTestRight(p_bullet, 1, g_screen, boss);
+    boss->InitBullet4(g_screen, boss);
 
 
     while (!end) {
@@ -459,7 +460,7 @@ int main(int argc, char* argv[])
                         //spaceship threat create
                         if (player_score < 40) {
                             for (int ii = 0; ii < NUM_THREAT; ii++) {
-                                ThreatsObject* p_threat = (p_threats + ii);
+                                Enemy* p_threat = (p_threats + ii);
                                 //if (p_threat) {
                                     if (p_threat->get_dir())
                                     {
@@ -470,7 +471,7 @@ int main(int argc, char* argv[])
                                         p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
                                     }
                                     p_threat->Render(g_screen, NULL, 100, 100);
-                                    p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                                    p_threat->MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
 
                                     //collision check
 
@@ -513,18 +514,18 @@ int main(int argc, char* argv[])
                                             }
                                         }
                                         //va cham nguoi va dan quai
-                                        std::vector<AmoObject*> amo_list_threat = p_threat->GetAmoList();
-                                        for (int iat = 0; iat < amo_list_threat.size(); iat++)
+                                        std::vector<Bullet*> bullet_list_threat = p_threat->GetBulletList();
+                                        for (int iat = 0; iat < bullet_list_threat.size(); iat++)
                                         {
-                                            AmoObject* p_amo_threat = amo_list_threat.at(iat);
-                                            if (p_amo_threat != NULL)
+                                            Bullet* p_bullet_threat = bullet_list_threat.at(iat);
+                                            if (p_bullet_threat != NULL)
                                             {
                                                 if (SDL_GetTicks() - invi_timer >= 1500)
                                                 {
-                                                    bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_threat->GetRect(), p_player.GetRect());
+                                                    bool ret_col_threat = SDLCommonFunction::CheckCollision(p_bullet_threat->GetRect(), p_player.GetRect());
                                                     if (ret_col_threat)
                                                     {
-                                                        p_threat->ResetAmo(p_amo_threat);
+                                                        p_threat->ResetBullet(p_bullet_threat);
                                                         Mix_PlayChannel(-1, g_sound_explo[1], 0);
                                                         for (int ex = 0; ex < explosion_frame; ex++)
                                                         {
@@ -536,7 +537,7 @@ int main(int argc, char* argv[])
                                                             exp_threat.render_explosion(g_screen);
                                                             SDL_RenderPresent(g_screen);
                                                         }
-                                                        //p_threat->ResetAmo(p_amo_threat);
+                                                        //p_threat->ResetBullet(p_bullet_threat);
                                                         //p_player.Reset(0); 
                                                         SDL_Delay(500);
                                                         death_counts++;
@@ -564,13 +565,13 @@ int main(int argc, char* argv[])
                                     }
                                     //nguoi ban trung quai
 
-                                    std::vector<AmoObject*> amo_list = p_player.GetAmoList();
-                                    for (int ia = 0; ia < amo_list.size(); ia++)
+                                    std::vector<Bullet*> bullet_list = p_player.GetBulletList();
+                                    for (int ia = 0; ia < bullet_list.size(); ia++)
                                     {
-                                        AmoObject* p_amo = amo_list.at(ia);
-                                        if (p_amo != NULL)
+                                        Bullet* p_bullet = bullet_list.at(ia);
+                                        if (p_bullet != NULL)
                                         {
-                                            bool ret_col = SDLCommonFunction::CheckCollision(p_amo->GetRect(), p_threat->GetRect());
+                                            bool ret_col = SDLCommonFunction::CheckCollision(p_bullet->GetRect(), p_threat->GetRect());
                                             if (ret_col)
                                             {
                                                 Mix_PlayChannel(2, g_sound_explo[2], 0);
@@ -586,7 +587,7 @@ int main(int argc, char* argv[])
                                                     SDL_Delay(2);
                                                 }
 
-                                                p_player.DestroyAmo(ia);
+                                                p_player.DestroyBullet(ia);
                                                 p_threat->Reset(-100);
                                                 player_score++;
                                                 break;
@@ -599,7 +600,7 @@ int main(int argc, char* argv[])
                                     p_threat->HandleMoveRtoL(SCREEN_WIDTH, SCREEN_HEIGHT);
                                 }*/
                                 p_threat->Render(g_screen, NULL, 100, 100);
-                                p_threat->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
+                                p_threat->MakeBullet(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
                                 p_threat = NULL;
                                 delete p_threat;
                             }
@@ -608,7 +609,7 @@ int main(int argc, char* argv[])
                         //meteor threat init & collision
                         if (player_score >= 15 && player_score < 40) {
                             for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
-                                ThreatsObject* meteor = (meteors + ii);
+                                Enemy* meteor = (meteors + ii);
                                 if (meteor) {
                                     meteor->HandleMoveMeteor(SCREEN_WIDTH, SCREEN_HEIGHT);
                                     meteor->Render2(g_screen, NULL);
@@ -655,10 +656,10 @@ int main(int argc, char* argv[])
                         {
                             boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                             boss->Render2(g_screen, NULL);
-                            boss->MakeAmoMid(g_screen, boss);
+                            boss->MakeBulletMid(g_screen, boss);
 
                             //upgraded canon
-                            p_player.SetAmoType(1);
+                            p_player.SetBulletType(1);
 
                             if (!p_player.cheatsw()) {
                                 //nguoi va cham voi boss
@@ -697,18 +698,18 @@ int main(int argc, char* argv[])
                                 }
 
                                 //nguoi va cham dan boss
-                                std::vector<AmoObject*> amo_list_boss = boss->GetAmoList();
-                                for (int iat = 0; iat < amo_list_boss.size(); iat++)
+                                std::vector<Bullet*> Bullet_list_boss = boss->GetBulletList();
+                                for (int iat = 0; iat < Bullet_list_boss.size(); iat++)
                                 {
-                                    AmoObject* p_amo_boss = amo_list_boss.at(iat);
-                                    if (p_amo_boss != NULL)
+                                    Bullet* p_bullet_boss = Bullet_list_boss.at(iat);
+                                    if (p_bullet_boss != NULL)
                                     {
                                         if (SDL_GetTicks() - invi_timer >= 1500)
                                         {
-                                            bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_boss->GetRect(), p_player.GetRect());
+                                            bool ret_col_threat = SDLCommonFunction::CheckCollision(p_bullet_boss->GetRect(), p_player.GetRect());
                                             if (ret_col_threat)
                                             {
-                                                boss->ResetAmo(p_amo_boss);
+                                                boss->ResetBullet(p_bullet_boss);
                                                 Mix_PlayChannel(-1, g_sound_explo[1], 0);
                                                 for (int ex = 0; ex < explosion_frame; ex++)
                                                 {
@@ -742,13 +743,13 @@ int main(int argc, char* argv[])
                                 }
                             }
                             //nguoi ban trung boss
-                            std::vector<AmoObject*> amo_list_player = p_player.GetAmoList();
-                            for (int ia = 0; ia < amo_list_player.size(); ia++)
+                            std::vector<Bullet*> Bullet_list_player = p_player.GetBulletList();
+                            for (int ia = 0; ia < Bullet_list_player.size(); ia++)
                             {
-                                AmoObject* p_amo_player = amo_list_player.at(ia);
-                                if (p_amo != NULL)
+                                Bullet* p_bullet_player = Bullet_list_player.at(ia);
+                                if (p_bullet != NULL)
                                 {
-                                    bool ret_col = SDLCommonFunction::CheckCollision(p_amo_player->GetRect(), boss->GetRect());
+                                    bool ret_col = SDLCommonFunction::CheckCollision(p_bullet_player->GetRect(), boss->GetRect());
                                     if (ret_col)
                                     {
                                         boss_health -= 2;
@@ -766,7 +767,7 @@ int main(int argc, char* argv[])
                                             SDL_Delay(1);
                                         }
 
-                                        p_player.DestroyAmo(ia);
+                                        p_player.DestroyBullet(ia);
                                         if (boss_health == 0) 
                                         {
 
@@ -797,7 +798,7 @@ int main(int argc, char* argv[])
                             }
                         }
 
-                        p_player.MakeAmo(g_screen);
+                        p_player.MakeBullet(g_screen);
                         p_player.Render(g_screen, NULL);
 
                         // render health
@@ -844,10 +845,10 @@ int main(int argc, char* argv[])
                     else if (win)
                     {
                         p_player.Reset(START_XPOS_MAIN, START_YPOS_MAIN);
-                        std::vector<AmoObject*> amo_list_player = p_player.GetAmoList();
-                        for (int ia = 0; ia < amo_list_player.size(); ia++)
+                        std::vector<Bullet*> bullet_list_player = p_player.GetBulletList();
+                        for (int ia = 0; ia < bullet_list_player.size(); ia++)
                         {
-                            p_player.DestroyAmo(ia);
+                            p_player.DestroyBullet(ia);
                         }
                         SDL_ShowCursor(SDL_ENABLE);
                         while (SDL_PollEvent(&g_event) != 0)
