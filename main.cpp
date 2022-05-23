@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp"
+#include "Text.h"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -14,6 +14,8 @@ BaseObject load_menu;
 BaseObject load_help;
 BaseObject load_pause;
 BaseObject load_score;
+BaseObject load_win;
+
 
 GameButton PlayButton;
 GameButton HelpButton;
@@ -108,6 +110,7 @@ void close()
     load_menu.Free();
     load_pause.Free();
     load_score.Free();
+    load_win.Free();
 
     Mix_FreeChunk(g_sound_explo[0]);
     Mix_FreeChunk(g_sound_explo[1]);
@@ -150,6 +153,7 @@ int main(int argc, char* argv[])
     load_help.loadImg("img//help.png", g_screen);
     load_pause.loadImg("img//pause.png", g_screen);
     load_score.loadImg("img//HighScore.png", g_screen);
+    load_win.loadImg("img//Win.png", g_screen);
     Gameover.loadImg("img//GameOver.png", g_screen);
 
     if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
@@ -177,8 +181,9 @@ int main(int argc, char* argv[])
     bool score = false;
     bool QuitMenu = false;
     bool end = false;
-    //game text
+    bool win = false;
 
+    //game text
     game_time.Setcolor(Text::WHITE_TEXT);
     game_mark.Setcolor(Text::WHITE_TEXT);
     game_over.Setcolor(Text::WHITE_TEXT);
@@ -205,6 +210,7 @@ int main(int argc, char* argv[])
     exp_threat.set_clip();
 
     //threat
+
     ThreatsObject* p_threats = new ThreatsObject[3];
     for (int i = 0; i < NUM_THREAT; i++) {
         ThreatsObject* p_threat = (p_threats + i);
@@ -216,14 +222,16 @@ int main(int argc, char* argv[])
     }
 
     //meteor
+
     ThreatsObject* meteors = new ThreatsObject[2];
-    for (int i = 0; i < NUM_THREAT-1; i++) {
+    for (int i = 0; i < NUM_THREAT - 1; i++) {
         ThreatsObject* meteor = (meteors + i);
         meteor->loadImg("img//meteor.png", g_screen);
         meteor->SetRect(SCREEN_WIDTH, SCREEN_HEIGHT * 0.2);
     }
 
     //boss
+
     ThreatsObject* boss = new ThreatsObject();
     boss->loadImg("img//boss.png", g_screen);
     boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
@@ -231,7 +239,7 @@ int main(int argc, char* argv[])
     AmoObject* p_amo = new AmoObject();
     boss->InitAmoTestRight(p_amo, 1, g_screen, boss);
     boss->InitAmo4(g_screen, boss);
-    
+
 
     while (!end) {
 
@@ -599,7 +607,7 @@ int main(int argc, char* argv[])
                     }
 
                     //meteor threat init & collision
-                    if (player_score >= 15 && player_score <40) {
+                    if (player_score >= 15 && player_score < 40) {
                         for (int ii = 0; ii < NUM_THREAT - 1; ii++) {
                             ThreatsObject* meteor = (meteors + ii);
                             if (meteor) {
@@ -649,7 +657,7 @@ int main(int argc, char* argv[])
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                         boss->Render2(g_screen, NULL);
                         boss->MakeAmoMid(g_screen, boss);
-                     
+
                         //upgraded canon
                         //p_player.SetAmoType(1);
 
@@ -720,7 +728,7 @@ int main(int argc, char* argv[])
                                                 SDL_Delay(100);
                                                 p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
                                                 player_health.minus_health();
-                                                player_health.show_heart(g_screen);                                             
+                                                player_health.show_heart(g_screen);
                                                 invi_timer = SDL_GetTicks();
                                             }
                                             else
@@ -764,6 +772,7 @@ int main(int argc, char* argv[])
                                     if (boss_health == 0) {
                                         boss->Reset(-600);
                                         player_score += 40;
+                                        win = true;
                                     }
                                     //player_score += 40;
                                     break;
@@ -817,65 +826,82 @@ int main(int argc, char* argv[])
                         }
                     }
                 }
-            }
-            else
-            {
-                SDL_ShowCursor(SDL_ENABLE);
-                while (SDL_PollEvent(&g_event) != 0)
+                else if (win)
                 {
-                    if (g_event.type == SDL_QUIT)
+                    while (SDL_PollEvent(&g_event) != 0)
                     {
-                        play = false;
-                        end = true;
+                        if (g_event.type == SDL_QUIT)
+                        {
+                            play = false;
+                            win = true;
+                        }
+                        
+                        ExitButton.Exit(g_event, g_screen, play, end);
                     }
-                    RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end);
-                    ExitButton.Exit(g_event, g_screen, play, end);
+                    load_win.Render2(g_screen, NULL);
+                    ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
+                    ExitButton.Render2(g_screen, NULL);
+                    SDL_RenderPresent(g_screen);
+
                 }
-                Gameover.Render2(g_screen, NULL);
-                game_over.Loadfromrendertext(Gameover_font, g_screen);
-                game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
-                game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
-                game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
-                RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
-                RestartButton.Render2(g_screen, NULL);
-                ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
-                ExitButton.Render2(g_screen, NULL);
-                SDL_RenderPresent(g_screen);
-            }
-        }
-       /* //music switch
-        if (g_event.key.keysym.sym == SDLK_9)
-        {
-            //If there is no music playing
-            if (Mix_PlayingMusic() == 0)
-            {
-                //Play the music
-                if (Mix_PlayMusic(music, -1) == -1)
-                {
-                    return 1;
-                }
-            }
-            //If music is being played
-            else
-            {
-                //If the music is paused
-                if (Mix_PausedMusic() == 1)
-                {
-                    //Resume the music
-                    Mix_ResumeMusic();
-                }
-                //If the music is playing
                 else
                 {
-                    //Pause the music
-                    Mix_PauseMusic();
+                    SDL_ShowCursor(SDL_ENABLE);
+                    while (SDL_PollEvent(&g_event) != 0)
+                    {
+                        if (g_event.type == SDL_QUIT)
+                        {
+                            play = false;
+                            end = true;
+                        }
+                        RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end);
+                        ExitButton.Exit(g_event, g_screen, play, end);
+                    }
+                    Gameover.Render2(g_screen, NULL);
+                    game_over.Loadfromrendertext(Gameover_font, g_screen);
+                    game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
+                    game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                    game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
+                    RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
+                    RestartButton.Render2(g_screen, NULL);
+                    ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
+                    ExitButton.Render2(g_screen, NULL);
+                    SDL_RenderPresent(g_screen);
                 }
             }
+            /*
+            //music switch
+            if (g_event.key.keysym.sym == SDLK_9)
+            {
+                //If there is no music playing
+                if (Mix_PlayingMusic() == 0)
+                {
+                    //Play the music
+                    if (Mix_PlayMusic(music, -1) == -1)
+                    {
+                        return 1;
+                    }
+                }
+                //If music is being played
+                else
+                {
+                    //If the music is paused
+                    if (Mix_PausedMusic() == 1)
+                    {
+                        //Resume the music
+                        Mix_ResumeMusic();
+                    }
+                    //If the music is playing
+                    else
+                    {
+                        //Pause the music
+                        Mix_PauseMusic();
+                    }
+                }
+            }
+            */
         }
-        */
-
-
+        close();
+        return 0;
     }
-    close();
-    return 0;
 }
