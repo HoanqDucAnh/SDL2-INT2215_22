@@ -9,6 +9,7 @@
 #include <fstream>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include <math.h>
 
 static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;

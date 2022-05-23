@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp"
+#include "Text.h"
 #include "Bullet.h"
 
 BaseObject Gameover;
@@ -39,6 +39,7 @@ int player_score = 0;
 int time_value;
 int invi_timer = 0;
 int boss_health = 160;
+int start_timer = 0;
 
 
 bool InitData()
@@ -379,7 +380,8 @@ int main(int argc, char* argv[])
                 BackButton.Render2(g_screen, NULL);
                 SDL_RenderPresent(g_screen);
             }
-            if (!GameOver)
+            
+            else if (!GameOver)
             {
                 if (paused)
                 {
@@ -755,7 +757,7 @@ int main(int argc, char* argv[])
                                         boss_health --;
 
                                         Mix_PlayChannel(2, g_sound_explo[2], 0);
-                                        /*for (int ex = 0; ex < explosion_frame; ex++)
+                                        for (int ex = 0; ex < explosion_frame; ex++)
                                         {
                                             int x_pos = (boss->GetRect().x + boss->GetRect().w * 0.5) - exp_frame_width * 0.5;
                                             int y_pos = (boss->GetRect().y + boss->GetRect().h * 0.5) - exp_frame_height * 0.5;
@@ -765,7 +767,7 @@ int main(int argc, char* argv[])
                                             exp_threat.render_explosion(g_screen);
                                             SDL_RenderPresent(g_screen);
                                             SDL_Delay(1);
-                                        }*/
+                                        }
 
                                         p_player.DestroyBullet(ia);
                                         if (boss_health == 0) 

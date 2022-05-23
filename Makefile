@@ -1,5 +1,5 @@
-all:
-	g++ *.cpp -ID:\SDL2-2.0.22\i686-w64-mingw32\include\SDL2 -LD:\SDL2-2.0.22\i686-w64-mingw32\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -o SDLGame.exe
+
+
 #OBJS specifies which files to compile as part of the project
 OBJS = *.cpp
 
@@ -7,10 +7,10 @@ OBJS = *.cpp
 CC = g++
 
 #INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -Isource\include\SDL2
+INCLUDE_PATHS = -Isource/include/SDL2
 
 #LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = -Lsource\lib
+LIBRARY_PATHS = -Lsource/lib
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
@@ -21,7 +21,7 @@ COMPILER_FLAGS = -w -Wl,-subsystem,windows
 LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 #OBJ_NAME specifies the name of our exectuable
-OBJ_NAME = Space Fighter
+OBJ_NAME = SpaceFighter.exe
 
 #This is the target that compiles our executable
 all : $(OBJS)
