@@ -775,6 +775,7 @@ int main(int argc, char* argv[])
                                             player_score += 40;
                                             win = true;
                                         }
+                                        break;
                                         //player_score += 40;
 
 
@@ -848,31 +849,32 @@ int main(int argc, char* argv[])
 
                     }
                 }
-                
-                else
+
+
+            }
+            else if (GameOver)
+            {
+                SDL_ShowCursor(SDL_ENABLE);
+                while (SDL_PollEvent(&g_event) != 0)
                 {
-                    SDL_ShowCursor(SDL_ENABLE);
-                    while (SDL_PollEvent(&g_event) != 0)
+                    if (g_event.type == SDL_QUIT)
                     {
-                        if (g_event.type == SDL_QUIT)
-                        {
-                            play = false;
-                            end = true;
-                        }
-                        RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end);
-                        ExitButton.Exit(g_event, g_screen, play, end);
+                        play = false;
+                        end = false;
                     }
-                    Gameover.Render2(g_screen, NULL);
-                    game_over.Loadfromrendertext(Gameover_font, g_screen);
-                    game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
-                    game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
-                    game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
-                    RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
-                    RestartButton.Render2(g_screen, NULL);
-                    ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
-                    ExitButton.Render2(g_screen, NULL);
-                    SDL_RenderPresent(g_screen);
+                    RestartButton.Menu(g_event, g_screen, player_score, menu, QuitMenu, play, end, win);
+                    ExitButton.Exit(g_event, g_screen, play, end);
                 }
+                Gameover.Render2(g_screen, NULL);
+                game_over.Loadfromrendertext(Gameover_font, g_screen);
+                game_over.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 170, SCREEN_HEIGHT / 2 - 100);
+                game_over_mark.Loadfromrendertext(Gameover_font, g_screen);
+                game_over_mark.loadtexttoscreen(g_screen, SCREEN_WIDTH / 2 - 70, SCREEN_HEIGHT / 2 - 20);
+                RestartButton.SetRect(SCREEN_WIDTH / 2 - RestartButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - RestartButton.get_height_frame() + 150);
+                RestartButton.Render2(g_screen, NULL);
+                ExitButton.SetRect(SCREEN_WIDTH / 2 - ExitButton.get_width_frame() / 2, SCREEN_HEIGHT / 2 - ExitButton.get_height_frame() + 250);
+                ExitButton.Render2(g_screen, NULL);
+                SDL_RenderPresent(g_screen);
             }
             /*
             //music switch
@@ -906,7 +908,7 @@ int main(int argc, char* argv[])
             }
             */
         }
-        close();
-        return 0;
     }
+    close();
+    return 0;
 }
