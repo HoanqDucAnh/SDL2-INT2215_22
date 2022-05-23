@@ -39,7 +39,7 @@ void Enemy::InitBullet4(SDL_Renderer* des, Enemy* object)
         p_bullet->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
         p_bullet->set_is_move(true);
         p_bullet->set_angle(30 * i);
-        p_bullet->Set_y_val(2);
+        p_bullet->Set_y_val(1);
         p_bullet->Set_x_val(1);
         p_bullet->set_pos(object->rect_.x + object->rect_.w / 2 + BOSS_WIDTH / 2 - 50, object->rect_.y + object->rect_.h / 2 - BOSS_HEIGHT / 4 + 25);
         p_bullet_list.push_back(p_bullet);

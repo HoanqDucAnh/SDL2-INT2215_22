@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.h"
+#include "Text.cpp"
 #include "Bullet.h"
 
 BaseObject Gameover;
@@ -38,7 +38,7 @@ Text game_over_mark;
 int player_score = 0;
 int time_value;
 int invi_timer = 0;
-int boss_health = 120;
+int boss_health = 160;
 
 
 bool InitData()
@@ -458,7 +458,7 @@ int main(int argc, char* argv[])
                         int exp_frame_width = exp_threat.get_fr_width();
                         int exp_frame_height = exp_threat.get_fr_height();
                         //spaceship threat create
-                        if (player_score < 40) {
+                        if (player_score <= 40) {
                             for (int ii = 0; ii < NUM_THREAT; ii++) {
                                 Enemy* p_threat = (p_threats + ii);
                                 //if (p_threat) {
@@ -752,10 +752,10 @@ int main(int argc, char* argv[])
                                     bool ret_col = SDLCommonFunction::CheckCollision(p_bullet_player->GetRect(), boss->GetRect());
                                     if (ret_col)
                                     {
-                                        boss_health -= 2;
+                                        boss_health --;
 
                                         Mix_PlayChannel(2, g_sound_explo[2], 0);
-                                        for (int ex = 0; ex < explosion_frame; ex++)
+                                        /*for (int ex = 0; ex < explosion_frame; ex++)
                                         {
                                             int x_pos = (boss->GetRect().x + boss->GetRect().w * 0.5) - exp_frame_width * 0.5;
                                             int y_pos = (boss->GetRect().y + boss->GetRect().h * 0.5) - exp_frame_height * 0.5;
@@ -765,7 +765,7 @@ int main(int argc, char* argv[])
                                             exp_threat.render_explosion(g_screen);
                                             SDL_RenderPresent(g_screen);
                                             SDL_Delay(1);
-                                        }
+                                        }*/
 
                                         p_player.DestroyBullet(ia);
                                         if (boss_health == 0) 

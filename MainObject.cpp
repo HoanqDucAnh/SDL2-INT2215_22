@@ -210,8 +210,8 @@ void MainObject::reset_main_pos(int x, int y)
 {
 	x_pos_ = x;
 	y_pos_ = y;
-	rect_.w = DOT_WIDTH;
-	rect_.h = DOT_HEIGHT;
+	//.w = DOT_WIDTH;
+	//rect_.h = DOT_HEIGHT;
 }
 
 int MainObject::fetchScore()
@@ -231,6 +231,6 @@ void MainObject::incScore()
 void MainObject::Reset(int x, int y) {
 	x_pos_ = x;
 	y_pos_ = y;
-	rect_.w = DOT_WIDTH;
-	rect_.h = DOT_HEIGHT;
+	//rect_.w = DOT_WIDTH;
+	//rect_.h = DOT_HEIGHT;
 }
