@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.h"
+#include "Text.cpp"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -35,7 +35,7 @@ Text game_over_mark;
 int player_score = 0;
 int time_value;
 int invi_timer = 0;
-int boss_shoot_time = 0;
+int boss_health = 10;
 
 
 bool InitData()
@@ -229,7 +229,8 @@ int main(int argc, char* argv[])
     boss->SetRect(SCREEN_WIDTH / 2 + 230 / 2, 10);
     boss->set_x_val(2);
     AmoObject* p_amo = new AmoObject();
-    boss->InitAmo(p_amo, 7, g_screen);
+    boss->InitAmoTestRight(p_amo, 1, g_screen, boss);
+    boss->InitAmo4(g_screen, boss);
     
 
     while (!end) {
@@ -643,45 +644,134 @@ int main(int argc, char* argv[])
                     }
 
                     //boss 
-                    if (player_score >= 40)
+                    if (player_score >= 1)
                     {
                         boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                         boss->Render2(g_screen, NULL);
-                        boss->MakeAmo(g_screen, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+                        boss->MakeAmoMid(g_screen, boss);
+                     
                         //upgraded canon
-                        p_player.SetAmoType(1);
+                        //p_player.SetAmoType(1);
+
+                        if (!p_player.cheatsw()) {
+                            //nguoi va cham voi boss
+                            bool is_col = SDLCommonFunction::CheckCollision(p_player.GetRect(), boss->GetRect());
+                            if (SDL_GetTicks() - invi_timer >= 1500)
+                            {
+                                if (is_col)
+                                {
+                                    Mix_PlayChannel(-1, g_sound_explo[0], 0);
+                                    for (int ex = 0; ex < explosion_frame; ex++)
+                                    {
+                                        int x_player_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                        int y_player_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_width * 0.5;
+
+                                        exp_threat.set_frame(ex);
+                                        exp_threat.SetRect(x_player_pos, y_player_pos);
+                                        exp_threat.render_explosion(g_screen);
+                                        SDL_RenderPresent(g_screen);
+                                    }
+                                    SDL_Delay(500);
+                                    death_counts++;
+                                    if (death_counts <= 2) {
+
+                                        p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                        player_health.minus_health();
+                                        player_health.show_heart(g_screen);
+
+                                        invi_timer = SDL_GetTicks();
+                                    }
+                                    else {
+                                        Mix_PlayChannel(-1, g_sound_explo[0], 0);
+                                        SDLCommonFunction::CheckHighScore(player_score);
+                                        GameOver = true;
+                                    }
+                                }
+                            }
+
+                            //nguoi va cham dan boss
+                            std::vector<AmoObject*> amo_list_boss = boss->GetAmoList();
+                            for (int iat = 0; iat < amo_list_boss.size(); iat++)
+                            {
+                                AmoObject* p_amo_boss = amo_list_boss.at(iat);
+                                if (p_amo_boss != NULL)
+                                {
+                                    if (SDL_GetTicks() - invi_timer >= 1500)
+                                    {
+                                        bool ret_col_threat = SDLCommonFunction::CheckCollision(p_amo_boss->GetRect(), p_player.GetRect());
+                                        if (ret_col_threat)
+                                        {
+                                            boss->ResetAmo(p_amo_boss);
+                                            Mix_PlayChannel(-1, g_sound_explo[1], 0);
+                                            for (int ex = 0; ex < explosion_frame; ex++)
+                                            {
+                                                int x_pos = (p_player.GetRect().x + p_player.GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                                int y_pos = (p_player.GetRect().y + p_player.GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                                exp_threat.set_frame(ex);
+                                                exp_threat.SetRect(x_pos, y_pos);
+                                                exp_threat.render_explosion(g_screen);
+                                                SDL_RenderPresent(g_screen);
+                                            }
+                                            SDL_Delay(500);
+                                            death_counts++;
+                                            if (death_counts <= 2)
+                                            {
+                                                SDL_Delay(100);
+                                                p_player.reset_main_pos(START_XPOS_MAIN, START_YPOS_MAIN);
+                                                player_health.minus_health();
+                                                player_health.show_heart(g_screen);                                             
+                                                invi_timer = SDL_GetTicks();
+                                            }
+                                            else
+                                            {
+                                                Mix_PlayChannel(-1, g_sound_explo[0], 0);
+                                                SDLCommonFunction::CheckHighScore(player_score);
+                                                GameOver = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        //int boss_health = 10;
+                            //nguoi ban trung boss
+                        std::vector<AmoObject*> amo_list_player = p_player.GetAmoList();
+                        for (int ia = 0; ia < amo_list_player.size(); ia++)
+                        {
+                            AmoObject* p_amo_player = amo_list_player.at(ia);
+                            if (p_amo != NULL)
+                            {
+                                bool ret_col = SDLCommonFunction::CheckCollision(p_amo_player->GetRect(), boss->GetRect());
+                                if (ret_col)
+                                {
+                                    boss_health -= 2;
+
+                                    Mix_PlayChannel(2, g_sound_explo[2], 0);
+                                    for (int ex = 0; ex < explosion_frame; ex++)
+                                    {
+                                        int x_pos = (boss->GetRect().x + boss->GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                        int y_pos = (boss->GetRect().y + boss->GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                        exp_threat.set_frame(ex);
+                                        exp_threat.SetRect(x_pos, y_pos);
+                                        exp_threat.render_explosion(g_screen);
+                                        SDL_RenderPresent(g_screen);
+                                        SDL_Delay(2);
+                                    }
+
+                                    p_player.DestroyAmo(ia);
+                                    if (boss_health == 0) {
+                                        boss->Reset(-600);
+                                        player_score += 40;
+                                    }
+                                    //player_score += 40;
+                                    break;
+
+                                }
+                            }
+                        }
                     }
-
-                    /*
-                    //if (player_score > 40) {
-                    boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
-                    boss->Render2(g_screen, NULL);
-                    if (SDL_GetTicks() - boss_shoot_time >= 400) {
-                        AmoObject* p_boss = new AmoObject();
-                        if (player_score < 5) {
-                            boss->InitAmo2(g_screen, boss);
-                            boss->InitAmo3(g_screen, boss);
-                            boss->InitAmo4(g_screen, boss);
-                        }
-                        //player_score <= 20 && player_score > 5
-                        if (player_score <= 20 && player_score > 5) {
-
-                            boss->InitAmoTestLeft( g_screen, boss);
-                            boss->InitAmoTestMid(g_screen, boss);
-                            boss->InitAmoTestRight( g_screen, boss);
-
-                        }
-                        //player_score > 20
-                        if (player_score <= 20 && player_score > 5) {
-                            boss->InitAmoTest1(g_screen, boss);
-                            boss->InitAmoTest2(g_screen, boss);
-                        }
-                        boss_shoot_time = SDL_GetTicks();
-                    }
-                    boss->MakeAmo1(g_screen, boss);
-                    //}
-                    */
 
                     p_player.MakeAmo(g_screen);
                     p_player.Render(g_screen, NULL);

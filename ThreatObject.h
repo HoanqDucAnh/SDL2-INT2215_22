@@ -22,15 +22,10 @@ public:
     void HandleMove(const int& x_border, const int& y_border);
     void HandleMoveBoss(const int& x_border, const int& y_border);
     void HandleMoveMeteor(const int& x_border, const int& y_border);
-    void InitAmo2( SDL_Renderer* des, ThreatsObject* object);
-    void InitAmo3( SDL_Renderer* des, ThreatsObject* object);
-    void InitAmo4( SDL_Renderer* des, ThreatsObject* object);
-    void InitAmoTestLeft( SDL_Renderer* des, ThreatsObject* object);
-    void InitAmoTestRight( SDL_Renderer* des, ThreatsObject* object);
+    void InitAmo4(SDL_Renderer* des, ThreatsObject* object);
+    void InitAmoTestRight(AmoObject* p_amo, const int& speed, SDL_Renderer* des, ThreatsObject* object);
     void InitAmoTestMid(AmoObject* p_amo, const int& speed, SDL_Renderer* des, ThreatsObject* object);
-    void InitAmoTest1(AmoObject* p_amo, SDL_Renderer* des, ThreatsObject* object, int x);
-    void InitAmoTest2( SDL_Renderer* des, ThreatsObject* object);
-    void MakeAmo1(SDL_Renderer* des, ThreatsObject* boss);
+    void MakeAmoMid(SDL_Renderer* des, ThreatsObject* object);
     void set_x_val(const int& val)
     {
         x_val_ = val;
@@ -70,7 +65,6 @@ public:
     }
     void set_type_threat(const double type_) { type = type_; }
     int get_type_threat() const { return type; }
-    bool LoadTexture(std::string path, SDL_Renderer* screen);
     void MakeAmo(SDL_Renderer* des, const int& x_limit, const int& y_limit);
     void Reset(const int& yborder);
     void ResetAmo(AmoObject* p_amo);
