@@ -6,7 +6,7 @@
 #include "explosion.h"
 #include "GameButton.h"
 #include "PlayerHealth.h"
-#include "Text.cpp"
+#include "Text.h"
 
 BaseObject Gameover;
 BaseObject g_background;
@@ -37,7 +37,7 @@ Text game_over_mark;
 int player_score = 0;
 int time_value;
 int invi_timer = 0;
-int boss_health = 70;
+int boss_health = 120;
 
 
 bool InitData()
@@ -651,7 +651,7 @@ int main(int argc, char* argv[])
                         }
 
                         //boss 
-                        if (player_score >= 40)
+                        if (player_score >= 4)
                         {
                             boss->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
                             boss->Render2(g_screen, NULL);
@@ -763,13 +763,32 @@ int main(int argc, char* argv[])
                                             exp_threat.SetRect(x_pos, y_pos);
                                             exp_threat.render_explosion(g_screen);
                                             SDL_RenderPresent(g_screen);
-                                            SDL_Delay(2);
+                                            SDL_Delay(1);
                                         }
 
                                         p_player.DestroyAmo(ia);
-                                        if (boss_health == 0) {
+                                        if (boss_health == 0) 
+                                        {
+
+                                            Mix_PlayChannel(2, g_sound_explo[0], 0);
+                                            Mix_PlayChannel(2, g_sound_explo[1], 0);
+                                            Mix_PlayChannel(2, g_sound_explo[2], 0);
+                                            
+                                            for (int ex = 0; ex < explosion_frame; ex++)
+                                            {
+                                                int x_pos = (boss->GetRect().x + boss->GetRect().w * 0.5) - exp_frame_width * 0.5;
+                                                int y_pos = (boss->GetRect().y + boss->GetRect().h * 0.5) - exp_frame_height * 0.5;
+
+                                                exp_threat.set_frame(ex);
+                                                exp_threat.SetRect(x_pos, y_pos);
+                                                exp_threat.render_explosion(g_screen);
+                                                SDL_RenderPresent(g_screen);
+                                                SDL_Delay(1);
+                                            }
                                             boss->Reset(-600);
+                                            
                                             player_score += 40;
+                                            SDL_Delay(500);
                                             win = true;
                                         }
                                         break;
@@ -824,6 +843,12 @@ int main(int argc, char* argv[])
                     }
                     else if (win)
                     {
+                        p_player.Reset(START_XPOS_MAIN, START_YPOS_MAIN);
+                        std::vector<AmoObject*> amo_list_player = p_player.GetAmoList();
+                        for (int ia = 0; ia < amo_list_player.size(); ia++)
+                        {
+                            p_player.DestroyAmo(ia);
+                        }
                         SDL_ShowCursor(SDL_ENABLE);
                         while (SDL_PollEvent(&g_event) != 0)
                         {
@@ -843,8 +868,6 @@ int main(int argc, char* argv[])
 
                     }
                 }
-
-
             }
             else if (GameOver)
             {

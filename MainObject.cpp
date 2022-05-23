@@ -30,7 +30,8 @@ MainObject::MainObject(int x, int y)
 	y_val_ = 0;
 }
 
-void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fire_sound[2]) {
+void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fire_sound[2]) 
+{
 	if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
 	{
 		//Adjust the velocity
@@ -61,9 +62,11 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fi
 
 					p_amo->loadImg("img//bullet.png", des);
 					p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+					
 					p_amo->set_is_move(true);
-
+					p_amo->set_angle(90);
 					p_amo->Set_y_val(2);
+					p_amo->Set_x_val(2);
 
 					p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
 					p_amo_list.push_back(p_amo);
@@ -73,13 +76,19 @@ void MainObject::HandleInputAction(SDL_Event e, SDL_Renderer* des, Mix_Chunk* fi
 					Mix_PlayChannel(-1, fire_sound[0], 0);
 
 					Mix_PlayChannel(-1, fire_sound[1], 0);
-						AmoObject* p_amo = new AmoObject();
-						p_amo->loadImg("img//dantim.png", des);
+					for (int i = 0; i < 5; i++) {
+				  		AmoObject* p_amo = new AmoObject();
+						p_amo->loadImg("img//bulletr.png", des);
 						p_amo->SetWidthHeight(WIDTH_LAZER, HEIGHT_LAZER);
+
+						p_amo->set_angle(80 + 5 * i);
+						p_amo->Set_y_val(2);
+						p_amo->Set_x_val(2);
 						p_amo->set_is_move(true);
-						p_amo->Set_y_val(2);;
+
 						p_amo->set_pos(x_pos_ + DOT_WIDTH / 2 - (p_amo->GetRect().w) / 2, y_pos_ + DOT_HEIGHT / 2);
 						p_amo_list.push_back(p_amo);
+					}
 				}
 				break;
 		}
@@ -110,7 +119,15 @@ void MainObject::MakeAmo(SDL_Renderer* des)
 			if (p_amo->get_is_move() == true)
 			{
 				p_amo->Render(des, NULL, this->rect_.x, this->rect_.y);
-				p_amo->HandleMoveMain(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+				if (ammo_type == 0)
+				{
+					p_amo->HandleMoveMain(SCREEN_WIDTH, SCREEN_HEIGHT);
+				}
+				else if (ammo_type == 1)
+				{
+					p_amo->HandleMoveBoss(SCREEN_WIDTH, SCREEN_HEIGHT);
+				}				
 			}
 			else
 			{

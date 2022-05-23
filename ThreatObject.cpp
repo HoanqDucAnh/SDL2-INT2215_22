@@ -223,16 +223,32 @@ void ThreatsObject::ResetAmo(AmoObject* p_amo)
 
 void ThreatsObject::HandleMoveBoss(const int& x_border, const int& y_border)
 {
-    rect_.x = SCREEN_WIDTH / 2 - BOSS_WIDTH / 2;
+    //rect_.x = SCREEN_WIDTH / 2 - BOSS_WIDTH / 2;
     /*if (rect_.x > SCREEN_WIDTH / 2)
     {
         rect_.x -= 1;
         rect_.x = -100;
     }*/
-    if (rect_.y >= 0) {
-        rect_.y = 0;
+    if (get_dir() == true)
+    {
+        rect_.x += 1;
+        if (rect_.x > 200) 
+        {
+            rect_.x -= 1;
+            set_direction(false);
+        }
     }
-    rect_.y += 1;
+
+    if (get_dir() == false)
+    {
+        rect_.x -= 1;
+        if (rect_.x < 0)
+        {
+            rect_.x += 1;
+            set_direction(true);
+        }
+    }
+    
     /*rect_.x++;
     if (rect_.x = 800) {
         rect_.x -= 1;
